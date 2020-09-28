@@ -150,17 +150,20 @@ namespace Manager.Testes.ConsoleApp
 
                     try
                     {
-                        Projeto projeto = new Projeto("Manager Chamados");
-                        projeto.AdicionarRelease(new Release("teste", "v1.0.0", projeto));
+                        Projeto projeto = new Projeto("Teste");
+                        projeto.AdicionarDocumento(new Documento("Teste", "teste", projeto));
+                        //Projeto projeto = new Projeto("Manager Chamados");
+                        //projeto.AdicionarRelease(new Release("teste", "v1.0.0", projeto));
                         //projeto.Releases.Add(new Release("", "v.1.2", projeto));
                         //projeto.Documentos.Add(new Documento("Caso de uso","Diagrama com as especificação de casos de uso do sistema", projeto));
 
                         IRepositorioProjeto repositorioProjeto = new RepositorioProjeto(database);
-                        //repositorioProjeto.Adicionar(projeto);
+                        repositorioProjeto.Adicionar(projeto);
+                        database.SaveChanges();
 
                         //Documento doc = new Documento("Diagrama de classes2", "teste", projeto);
                         //                        Release rel = new Release("Teste release2", "teste", projeto);
-                        repositorioProjeto.Adicionar(projeto);
+                        //repositorioProjeto.Adicionar(projeto);
                         //projeto.Documentos.Add(doc);
                         //negocio.SalvarProjeto(projeto, doc, rel);
                         //negocio.SalvarProjeto(projeto, null, null);

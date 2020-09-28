@@ -18,7 +18,7 @@ namespace Manager.Infra.Data.Mapeamentos
             builder.HasOne(u => u.TipoUsuario);
             builder.HasMany(u => u.Notas).WithOne(n => n.Usuario);
             builder.HasMany(u => u.Tickets).WithOne(t => t.Usuario);
-            builder.HasMany(u => u.UsuarioProjetos).WithOne(p => p.Usuario);
+            //builder.HasMany(u => u.ProjetoUsuarios).WithOne(p => p.Usuario);
         }
     }
 }

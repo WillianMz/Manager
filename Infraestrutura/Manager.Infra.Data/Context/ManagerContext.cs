@@ -1,3 +1,4 @@
+using Flunt.Notifications;
 using Manager.Domain.Entidades;
 using Manager.Infra.Data.Mapeamentos;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +17,8 @@ namespace Manager.Infra.Data.Context
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<TipoUsuario> TipoUsuarios { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
-        public DbSet<UsuarioProjeto> UsuarioProjetos { get; set; }
+        public DbSet<ProjetoUsuario> ProjetoUsuarios { get; set; }
+        //public DbSet<UsuarioProjeto> UsuarioProjetos { get; set; }
 
         public ManagerContext(DbContextOptions options) : base(options)
         {
@@ -25,6 +27,8 @@ namespace Manager.Infra.Data.Context
         //configuração das tabelas pelo metodo de sobreposição, utilizando o FluentApi do EFCore
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Ignore<Notification>();
+
             modelBuilder.ApplyConfiguration(new CategoriaMap());
             modelBuilder.ApplyConfiguration(new DocumentoMap());
             modelBuilder.ApplyConfiguration(new NotaMap());
@@ -35,7 +39,7 @@ namespace Manager.Infra.Data.Context
             modelBuilder.ApplyConfiguration(new TicketMap());
             modelBuilder.ApplyConfiguration(new TipoUsuarioMap());
             modelBuilder.ApplyConfiguration(new UsuarioMap());
-            modelBuilder.ApplyConfiguration(new UsuarioProjetoMap());
+            modelBuilder.ApplyConfiguration(new ProjetoUsuarioMap());
 
             base.OnModelCreating(modelBuilder);
         }

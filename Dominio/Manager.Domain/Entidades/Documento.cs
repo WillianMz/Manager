@@ -5,9 +5,7 @@ namespace Manager.Domain.Entidades
     public class Documento : EntidadeBase
     {
         //Para o EFCore
-        protected Documento()
-        {
-        }
+        protected Documento() { }
 
         public Documento(string titulo, string conteudo, Projeto projeto)
         {

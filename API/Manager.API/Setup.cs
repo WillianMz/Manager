@@ -3,7 +3,6 @@ using Manager.Domain.Interfaces.Repositorios;
 using Manager.Infra.Data.Context;
 using Manager.Infra.Data.Repositorios;
 using Manager.Infra.Data.Transacoes;
-using Manager.Negocio.Commands.Categorias.Adicionar;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -88,7 +87,7 @@ namespace Manager.API
 
         public static void ConfigureMediatR(this IServiceCollection services)
         {
-            services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly, typeof(AdicionarCategoriaRequest).GetTypeInfo().Assembly);
+           // services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly, typeof(AdicionarCategoriaRequest).GetTypeInfo().Assembly);
         }
 
         public static void ConfigureRepositorios(this IServiceCollection services)

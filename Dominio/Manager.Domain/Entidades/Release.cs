@@ -1,16 +1,13 @@
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Manager.Domain.Entidades
 {
     public class Release : EntidadeBase
     {
-        private IList<Ticket> _tickets;
+        private List<Ticket> _tickets;
 
         //Para o EFCore
-        protected Release()
-        {
-        }
+        protected Release() { }
 
         public Release(string nome, string descricao, Projeto projeto)
         {
@@ -29,7 +26,7 @@ namespace Manager.Domain.Entidades
         public int ProjetoId { get; private set; }
         public virtual Projeto Projeto { get; private set; }
 
-        public virtual IReadOnlyCollection<Ticket> Tickets { get { return _tickets.ToArray(); } }
+        public virtual IReadOnlyCollection<Ticket> Tickets => _tickets;
 
     }
 }

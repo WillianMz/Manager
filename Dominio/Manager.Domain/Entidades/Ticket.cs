@@ -1,17 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Manager.Domain.Entidades
 {
     public class Ticket : EntidadeBase
     {
-        private IList<Nota> _notas;
+        private List<Nota> _notas;
 
         //Para o EFCore
-        protected Ticket()
-        {
-        }
+        protected Ticket() { }
 
         public Ticket(string descricao, Prioridade prioridade, Usuario usuario, Projeto projeto, Categoria categoria, Release release)
         {
@@ -46,7 +43,7 @@ namespace Manager.Domain.Entidades
         public int ReleaseId { get; set; }
         public virtual Release Release { get; set; }
 
-        public virtual IReadOnlyCollection<Nota> Notas { get { return _notas.ToArray(); } }
+        public virtual IReadOnlyCollection<Nota> Notas => _notas;
 
 
         public void AdicionarNota(Nota nota)

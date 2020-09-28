@@ -6,9 +6,7 @@ namespace Manager.Domain.Entidades
     public class Nota : EntidadeBase
     {
         //Para o EFCore
-        protected Nota()
-        {
-        }
+        protected Nota() { }
 
         public Nota(string titulo, string descricao, Ticket ticket, Usuario usuario)
         {

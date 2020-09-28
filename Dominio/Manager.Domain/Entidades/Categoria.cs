@@ -5,11 +5,10 @@ namespace Manager.Domain.Entidades
 {
     public class Categoria : EntidadeBase
     {
+        private List<Ticket> _tickets;
 
         //para o EFCore
-        protected Categoria()
-        {
-        }
+        protected Categoria() {}
 
         public Categoria(string nome)
         {
@@ -20,7 +19,7 @@ namespace Manager.Domain.Entidades
             */
             Nome = nome?.Trim().ToUpper();           
 
-            Tickets = new List<Ticket>();
+            _tickets = new List<Ticket>();
 
             AddNotifications(new Contract()
                 .Requires()
@@ -34,7 +33,7 @@ namespace Manager.Domain.Entidades
         public int Id { get; private set; }
         public string Nome { get; private set; }
 
-        public virtual IReadOnlyCollection<Ticket> Tickets { get; set; }
+        public virtual IReadOnlyCollection<Ticket> Tickets => _tickets;
         
     }
 }

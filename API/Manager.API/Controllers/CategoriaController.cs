@@ -1,5 +1,4 @@
 ﻿using Manager.Infra.Data.Transacoes;
-using Manager.Negocio.Commands.Categorias.Adicionar;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,20 +17,20 @@ namespace Manager.API.Controllers
             _mediator = mediator;
         }
 
-        [AllowAnonymous]
-        [HttpPost]
-        [Route("Adicionar")]
-        public async Task<IActionResult> Adicionar([FromBody]AdicionarCategoriaRequest request)
-        {
-            try
-            {
-                var response = await _mediator.Send(request, CancellationToken.None);
-                return await ResponseAsync(response);
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+        //[AllowAnonymous]
+        //[HttpPost]
+        //[Route("Adicionar")]
+        //public async Task<IActionResult> Adicionar([FromBody]AdicionarCategoriaRequest request)
+        //{
+        //    try
+        //    {
+        //        var response = await _mediator.Send(request, CancellationToken.None);
+        //        return await ResponseAsync(response);
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
     }
 }

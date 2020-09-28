@@ -1,18 +1,15 @@
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Manager.Domain.Entidades
 {
     public class Usuario : EntidadeBase
     {
-        private IList<Nota> _notas;
-        private IList<Ticket> _tickets;
-        private IList<UsuarioProjeto> _usuariosProjeto;
+        private List<Nota> _notas;
+        private List<Ticket> _tickets;
+        private List<ProjetoUsuario> _projetoUsuarios;
 
         //Para o EFCore
-        protected Usuario()
-        {
-        }
+        protected Usuario() { }
 
         public Usuario(string nome, string login, string senha, string email)
         {
@@ -24,7 +21,7 @@ namespace Manager.Domain.Entidades
             //Ativo = false;    
             _notas = new List<Nota>();
             _tickets = new List<Ticket>();
-            _usuariosProjeto = new List<UsuarioProjeto>();
+            _projetoUsuarios = new List<ProjetoUsuario>();
         }
 
         public int Id { get; private set; }
@@ -37,8 +34,8 @@ namespace Manager.Domain.Entidades
         public virtual TipoUsuario TipoUsuario { get; private set; }
 
         //relacionamento 1 para N
-        public virtual IReadOnlyCollection<Nota> Notas { get { return _notas.ToArray(); } }
-        public virtual IReadOnlyCollection<Ticket> Tickets { get { return _tickets.ToArray(); } }
-        public virtual IReadOnlyCollection<UsuarioProjeto> UsuarioProjetos { get { return _usuariosProjeto.ToArray(); } }
+        public virtual IReadOnlyCollection<Nota> Notas => _notas;
+        public virtual IReadOnlyCollection<Ticket> Tickets => _tickets;
+        public virtual IReadOnlyCollection<ProjetoUsuario> ProjetoUsuarios => _projetoUsuarios;
     }
 }

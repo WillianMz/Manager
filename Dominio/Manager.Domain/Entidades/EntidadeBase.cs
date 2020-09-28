@@ -4,5 +4,6 @@ namespace Manager.Domain.Entidades
 {
     public abstract class EntidadeBase : Notifiable
     {
+        public EntidadeBase() { }
     }
 }
