@@ -34,6 +34,17 @@ namespace Manager.Domain.Entidades
         public string Nome { get; private set; }
 
         public virtual IReadOnlyCollection<Ticket> Tickets => _tickets;
+
+
+        //metodos
+        public void Renomear(string novoNome)
+        {
+            Nome = novoNome?.Trim().ToUpper();
+
+            if (string.IsNullOrEmpty(novoNome))
+                AddNotification("Nome", "Novo nome não pode ser vazio");
+
+        }
         
     }
 }

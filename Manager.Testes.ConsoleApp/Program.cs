@@ -40,12 +40,12 @@ namespace Manager.Testes.ConsoleApp
                     Console.WriteLine("Processando............");
 
                     //CategoriaNegocio cn = new CategoriaNegocio(_repo);
-                    //var lista = cn.ListarCategorias();
+                    var lista = _repo.ListarTodos();
 
-                    //foreach(Categoria c in lista)
-                    //{
-                    //    Console.WriteLine(Convert.ToString(c.Id) + " - " + c.Nome);
-                    //}
+                    foreach (Categoria c in lista)
+                    {
+                        Console.WriteLine(Convert.ToString(c.Id) + " - " + c.Nome);
+                    }
 
                     #region ADICIONAR CATEGORIA
 
@@ -91,6 +91,40 @@ namespace Manager.Testes.ConsoleApp
                     //Console.WriteLine("Listas de categorias adicionada a base de dados!");
 
                     //Console.WriteLine("-------------------------------------------");
+
+                    #endregion
+
+                    #region ALTERAR CATEGORIA
+                    Console.WriteLine("Informe o ID da Categoria que deseja alterar");
+                    var id = Console.ReadLine();                 
+
+                    Categoria categoria = _repo.CarregarObjetoPeloID(int.Parse(id));
+
+                    if(categoria != null)
+                    {
+                        Console.WriteLine("Categoria selecionada: " + categoria.Nome);
+                        Console.WriteLine("");
+                        Console.WriteLine("Digite o novo nome");
+                        string NovoNome = Console.ReadLine();
+
+                        categoria.Renomear(NovoNome);
+
+                        if (categoria.Invalid)
+                        {
+                            foreach (var not in categoria.Notifications)
+                            {
+                                Console.WriteLine($"{not.Property} - {not.Message}");
+                            }
+                        }
+                        else
+                        {
+                            _repo.Editar(categoria);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Nenhuma categoria foi encontrada com o Id: " + id);
+                    }                                        
 
                     #endregion
 
@@ -227,14 +261,13 @@ namespace Manager.Testes.ConsoleApp
 
                     #endregion
 
-                    //var lista2 = cn.ListarCategorias();
+                    var lista2 = _repo.ListarTodos();
 
-                    //foreach (Categoria c in lista2)
-                    //{
-                    //    Console.WriteLine(Convert.ToString(c.Id) + " - " + c.Nome);
-                    //}
+                    foreach (Categoria c in lista2)
+                        Console.WriteLine(Convert.ToString(c.Id) + " - " + c.Nome);
+                    
 
-                    //Console.WriteLine("-------------------------------------------");
+                    Console.WriteLine("-------------------------------------------");
                 }
             }
             catch (Exception ex)

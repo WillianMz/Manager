@@ -1,3 +1,4 @@
+using Flunt.Validations;
 using System.Collections.Generic;
 
 namespace Manager.Domain.Entidades
@@ -16,6 +17,14 @@ namespace Manager.Domain.Entidades
             Projeto = projeto;
 
             _tickets = new List<Ticket>();
+
+            AddNotifications(new Contract()
+                .Requires()
+                .IsNullOrEmpty(Nome, "Nome", "Informe o nome da Release")
+                .IsNullOrEmpty(Descricao, "Descricao", "Informe uma descrição para a release")
+                .IsNull(Projeto, "Projeto", "Informe o projeto a qual esta release pertence")
+            );
+
         }
 
 

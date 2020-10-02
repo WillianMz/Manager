@@ -17,6 +17,11 @@ namespace Manager.Domain.Entidades
             DataDaNota = DateTime.Now;
 
             AddNotifications(new Contract()
+                .Requires()
+                .IsNullOrEmpty(Titulo, "Titulo", "Título não pode estar em branco")
+                .IsNullOrEmpty(Descricao, "Descricao", "Descrição não pode estar em branco")
+                .IsNull(Ticket, "Ticket", "Não foi informado a qual ticket esta nota pertence")
+                .IsNull(Usuario, "Usuario", "Não foi informado o usuário criador desta nota")
             );
         }
 

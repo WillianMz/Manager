@@ -1,3 +1,4 @@
+using Flunt.Validations;
 using System.Collections.Generic;
 
 namespace Manager.Domain.Entidades
@@ -22,6 +23,15 @@ namespace Manager.Domain.Entidades
             _notas = new List<Nota>();
             _tickets = new List<Ticket>();
             _projetoUsuarios = new List<ProjetoUsuario>();
+
+            AddNotifications(new Contract()
+                .Requires()
+                .IsNullOrEmpty(Nome, "Nome", "Nome do usuário inválido")
+                .IsNullOrEmpty(Login, "Login", "Informe um login")
+                .IsNullOrEmpty(Senha, "Senha", "Informe uma senha")
+                .IsNullOrEmpty(Email, "Email", "Informe um email")
+            );
+
         }
 
         public int Id { get; private set; }
@@ -37,5 +47,13 @@ namespace Manager.Domain.Entidades
         public virtual IReadOnlyCollection<Nota> Notas => _notas;
         public virtual IReadOnlyCollection<Ticket> Tickets => _tickets;
         public virtual IReadOnlyCollection<ProjetoUsuario> ProjetoUsuarios => _projetoUsuarios;
+
+
+        //metodos
+        public void AlterarSenha(string senhaAtual, string novaSenha)
+        {
+
+        }
+
     }
 }

@@ -29,5 +29,11 @@ namespace Manager.Domain.Entidades
         public int ProjetoId { get; private set; }
         public virtual Projeto Projeto { get; private set; }
 
+        //metodos
+        public void Renomear()
+        {
+
+        }
+
     }
 }

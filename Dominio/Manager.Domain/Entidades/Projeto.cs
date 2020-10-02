@@ -1,5 +1,5 @@
+using Flunt.Validations;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.ComTypes;
 
 namespace Manager.Domain.Entidades
 {
@@ -20,6 +20,14 @@ namespace Manager.Domain.Entidades
             _documentos = new List<Documento>();
             _releases = new List<Release>();
             _tickets = new List<Ticket>();
+
+            _projetoUsuarios = new List<ProjetoUsuario>();
+
+            AddNotifications(new Contract()
+                .Requires()
+                .IsNullOrEmpty(Descricao, "Descricao", "Nome do projeto não pode estar vazio")
+            );
+
         }
 
         public int Id { get; private set; }
@@ -46,9 +54,9 @@ namespace Manager.Domain.Entidades
             _releases.Add(release);
         }
 
-        public void AdicionarUsuarioAoProjeto(Usuario usuario)
+        public void AdicionarMembroNoProjeto(Usuario usuario)
         {
-            //procedimento para adicionar usuario ao projeto
+
         }
 
     }

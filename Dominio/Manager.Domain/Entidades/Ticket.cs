@@ -1,3 +1,5 @@
+using Flunt.Validations;
+using Manager.Domain.Enums;
 using System;
 using System.Collections.Generic;
 
@@ -20,6 +22,16 @@ namespace Manager.Domain.Entidades
 
             _notas = new List<Nota>();
             DataAbertura = DateTime.Now;
+
+            AddNotifications(new Contract()
+                .Requires()
+                .IsNullOrEmpty(Descricao, "Descricao", "Informe a descrição do Ticket")
+                .IsNull(Prioridade, "Prioridade", "Informe a prioridade")
+                .IsNull(Usuario, "Usuario", "Identifique o usuário criador do ticket")
+                .IsNull(Projeto, "Projeto", "Informe o projeto relacionado a este ticket")
+                .IsNull(Categoria, "Categoria", "Informe a categoria")
+            );
+
         }
 
         public int Id { get; private set; }
@@ -49,6 +61,24 @@ namespace Manager.Domain.Entidades
         public void AdicionarNota(Nota nota)
         {
             _notas.Add(nota);
+        }
+
+        public void Editar()
+        {
+
+        }
+
+        public void FecharTicket(string solucao)
+        {
+            DataFechamento = DateTime.Now;
+            
+            Solucao = solucao?.ToUpper();
+
+            AddNotifications(new Contract()
+                .Requires()
+                .IsNullOrEmpty(Solucao, "Solucao", "Descreva a solução")
+            );
+
         }
     }
 }
