@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Manager.Infra.Data.Migrations
 {
     [DbContext(typeof(ManagerContext))]
-    [Migration("20200913201316_Inicial")]
-    partial class Inicial
+    [Migration("20201004214506_NovoVersaoInicial")]
+    partial class NovoVersaoInicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -18,6 +18,32 @@ namespace Manager.Infra.Data.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("Manager.Domain.Entidades.Anexo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("varchar(40) CHARACTER SET utf8mb4")
+                        .HasMaxLength(40);
+
+                    b.Property<int>("TicketId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("URL")
+                        .IsRequired()
+                        .HasColumnType("varchar(300) CHARACTER SET utf8mb4")
+                        .HasMaxLength(300);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TicketId");
+
+                    b.ToTable("Anexos");
+                });
 
             modelBuilder.Entity("Manager.Domain.Entidades.Categoria", b =>
                 {
@@ -41,11 +67,6 @@ namespace Manager.Infra.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("Conteudo")
-                        .IsRequired()
-                        .HasColumnType("varchar(200) CHARACTER SET utf8mb4")
-                        .HasMaxLength(200);
-
                     b.Property<int>("ProjetoId")
                         .HasColumnType("int");
 
@@ -53,6 +74,11 @@ namespace Manager.Infra.Data.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(45) CHARACTER SET utf8mb4")
                         .HasMaxLength(45);
+
+                    b.Property<string>("URL")
+                        .IsRequired()
+                        .HasColumnType("varchar(200) CHARACTER SET utf8mb4")
+                        .HasMaxLength(200);
 
                     b.Property<string>("teste")
                         .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
@@ -149,9 +175,30 @@ namespace Manager.Infra.Data.Migrations
                         .HasColumnType("varchar(200) CHARACTER SET utf8mb4")
                         .HasMaxLength(200);
 
+                    b.Property<string>("Nome")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.HasKey("Id");
 
                     b.ToTable("Projetos");
+                });
+
+            modelBuilder.Entity("Manager.Domain.Entidades.ProjetoUsuario", b =>
+                {
+                    b.Property<int>("ProjetoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Gerente")
+                        .HasColumnType("tinyint(1)");
+
+                    b.HasKey("ProjetoId", "UsuarioId");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("ProjetoUsuarios");
                 });
 
             modelBuilder.Entity("Manager.Domain.Entidades.Release", b =>
@@ -159,6 +206,12 @@ namespace Manager.Infra.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("DataDeCriacao")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("DataDeLiberacao")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
@@ -173,9 +226,17 @@ namespace Manager.Infra.Data.Migrations
                     b.Property<int>("ProjetoId")
                         .HasColumnType("int");
 
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Versao")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ProjetoId");
+
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Releases");
                 });
@@ -223,10 +284,6 @@ namespace Manager.Infra.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("Arquivo")
-                        .HasColumnType("varchar(300) CHARACTER SET utf8mb4")
-                        .HasMaxLength(300);
-
                     b.Property<int>("CategoriaId")
                         .HasColumnType("int");
 
@@ -241,18 +298,21 @@ namespace Manager.Infra.Data.Migrations
                         .HasColumnType("varchar(300) CHARACTER SET utf8mb4")
                         .HasMaxLength(300);
 
+                    b.Property<int>("PrioridadeAtual")
+                        .HasColumnType("int");
+
                     b.Property<int?>("PrioridadeId")
                         .HasColumnType("int");
 
                     b.Property<int>("ProjetoId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ReleaseId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Solucao")
                         .HasColumnType("varchar(300) CHARACTER SET utf8mb4")
                         .HasMaxLength(300);
+
+                    b.Property<int>("StatusAtual")
+                        .HasColumnType("int");
 
                     b.Property<int?>("StatusId")
                         .HasColumnType("int");
@@ -270,8 +330,6 @@ namespace Manager.Infra.Data.Migrations
                     b.HasIndex("PrioridadeId");
 
                     b.HasIndex("ProjetoId");
-
-                    b.HasIndex("ReleaseId");
 
                     b.HasIndex("StatusId");
 
@@ -356,19 +414,13 @@ namespace Manager.Infra.Data.Migrations
                     b.ToTable("Usuarios");
                 });
 
-            modelBuilder.Entity("Manager.Domain.Entidades.UsuarioProjeto", b =>
+            modelBuilder.Entity("Manager.Domain.Entidades.Anexo", b =>
                 {
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProjetoId")
-                        .HasColumnType("int");
-
-                    b.HasKey("UsuarioId", "ProjetoId");
-
-                    b.HasIndex("ProjetoId");
-
-                    b.ToTable("UsuarioProjetos");
+                    b.HasOne("Manager.Domain.Entidades.Ticket", "Ticket")
+                        .WithMany("Anexos")
+                        .HasForeignKey("TicketId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Manager.Domain.Entidades.Documento", b =>
@@ -395,11 +447,32 @@ namespace Manager.Infra.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Manager.Domain.Entidades.ProjetoUsuario", b =>
+                {
+                    b.HasOne("Manager.Domain.Entidades.Projeto", "Projeto")
+                        .WithMany("ProjetoUsuarios")
+                        .HasForeignKey("ProjetoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Manager.Domain.Entidades.Usuario", "Usuario")
+                        .WithMany("ProjetoUsuarios")
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Manager.Domain.Entidades.Release", b =>
                 {
                     b.HasOne("Manager.Domain.Entidades.Projeto", "Projeto")
                         .WithMany("Releases")
                         .HasForeignKey("ProjetoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Manager.Domain.Entidades.Usuario", "Usuario")
+                        .WithMany("Releases")
+                        .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -422,12 +495,6 @@ namespace Manager.Infra.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Manager.Domain.Entidades.Release", "Release")
-                        .WithMany("Tickets")
-                        .HasForeignKey("ReleaseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Manager.Domain.Entidades.Status", "Status")
                         .WithMany()
                         .HasForeignKey("StatusId");
@@ -444,21 +511,6 @@ namespace Manager.Infra.Data.Migrations
                     b.HasOne("Manager.Domain.Entidades.TipoUsuario", "TipoUsuario")
                         .WithMany()
                         .HasForeignKey("TipoUsuarioId");
-                });
-
-            modelBuilder.Entity("Manager.Domain.Entidades.UsuarioProjeto", b =>
-                {
-                    b.HasOne("Manager.Domain.Entidades.Projeto", "Projeto")
-                        .WithMany()
-                        .HasForeignKey("ProjetoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Manager.Domain.Entidades.Usuario", "Usuario")
-                        .WithMany("UsuarioProjetos")
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

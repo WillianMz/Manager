@@ -18,7 +18,7 @@ namespace Manager.Infra.Data.Context
         public DbSet<TipoUsuario> TipoUsuarios { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<ProjetoUsuario> ProjetoUsuarios { get; set; }
-        //public DbSet<UsuarioProjeto> UsuarioProjetos { get; set; }
+        public DbSet<Anexo> Anexos { get; set; }        
 
         public ManagerContext(DbContextOptions options) : base(options)
         {
@@ -40,6 +40,7 @@ namespace Manager.Infra.Data.Context
             modelBuilder.ApplyConfiguration(new TipoUsuarioMap());
             modelBuilder.ApplyConfiguration(new UsuarioMap());
             modelBuilder.ApplyConfiguration(new ProjetoUsuarioMap());
+            modelBuilder.ApplyConfiguration(new AnexoMap());
 
             base.OnModelCreating(modelBuilder);
         }

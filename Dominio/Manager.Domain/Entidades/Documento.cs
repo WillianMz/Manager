@@ -7,32 +7,39 @@ namespace Manager.Domain.Entidades
         //Para o EFCore
         protected Documento() { }
 
-        public Documento(string titulo, string conteudo, Projeto projeto)
+        public Documento(string titulo, string url, Projeto projeto)
         {
             Titulo = titulo?.Trim().ToUpper();
-            Conteudo = conteudo?.Trim().ToUpper();
+            URL = url?.Trim().ToUpper();
             Projeto = projeto;
 
             AddNotifications(new Contract()
                 .Requires()
-                .IsNullOrEmpty(Titulo, "Titulo", "Não é permitido documento sem titulo")
-                .IsNullOrEmpty(Conteudo, "Conteudo", "Coloque uma descrição breve sobre o documento")
+                .IsNotNullOrEmpty(titulo, "Titulo", "Não é permitido documento sem titulo")
+                .IsNotNullOrEmpty(url, "URL", "Informe o endereço do documento")
             );
         }
 
 
         public int Id { get; private set; }
         public string Titulo { get; private set; }
-        public string Conteudo { get; private set; }
+        public string URL { get; private set; }
         public string teste { get; private set; }
 
         public int ProjetoId { get; private set; }
         public virtual Projeto Projeto { get; private set; }
 
         //metodos
-        public void Renomear()
+        public void Editar(string titulo, string url)
         {
+            Titulo = titulo?.Trim().ToUpper();
+            URL = url?.Trim().ToUpper();
 
+            AddNotifications(new Contract()
+                .Requires()
+                .IsNotNullOrEmpty(titulo, "Titulo", "Não é permitido documento sem título")
+                .IsNotNullOrEmpty(url, "URL", "Informe o endereço do documento")
+            );
         }
 
     }

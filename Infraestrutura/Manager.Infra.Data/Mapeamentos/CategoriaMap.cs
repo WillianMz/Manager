@@ -9,9 +9,7 @@ namespace Manager.Infra.Data.Mapeamentos
         public void Configure(EntityTypeBuilder<Categoria> builder)
         {
             builder.HasKey(c => c.Id);
-            builder.Property(c => c.Nome)
-                            .IsRequired()
-                            .HasMaxLength(45);
+            builder.Property(c => c.Nome).IsRequired().HasMaxLength(45);
 
             //relacionamento 1 para N
             //uma categoria possui varios tickts, 1 ticket pertence a 1 categoria

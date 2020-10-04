@@ -14,11 +14,13 @@ namespace Manager.Infra.Data.Mapeamentos
             builder.Property(t => t.Tempo);
             builder.Property(t => t.Descricao).IsRequired().HasMaxLength(300);
             builder.Property(t => t.Solucao).HasMaxLength(300);
-            builder.Property(t => t.Arquivo).HasMaxLength(300);
 
             //relacionamento 
             builder.HasOne(t => t.Status);
             builder.HasOne(t => t.Prioridade);
+
+            builder.HasMany(t => t.Notas).WithOne(n => n.Ticket);
+            builder.HasMany(t => t.Anexos).WithOne(a => a.Ticket);
         }
     }
 }

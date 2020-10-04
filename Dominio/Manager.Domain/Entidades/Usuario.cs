@@ -7,6 +7,7 @@ namespace Manager.Domain.Entidades
     {
         private List<Nota> _notas;
         private List<Ticket> _tickets;
+        private List<Release> _releases;
         private List<ProjetoUsuario> _projetoUsuarios;
 
         //Para o EFCore
@@ -22,14 +23,15 @@ namespace Manager.Domain.Entidades
             //Ativo = false;    
             _notas = new List<Nota>();
             _tickets = new List<Ticket>();
+            _releases = new List<Release>();
             _projetoUsuarios = new List<ProjetoUsuario>();
 
             AddNotifications(new Contract()
                 .Requires()
-                .IsNullOrEmpty(Nome, "Nome", "Nome do usuário inválido")
-                .IsNullOrEmpty(Login, "Login", "Informe um login")
-                .IsNullOrEmpty(Senha, "Senha", "Informe uma senha")
-                .IsNullOrEmpty(Email, "Email", "Informe um email")
+                .IsNotNullOrEmpty(nome, "Nome", "Nome do usuário inválido")
+                .IsNotNullOrEmpty(login, "Login", "Informe um login")
+                .IsNotNullOrEmpty(senha, "Senha", "Informe uma senha")
+                .IsNotNullOrEmpty(email, "Email", "Informe um email")
             );
 
         }
@@ -46,6 +48,7 @@ namespace Manager.Domain.Entidades
         //relacionamento 1 para N
         public virtual IReadOnlyCollection<Nota> Notas => _notas;
         public virtual IReadOnlyCollection<Ticket> Tickets => _tickets;
+        public virtual IReadOnlyCollection<Release> Releases => _releases;
         public virtual IReadOnlyCollection<ProjetoUsuario> ProjetoUsuarios => _projetoUsuarios;
 
 

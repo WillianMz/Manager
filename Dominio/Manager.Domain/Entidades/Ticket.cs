@@ -8,28 +8,32 @@ namespace Manager.Domain.Entidades
     public class Ticket : EntidadeBase
     {
         private List<Nota> _notas;
+        private List<Anexo> _anexos;
 
         //Para o EFCore
         protected Ticket() { }
 
-        public Ticket(string descricao, Prioridade prioridade, Usuario usuario, Projeto projeto, Categoria categoria, Release release)
+        public Ticket(string descricao, Usuario usuario, Projeto projeto, Categoria categoria)
         {
             Descricao = descricao?.Trim().ToUpper();
-            Prioridade = prioridade;
             Usuario = usuario;
             Projeto = projeto;
             Categoria = categoria;
 
+            StatusAtual = StatusEnum.Aberto;
+            PrioridadeAtual = PrioridadeEnum.Normal;
+
             _notas = new List<Nota>();
+            _anexos = new List<Anexo>();
+
             DataAbertura = DateTime.Now;
 
             AddNotifications(new Contract()
                 .Requires()
-                .IsNullOrEmpty(Descricao, "Descricao", "Informe a descrição do Ticket")
-                .IsNull(Prioridade, "Prioridade", "Informe a prioridade")
-                .IsNull(Usuario, "Usuario", "Identifique o usuário criador do ticket")
-                .IsNull(Projeto, "Projeto", "Informe o projeto relacionado a este ticket")
-                .IsNull(Categoria, "Categoria", "Informe a categoria")
+                .IsNotNullOrEmpty(descricao, "Descricao", "Informe a descrição do Ticket")
+                .IsNotNull(usuario, "Usuario", "Identifique o usuário criador do ticket")
+                .IsNotNull(projeto, "Projeto", "Informe o projeto relacionado a este ticket")
+                .IsNotNull(categoria, "Categoria", "Informe a categoria")
             );
 
         }
@@ -39,12 +43,15 @@ namespace Manager.Domain.Entidades
         public DateTime? DataFechamento { get; set; }
         public int Tempo { get; set; }
         public string Descricao { get; set; }
-        public string Solucao { get; set; }
-        public string Arquivo { get; set; }
-
+        public string Solucao { get; set; }             
         public virtual Status Status { get; set; }
         public virtual Prioridade Prioridade { get; set; }
-        
+
+        public StatusEnum StatusAtual { get; private set; }
+        public PrioridadeEnum PrioridadeAtual { get; private set; }
+
+        #region RELACIONAMENTOS
+
         //relacionamentos
         public int UsuarioId { get; set; }  
         public virtual Usuario Usuario { get; set; }
@@ -52,33 +59,77 @@ namespace Manager.Domain.Entidades
         public virtual Projeto Projeto { get; set; }
         public int CategoriaId { get; set; }
         public virtual Categoria Categoria { get; set; }
-        public int ReleaseId { get; set; }
-        public virtual Release Release { get; set; }
 
-        public virtual IReadOnlyCollection<Nota> Notas => _notas;
+        #endregion
+
+        public virtual IReadOnlyCollection<Anexo> Anexos => _anexos;
+        public virtual IReadOnlyCollection<Nota> Notas => _notas;        
 
 
-        public void AdicionarNota(Nota nota)
+        //METODOS
+        public void Editar(string descricao, Usuario usuario, Categoria categoria )
         {
-            _notas.Add(nota);
-        }
-
-        public void Editar()
-        {
-
-        }
-
-        public void FecharTicket(string solucao)
-        {
-            DataFechamento = DateTime.Now;
-            
-            Solucao = solucao?.ToUpper();
+            Descricao = descricao?.Trim().ToUpper();
+            Usuario = usuario;
+            Categoria = categoria;
 
             AddNotifications(new Contract()
                 .Requires()
-                .IsNullOrEmpty(Solucao, "Solucao", "Descreva a solução")
+                .IsNotNullOrEmpty(descricao, "Descricao", "Informe a descrição do Ticket")
+                .IsNotNull(usuario, "Usuario", "Identifique o usuário criador do ticket")
+                .IsNotNull(categoria, "Categoria", "Informe a categoria")
             );
-
         }
+
+        public void Cancelar()
+        {
+            if(StatusAtual != StatusEnum.Cancelado)
+                StatusAtual = StatusEnum.Cancelado;
+        }
+
+        public void Finalizar()
+        {
+            if(StatusAtual == StatusEnum.Cancelado)
+                AddNotification("Finalizar", "Não é possível finalizar um ticket cancelado");
+            else
+                StatusAtual = StatusEnum.Concluido;
+        }
+
+        public void AlterarPrioridade(PrioridadeEnum prioridadeEnum)
+        {
+            if ((StatusAtual == StatusEnum.Concluido) | (StatusAtual == StatusEnum.Cancelado) )
+            {
+                AddNotification("Status", "Não é possível alterar a prioridade de um ticket concluído ou cancelado");
+            }
+            else
+            {
+                PrioridadeAtual = prioridadeEnum;
+            }            
+        }
+
+        public void AdicionarNota(Nota nota)
+        {
+            if(nota.Valid)
+            {
+                _notas.Add(nota);
+            }
+            else
+            {
+                AddNotification("Nota", "A nota adicionada é invalida");
+            }
+        }        
+
+        public void AdicionarAnexo(Anexo anexo)
+        {
+            if (anexo.Valid)
+            {
+                _anexos.Add(anexo);
+            }
+            else
+            {
+                AddNotification("Anexo", "O anexo adicionado é invalido");
+            }
+        }
+
     }
 }

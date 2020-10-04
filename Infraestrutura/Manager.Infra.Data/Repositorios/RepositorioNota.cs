@@ -1,5 +1,6 @@
 ﻿using Manager.Domain.Entidades;
 using Manager.Domain.Interfaces.Repositorios;
+using Manager.Infra.Data.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,13 @@ namespace Manager.Infra.Data.Repositorios
 {
     public class RepositorioNota : IRepositorioNota
     {
+        private readonly ManagerContext context;
+
+        public RepositorioNota(ManagerContext context)
+        {
+            this.context = context;
+        }
+
         public void Adicionar(Nota entidade)
         {
             throw new NotImplementedException();

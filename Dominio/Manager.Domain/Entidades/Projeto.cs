@@ -1,4 +1,3 @@
-using Flunt.Validations;
 using System.Collections.Generic;
 
 namespace Manager.Domain.Entidades
@@ -13,24 +12,26 @@ namespace Manager.Domain.Entidades
         //Para o EFCore
         protected Projeto() { }
 
-        public Projeto(string descricao)
+        public Projeto(string nome, string descricao)
         {
+            Nome = nome.Trim().ToUpper();
             Descricao = descricao?.Trim().ToUpper();
 
             _documentos = new List<Documento>();
             _releases = new List<Release>();
             _tickets = new List<Ticket>();
-
             _projetoUsuarios = new List<ProjetoUsuario>();
 
-            AddNotifications(new Contract()
-                .Requires()
-                .IsNullOrEmpty(Descricao, "Descricao", "Nome do projeto não pode estar vazio")
-            );
+            if (string.IsNullOrEmpty(nome))
+                AddNotification("Nome", "Nome do projeto não pode estar vazio");
+
+            if (string.IsNullOrEmpty(descricao))
+                AddNotification("Descricao", "Informe uma descrição para o projeto");
 
         }
 
         public int Id { get; private set; }
+        public string Nome { get; private set; }
         public string Descricao { get; set; }
 
         /* IReadOnlyCollection - Link da documentação da Microsoft. Estava dando erro com o EFCore
@@ -43,20 +44,48 @@ namespace Manager.Domain.Entidades
         public virtual IReadOnlyCollection<ProjetoUsuario> ProjetoUsuarios => _projetoUsuarios;
 
 
-        //metodos
+        //METODOS
+        public void Editar(string nome, string descricao)
+        {
+            Nome = nome?.Trim().ToUpper();
+            Descricao = descricao?.Trim().ToUpper();
+           
+            if (string.IsNullOrEmpty(nome))
+                AddNotification("Nome", "Nome do projeto não pode estar vazio");
+
+            if (string.IsNullOrEmpty(descricao))
+                AddNotification("Descricao", "Informe uma descrição para o projeto");
+        }
+
+        public void AdicionarMembro(Usuario usuario)
+        {
+            if (usuario.Valid)
+            {
+                ProjetoUsuario projetoUsuario = new ProjetoUsuario(this, usuario);
+                _projetoUsuarios.Add(projetoUsuario);
+            }
+            else
+                AddNotification("Usuario", "Usuário informado é inválido");
+        }
+
         public void AdicionarDocumento(Documento documento)
         {
-            _documentos.Add(documento);
+            if (documento.Valid)
+            {
+                _documentos.Add(documento);
+            }
+            else
+                AddNotification("Documento", "Documento informado é inválido");
         }
 
         public void AdicionarRelease(Release release)
         {
-            _releases.Add(release);
-        }
-
-        public void AdicionarMembroNoProjeto(Usuario usuario)
-        {
-
+            if (release.Valid)
+            {
+                _releases.Add(release);
+            }
+            else
+                AddNotification("Release", "Release informada é inválida");
         }
 
     }

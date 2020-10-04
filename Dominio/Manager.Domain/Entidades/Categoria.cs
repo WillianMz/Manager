@@ -23,9 +23,9 @@ namespace Manager.Domain.Entidades
 
             AddNotifications(new Contract()
                 .Requires()
-                .IsNullOrEmpty(Nome, "Nome", "O Nome da categoria não pode estar vazio!")
-                .HasMinLen(Nome, 3, "Nome", "Nome deve conter pelo menos 3 caracteres ou mais")
-                .HasMaxLen(Nome, 45, "Nome", "O nome deve conter até 45 caracteres!" )
+                .IsNotNullOrEmpty(nome, "Nome", "O Nome da categoria não pode estar vazio!")
+                .HasMinLen(nome, 3, "Nome", "Nome deve conter pelo menos 3 caracteres ou mais")
+                .HasMaxLen(nome, 45, "Nome", "O nome deve conter até 45 caracteres!" )
             );
         }
 
@@ -36,10 +36,14 @@ namespace Manager.Domain.Entidades
         public virtual IReadOnlyCollection<Ticket> Tickets => _tickets;
 
 
-        //metodos
-        public void Renomear(string novoNome)
+        //METODOS
+        public void Editar(string novoNome)
         {
-            Nome = novoNome?.Trim().ToUpper();
+            if (Nome == novoNome)
+                AddNotification("Nome", "O novo nome informado é o mesmo do alterior");
+            else
+                Nome = novoNome?.Trim().ToUpper();
+            
 
             if (string.IsNullOrEmpty(novoNome))
                 AddNotification("Nome", "Novo nome não pode ser vazio");

@@ -40,12 +40,12 @@ namespace Manager.Testes.ConsoleApp
                     Console.WriteLine("Processando............");
 
                     //CategoriaNegocio cn = new CategoriaNegocio(_repo);
-                    var lista = _repo.ListarTodos();
+                    //var lista = _repo.ListarTodos();
 
-                    foreach (Categoria c in lista)
-                    {
-                        Console.WriteLine(Convert.ToString(c.Id) + " - " + c.Nome);
-                    }
+                    //foreach (Categoria c in lista)
+                    //{
+                    //    Console.WriteLine(Convert.ToString(c.Id) + " - " + c.Nome);
+                    //}
 
                     #region ADICIONAR CATEGORIA
 
@@ -95,36 +95,36 @@ namespace Manager.Testes.ConsoleApp
                     #endregion
 
                     #region ALTERAR CATEGORIA
-                    Console.WriteLine("Informe o ID da Categoria que deseja alterar");
-                    var id = Console.ReadLine();                 
+                    //Console.WriteLine("Informe o ID da Categoria que deseja alterar");
+                    //var id = Console.ReadLine();                 
 
-                    Categoria categoria = _repo.CarregarObjetoPeloID(int.Parse(id));
+                    //Categoria categoria = _repo.CarregarObjetoPeloID(int.Parse(id));
 
-                    if(categoria != null)
-                    {
-                        Console.WriteLine("Categoria selecionada: " + categoria.Nome);
-                        Console.WriteLine("");
-                        Console.WriteLine("Digite o novo nome");
-                        string NovoNome = Console.ReadLine();
+                    //if(categoria != null)
+                    //{
+                    //    Console.WriteLine("Categoria selecionada: " + categoria.Nome);
+                    //    Console.WriteLine("");
+                    //    Console.WriteLine("Digite o novo nome");
+                    //    string NovoNome = Console.ReadLine();
 
-                        categoria.Renomear(NovoNome);
+                    //    categoria.Editar(NovoNome);
 
-                        if (categoria.Invalid)
-                        {
-                            foreach (var not in categoria.Notifications)
-                            {
-                                Console.WriteLine($"{not.Property} - {not.Message}");
-                            }
-                        }
-                        else
-                        {
-                            _repo.Editar(categoria);
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Nenhuma categoria foi encontrada com o Id: " + id);
-                    }                                        
+                    //    if (categoria.Invalid)
+                    //    {
+                    //        foreach (var not in categoria.Notifications)
+                    //        {
+                    //            Console.WriteLine($"{not.Property} - {not.Message}");
+                    //        }
+                    //    }
+                    //    else
+                    //    {
+                    //        _repo.Editar(categoria);
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    Console.WriteLine("Nenhuma categoria foi encontrada com o Id: " + id);
+                    //}                                        
 
                     #endregion
 
@@ -179,33 +179,118 @@ namespace Manager.Testes.ConsoleApp
                     #region PROJETOS
                     ////ADICIONAR PROJETO
 
-                    Console.WriteLine("");
-                    Console.WriteLine("CRIANDO PROJETO PARA TESTE");
+                    //Console.WriteLine("");
+                    //Console.WriteLine("CRIANDO PROJETO PARA TESTE");
 
-                    try
+                    //try
+                    //{
+                    //    Projeto projeto = new Projeto("Teste");
+                    //    projeto.AdicionarDocumento(new Documento("Teste", "teste", projeto));
+                    //    //Projeto projeto = new Projeto("Manager Chamados");
+                    //    //projeto.AdicionarRelease(new Release("teste", "v1.0.0", projeto));
+                    //    //projeto.Releases.Add(new Release("", "v.1.2", projeto));
+                    //    //projeto.Documentos.Add(new Documento("Caso de uso","Diagrama com as especificação de casos de uso do sistema", projeto));
+
+                    //    IRepositorioProjeto repositorioProjeto = new RepositorioProjeto(database);
+                    //    repositorioProjeto.Adicionar(projeto);
+                    //    database.SaveChanges();
+
+                    //    //Documento doc = new Documento("Diagrama de classes2", "teste", projeto);
+                    //    //                        Release rel = new Release("Teste release2", "teste", projeto);
+                    //    //repositorioProjeto.Adicionar(projeto);
+                    //    //projeto.Documentos.Add(doc);
+                    //    //negocio.SalvarProjeto(projeto, doc, rel);
+                    //    //negocio.SalvarProjeto(projeto, null, null);
+
+                    //}
+                    //catch (Exception ex)
+                    //{
+                    //    Console.WriteLine(ex.Message);
+                    //}
+
+                    #endregion
+
+                    #region NOTAS
+                    //IRepositorioNota repositorioNota = new RepositorioNota(database);
+                    Projeto projeto = new Projeto("Teste", "sistema teste");
+                    Categoria categoria = new Categoria("Teste");
+                    Usuario usuario = new Usuario("Willian", "WillianMz", "123456", "wn@wn.com");
+                    Ticket ticket = new Ticket("Teste", usuario, projeto, categoria);
+                    Nota nota = new Nota("Teste", "fgsdfg", ticket, usuario);
+                    Anexo anexo = new Anexo("teste", "gsfgsdfg", ticket);
+                    ticket.AdicionarAnexo(anexo);
+                    ticket.AdicionarNota(nota);
+                    ticket.Finalizar();
+                    ticket.AlterarPrioridade(Domain.Enums.PrioridadeEnum.Urgente);
+                    nota.Editar("Teste editar", "teste nota", usuario);
+
+                    Usuario usuario1 = new Usuario("Willian2", "WillianMz2", "123456", "wn@wn.com");
+                    nota.Editar("teste", "teste", usuario);
+
+                    if (projeto.Invalid)
                     {
-                        Projeto projeto = new Projeto("Teste");
-                        projeto.AdicionarDocumento(new Documento("Teste", "teste", projeto));
-                        //Projeto projeto = new Projeto("Manager Chamados");
-                        //projeto.AdicionarRelease(new Release("teste", "v1.0.0", projeto));
-                        //projeto.Releases.Add(new Release("", "v.1.2", projeto));
-                        //projeto.Documentos.Add(new Documento("Caso de uso","Diagrama com as especificação de casos de uso do sistema", projeto));
-
-                        IRepositorioProjeto repositorioProjeto = new RepositorioProjeto(database);
-                        repositorioProjeto.Adicionar(projeto);
-                        database.SaveChanges();
-
-                        //Documento doc = new Documento("Diagrama de classes2", "teste", projeto);
-                        //                        Release rel = new Release("Teste release2", "teste", projeto);
-                        //repositorioProjeto.Adicionar(projeto);
-                        //projeto.Documentos.Add(doc);
-                        //negocio.SalvarProjeto(projeto, doc, rel);
-                        //negocio.SalvarProjeto(projeto, null, null);
-
+                        Console.WriteLine("------------PROJETO------------");
+                        foreach (var not in projeto.Notifications)
+                        {
+                            Console.WriteLine($"{not.Property} - {not.Message}");
+                        }
+                        
+                        Console.WriteLine("");
                     }
-                    catch (Exception ex)
+
+                    if (categoria.Invalid)
                     {
-                        Console.WriteLine(ex.Message);
+                        Console.WriteLine("-----------CATEGORIA----------");
+                        foreach (var not in categoria.Notifications)
+                        {
+                            Console.WriteLine($"{not.Property} - {not.Message}");
+                        }
+
+                        Console.WriteLine("");
+                    }
+
+                    if (usuario.Invalid)
+                    {
+                        Console.WriteLine("----------------USUARIO-----------------");
+                        foreach (var not in usuario.Notifications)
+                        {
+                            Console.WriteLine($"{not.Property} - {not.Message}");
+                        }
+
+                        Console.WriteLine("");
+                    }
+
+                    if (ticket.Invalid)
+                    {
+                        Console.WriteLine("----------------TICKET------------------");
+                        foreach (var not in ticket.Notifications)
+                        {
+                            Console.WriteLine($"{not.Property} - {not.Message}");
+                        }
+
+                        Console.WriteLine("");
+                    }
+
+                    if (nota.Invalid)
+                    {
+                        Console.WriteLine("-----------------NOTA-----------------");
+                        foreach (var not in nota.Notifications)
+                        {
+                            Console.WriteLine($"{not.Property} - {not.Message}");
+                        }
+
+                        Console.WriteLine("");
+                    }
+
+                    if (usuario1.Invalid)
+                    {
+                        Console.WriteLine("-----------------USUARIO 1-------------------");
+                        foreach (var not in usuario1.Notifications)
+                        {
+                            Console.WriteLine($"{not.Property} - {not.Message}");
+                        }
+
+                        Console.WriteLine("");
                     }
 
                     #endregion
@@ -261,11 +346,11 @@ namespace Manager.Testes.ConsoleApp
 
                     #endregion
 
-                    var lista2 = _repo.ListarTodos();
+                    //var lista2 = _repo.ListarTodos();
 
-                    foreach (Categoria c in lista2)
-                        Console.WriteLine(Convert.ToString(c.Id) + " - " + c.Nome);
-                    
+                    //foreach (Categoria c in lista2)
+                    //    Console.WriteLine(Convert.ToString(c.Id) + " - " + c.Nome);
+
 
                     Console.WriteLine("-------------------------------------------");
                 }

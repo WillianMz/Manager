@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Manager.Infra.Data.Migrations
 {
-    public partial class Inicial : Migration
+    public partial class NovoVersaoInicial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -40,6 +40,7 @@ namespace Manager.Infra.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Nome = table.Column<string>(nullable: true),
                     Descricao = table.Column<string>(maxLength: 200, nullable: false)
                 },
                 constraints: table =>
@@ -80,7 +81,7 @@ namespace Manager.Infra.Data.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Titulo = table.Column<string>(maxLength: 45, nullable: false),
-                    Conteudo = table.Column<string>(maxLength: 200, nullable: false),
+                    URL = table.Column<string>(maxLength: 200, nullable: false),
                     teste = table.Column<string>(nullable: true),
                     ProjetoId = table.Column<int>(nullable: false)
                 },
@@ -89,27 +90,6 @@ namespace Manager.Infra.Data.Migrations
                     table.PrimaryKey("PK_Documentos", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Documentos_Projetos_ProjetoId",
-                        column: x => x.ProjetoId,
-                        principalTable: "Projetos",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Releases",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nome = table.Column<string>(maxLength: 45, nullable: false),
-                    Descricao = table.Column<string>(maxLength: 300, nullable: false),
-                    ProjetoId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Releases", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Releases_Projetos_ProjetoId",
                         column: x => x.ProjetoId,
                         principalTable: "Projetos",
                         principalColumn: "Id",
@@ -141,6 +121,62 @@ namespace Manager.Infra.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ProjetoUsuarios",
+                columns: table => new
+                {
+                    ProjetoId = table.Column<int>(nullable: false),
+                    UsuarioId = table.Column<int>(nullable: false),
+                    Gerente = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProjetoUsuarios", x => new { x.ProjetoId, x.UsuarioId });
+                    table.ForeignKey(
+                        name: "FK_ProjetoUsuarios_Projetos_ProjetoId",
+                        column: x => x.ProjetoId,
+                        principalTable: "Projetos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProjetoUsuarios_Usuarios_UsuarioId",
+                        column: x => x.UsuarioId,
+                        principalTable: "Usuarios",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Releases",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Nome = table.Column<string>(maxLength: 45, nullable: false),
+                    Descricao = table.Column<string>(maxLength: 300, nullable: false),
+                    Versao = table.Column<string>(nullable: true),
+                    DataDeCriacao = table.Column<DateTime>(nullable: false),
+                    DataDeLiberacao = table.Column<DateTime>(nullable: false),
+                    UsuarioId = table.Column<int>(nullable: false),
+                    ProjetoId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Releases", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Releases_Projetos_ProjetoId",
+                        column: x => x.ProjetoId,
+                        principalTable: "Projetos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Releases_Usuarios_UsuarioId",
+                        column: x => x.UsuarioId,
+                        principalTable: "Usuarios",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Tickets",
                 columns: table => new
                 {
@@ -151,13 +187,13 @@ namespace Manager.Infra.Data.Migrations
                     Tempo = table.Column<int>(nullable: false),
                     Descricao = table.Column<string>(maxLength: 300, nullable: false),
                     Solucao = table.Column<string>(maxLength: 300, nullable: true),
-                    Arquivo = table.Column<string>(maxLength: 300, nullable: true),
                     StatusId = table.Column<int>(nullable: true),
                     PrioridadeId = table.Column<int>(nullable: true),
+                    StatusAtual = table.Column<int>(nullable: false),
+                    PrioridadeAtual = table.Column<int>(nullable: false),
                     UsuarioId = table.Column<int>(nullable: false),
                     ProjetoId = table.Column<int>(nullable: false),
-                    CategoriaId = table.Column<int>(nullable: false),
-                    ReleaseId = table.Column<int>(nullable: false)
+                    CategoriaId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -181,12 +217,6 @@ namespace Manager.Infra.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Tickets_Releases_ReleaseId",
-                        column: x => x.ReleaseId,
-                        principalTable: "Releases",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_Tickets_Status_StatusId",
                         column: x => x.StatusId,
                         principalTable: "Status",
@@ -201,25 +231,22 @@ namespace Manager.Infra.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UsuarioProjetos",
+                name: "Anexos",
                 columns: table => new
                 {
-                    UsuarioId = table.Column<int>(nullable: false),
-                    ProjetoId = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Nome = table.Column<string>(maxLength: 40, nullable: false),
+                    URL = table.Column<string>(maxLength: 300, nullable: false),
+                    TicketId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UsuarioProjetos", x => new { x.UsuarioId, x.ProjetoId });
+                    table.PrimaryKey("PK_Anexos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UsuarioProjetos_Projetos_ProjetoId",
-                        column: x => x.ProjetoId,
-                        principalTable: "Projetos",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UsuarioProjetos_Usuarios_UsuarioId",
-                        column: x => x.UsuarioId,
-                        principalTable: "Usuarios",
+                        name: "FK_Anexos_Tickets_TicketId",
+                        column: x => x.TicketId,
+                        principalTable: "Tickets",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -287,6 +314,11 @@ namespace Manager.Infra.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Anexos_TicketId",
+                table: "Anexos",
+                column: "TicketId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Documentos_ProjetoId",
                 table: "Documentos",
                 column: "ProjetoId");
@@ -308,9 +340,19 @@ namespace Manager.Infra.Data.Migrations
                 column: "UsuarioId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProjetoUsuarios_UsuarioId",
+                table: "ProjetoUsuarios",
+                column: "UsuarioId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Releases_ProjetoId",
                 table: "Releases",
                 column: "ProjetoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Releases_UsuarioId",
+                table: "Releases",
+                column: "UsuarioId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tickets_CategoriaId",
@@ -328,11 +370,6 @@ namespace Manager.Infra.Data.Migrations
                 column: "ProjetoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tickets_ReleaseId",
-                table: "Tickets",
-                column: "ReleaseId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Tickets_StatusId",
                 table: "Tickets",
                 column: "StatusId");
@@ -343,11 +380,6 @@ namespace Manager.Infra.Data.Migrations
                 column: "UsuarioId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UsuarioProjetos_ProjetoId",
-                table: "UsuarioProjetos",
-                column: "ProjetoId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Usuarios_TipoUsuarioId",
                 table: "Usuarios",
                 column: "TipoUsuarioId");
@@ -356,13 +388,19 @@ namespace Manager.Infra.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Anexos");
+
+            migrationBuilder.DropTable(
                 name: "Documentos");
 
             migrationBuilder.DropTable(
                 name: "Notas");
 
             migrationBuilder.DropTable(
-                name: "UsuarioProjetos");
+                name: "ProjetoUsuarios");
+
+            migrationBuilder.DropTable(
+                name: "Releases");
 
             migrationBuilder.DropTable(
                 name: "Tickets");
@@ -374,16 +412,13 @@ namespace Manager.Infra.Data.Migrations
                 name: "Prioridades");
 
             migrationBuilder.DropTable(
-                name: "Releases");
+                name: "Projetos");
 
             migrationBuilder.DropTable(
                 name: "Status");
 
             migrationBuilder.DropTable(
                 name: "Usuarios");
-
-            migrationBuilder.DropTable(
-                name: "Projetos");
 
             migrationBuilder.DropTable(
                 name: "TipoUsuarios");
