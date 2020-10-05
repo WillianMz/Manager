@@ -1,14 +1,9 @@
-﻿using Castle.Core.Internal;
-using Manager.Domain.Entidades;
+﻿using Manager.Domain.Entidades;
 using Manager.Domain.Interfaces.Repositorios;
-using Manager.Domain.Interfaces.Repositorios.Base;
 using Manager.Infra.Data.Context;
 using Manager.Infra.Data.Repositorios;
-using Manager.Negocio;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
 
 namespace Manager.Testes.ConsoleApp
 {
