@@ -10,8 +10,7 @@ namespace Manager.Infra.Data.Mapeamentos
         {
             builder.HasKey(d => d.Id);
             builder.Property(d => d.Titulo).IsRequired().HasMaxLength(45);
-            builder.Property(d => d.URL).IsRequired().HasMaxLength(200);
-            builder.HasIndex(d => d.teste).IsUnique();
+            builder.Property(d => d.URL).IsRequired().HasMaxLength(200);           
         }
     }
 }

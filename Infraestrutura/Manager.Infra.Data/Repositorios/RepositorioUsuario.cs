@@ -1,5 +1,6 @@
 ﻿using Manager.Domain.Entidades;
 using Manager.Domain.Interfaces.Repositorios;
+using Manager.Infra.Data.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,29 +9,38 @@ namespace Manager.Infra.Data.Repositorios
 {
     public class RepositorioUsuario : IRepositorioUsuario
     {
+        private readonly ManagerContext context;
+
+        public RepositorioUsuario(ManagerContext managerContext)
+        {
+            context = managerContext;
+        }
+
         public void Adicionar(Usuario entidade)
         {
-            throw new NotImplementedException();
+            context.Usuarios.Add(entidade);
         }
 
         public void AdicionarLista(IEnumerable<Usuario> entidades)
         {
-            throw new NotImplementedException();
+            context.Usuarios.AddRange(entidades);
         }
 
         public Usuario CarregarObjetoPeloID(int id)
         {
-            throw new NotImplementedException();
+            Usuario usuario = context.Usuarios.FirstOrDefault(u => u.Id == id);
+            return usuario;
         }
 
         public void Editar(Usuario entidade)
         {
-            throw new NotImplementedException();
+            context.Usuarios.Update(entidade);
         }
 
         public bool ExisteEntidade(Usuario entidade)
         {
-            throw new NotImplementedException();
+            var existe = context.Usuarios.Any(u => u.Email == entidade.Email);
+            return existe;
         }
 
         public IQueryable<Usuario> ListarNomeEmOrdemCrescente()
@@ -50,22 +60,24 @@ namespace Manager.Infra.Data.Repositorios
 
         public IQueryable<Usuario> ListarPorNome(string nome)
         {
-            throw new NotImplementedException();
+            var usuariosPorNome = context.Usuarios.Where(u => u.Nome == nome);
+            return usuariosPorNome;
         }
 
         public IList<Usuario> ListarTodos()
         {
-            throw new NotImplementedException();
+            var usuarios = context.Usuarios.ToList();
+            return usuarios;
         }
 
         public void Remover(Usuario entidade)
         {
-            throw new NotImplementedException();
+            context.Usuarios.Remove(entidade);
         }
 
         public void RemoverLista(IEnumerable<Usuario> entidades)
         {
-            throw new NotImplementedException();
+            context.Usuarios.RemoveRange(entidades);
         }
     }
 }

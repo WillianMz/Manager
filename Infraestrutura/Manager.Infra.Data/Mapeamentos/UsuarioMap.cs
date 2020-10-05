@@ -14,11 +14,15 @@ namespace Manager.Infra.Data.Mapeamentos
             builder.Property(u => u.Senha).IsRequired().HasMaxLength(150);
             builder.Property(u => u.Email).IsRequired().HasMaxLength(100);
             builder.Property(u => u.Ativo).IsRequired();
+            builder.Property(u => u.Tipo).IsRequired();
 
+            //Defique no database que a coluna é do tipo UNIQUE
+            builder.HasIndex(u => u.Email).IsUnique();
+
+            //Relacionamentos 1 para Muitos
             builder.HasOne(u => u.TipoUsuario);
             builder.HasMany(u => u.Notas).WithOne(n => n.Usuario);
             builder.HasMany(u => u.Tickets).WithOne(t => t.Usuario);
-            //builder.HasMany(u => u.ProjetoUsuarios).WithOne(p => p.Usuario);
             builder.HasMany(u => u.Releases).WithOne(r => r.Usuario);
         }
     }

@@ -24,8 +24,6 @@ namespace Manager.Domain.Entidades
         public int Id { get; private set; }
         public string Titulo { get; private set; }
         public string URL { get; private set; }
-        public string teste { get; private set; }
-
         public int ProjetoId { get; private set; }
         public virtual Projeto Projeto { get; private set; }
 

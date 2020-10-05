@@ -20,8 +20,6 @@ namespace Manager.Testes.ConsoleApp
             Console.WriteLine("2020 © WN Tecnologia");
             Console.WriteLine("Manager Teste - v1.0 | 2020-09-16");            
             Console.WriteLine("");
-            Console.WriteLine("Iniciando...");
-            Console.WriteLine("");
             Console.WriteLine("Pressione enter para continuar!");
             Console.ReadKey();
 
@@ -34,8 +32,7 @@ namespace Manager.Testes.ConsoleApp
             try
             {
                 using (var database = new ManagerContext(optBuilder.Options))
-                {
-                    IRepositorioCategoria _repo = new RepositorioCategoria(database);                    
+                {                   
 
                     Console.WriteLine("Processando............");
 
@@ -211,21 +208,33 @@ namespace Manager.Testes.ConsoleApp
                     #endregion
 
                     #region NOTAS
-                    //IRepositorioNota repositorioNota = new RepositorioNota(database);
-                    Projeto projeto = new Projeto("Teste", "sistema teste");
+                    IRepositorioCategoria repositorioCategoria = new RepositorioCategoria(database);
+                    IRepositorioProjeto repositorioProjeto = new RepositorioProjeto(database);
+                    IRepositorioUsuario repositorioUsuario = new RepositorioUsuario(database);
+                    IRepositorioTicket repositorioTicket = new RepositorioTicket(database);
+
+                    var dataAtual = DateTime.Now;
+                    Usuario usuario = new Usuario("wn", "WILLIAN", "123456", "wn@wn.com");
+                    repositorioUsuario.Adicionar(usuario);
+
+                    Projeto projeto = new Projeto("Tickets", "Software de Tickets");
+                    Documento documento = new Documento("Diagrama de classes", "c://aadfdafd.adf",projeto);
+                    Release release = new Release("Versao Inicial", "Versão para testes", "v1.0.0", projeto, usuario, dataAtual);
+                    projeto.AdicionarDocumento(documento);
+                    projeto.AdicionarRelease(release);
+                    projeto.AdicionarMembro(usuario);
+                    repositorioProjeto.Adicionar(projeto);
+                    
+
                     Categoria categoria = new Categoria("Teste");
-                    Usuario usuario = new Usuario("Willian", "WillianMz", "123456", "wn@wn.com");
-                    Ticket ticket = new Ticket("Teste", usuario, projeto, categoria);
-                    Nota nota = new Nota("Teste", "fgsdfg", ticket, usuario);
-                    Anexo anexo = new Anexo("teste", "gsfgsdfg", ticket);
+                    repositorioCategoria.Adicionar(categoria);
+
+                    Ticket ticket = new Ticket("Erro ao gravar usuário", usuario, projeto, categoria);
+                    Nota nota = new Nota("Observa~ção", "Problema corrigido", ticket, usuario);
+                    Anexo anexo = new Anexo("Imagem", "Imagem com o erro ocorrido", ticket);
                     ticket.AdicionarAnexo(anexo);
                     ticket.AdicionarNota(nota);
-                    ticket.Finalizar();
-                    ticket.AlterarPrioridade(Domain.Enums.PrioridadeEnum.Urgente);
-                    nota.Editar("Teste editar", "teste nota", usuario);
-
-                    Usuario usuario1 = new Usuario("Willian2", "WillianMz2", "123456", "wn@wn.com");
-                    nota.Editar("teste", "teste", usuario);
+                    repositorioTicket.Adicionar(ticket);
 
                     if (projeto.Invalid)
                     {
@@ -282,16 +291,9 @@ namespace Manager.Testes.ConsoleApp
                         Console.WriteLine("");
                     }
 
-                    if (usuario1.Invalid)
-                    {
-                        Console.WriteLine("-----------------USUARIO 1-------------------");
-                        foreach (var not in usuario1.Notifications)
-                        {
-                            Console.WriteLine($"{not.Property} - {not.Message}");
-                        }
 
-                        Console.WriteLine("");
-                    }
+
+                    database.SaveChanges();
 
                     #endregion
 

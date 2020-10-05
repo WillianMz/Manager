@@ -1,4 +1,5 @@
 using Flunt.Validations;
+using Manager.Domain.Enums;
 using System.Collections.Generic;
 
 namespace Manager.Domain.Entidades
@@ -16,9 +17,10 @@ namespace Manager.Domain.Entidades
         public Usuario(string nome, string login, string senha, string email)
         {
             Nome = nome?.Trim().ToUpper();
-            Login = login?.Trim().ToUpper();
+            Login = login?.Trim().ToLower();
             Senha = senha?.Trim();
             Email = email?.Trim().ToLower();
+            Tipo = UsuarioEnum.Cliente;
 
             //Ativo = false;    
             _notas = new List<Nota>();
@@ -42,6 +44,7 @@ namespace Manager.Domain.Entidades
         public string Senha { get; private set; }
         public string Email { get; private set; }
         public bool Ativo { get; private set; }
+        public UsuarioEnum Tipo { get; private set; }
 
         public virtual TipoUsuario TipoUsuario { get; private set; }
 
@@ -52,10 +55,49 @@ namespace Manager.Domain.Entidades
         public virtual IReadOnlyCollection<ProjetoUsuario> ProjetoUsuarios => _projetoUsuarios;
 
 
-        //metodos
-        public void AlterarSenha(string senhaAtual, string novaSenha)
+        //METODOS
+
+        private void ValidarSenha()
+        {
+            //fazer validação e criptografia da senha do usuario
+        }
+
+        public void Ativar()
         {
 
+        }
+
+        public void Desativa()
+        {
+
+        }
+
+        public void Editar(string nome)
+        {
+
+        }
+
+        public void AlterarSenha(string senhaAtual, string novaSenha)
+        {
+            if(senhaAtual == Senha)
+            {
+                if (novaSenha != Senha)
+                {
+                    //fazer criptografia e troca de senha
+                }
+                else
+                    AddNotification("Senha", "A nova senha informada é a mesma da atual");
+            }
+            else
+            {
+                AddNotification("Senha", "A senha informada não confere com a atual, verifique");
+            }
+
+            AddNotifications(new Contract()
+                .Requires()
+                .IsNotNullOrEmpty(senhaAtual, "Senha Atual","Para alterar a senha é necessário informar a senha atual")
+                .IsNotNullOrEmpty(novaSenha, "Nova Senha","É necessário informar a nova senha")
+            );
         }
 
     }
