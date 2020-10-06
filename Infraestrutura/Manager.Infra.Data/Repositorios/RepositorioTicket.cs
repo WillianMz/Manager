@@ -52,11 +52,6 @@ namespace Manager.Infra.Data.Repositorios
             throw new NotImplementedException();
         }
 
-        public IList<Ticket> ListarOrdenadoPor()
-        {
-            throw new NotImplementedException();
-        }
-
         public IQueryable<Ticket> ListarPorNome(string nome)
         {
             var ticketsPorDescricao = context.Tickets.Where(t => t.Descricao.Contains(nome));

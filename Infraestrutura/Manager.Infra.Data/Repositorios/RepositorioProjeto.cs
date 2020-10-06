@@ -1,9 +1,7 @@
 ﻿using Manager.Domain.Entidades;
 using Manager.Domain.Interfaces.Repositorios;
 using Manager.Infra.Data.Context;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace Manager.Infra.Data.Repositorios
@@ -54,11 +52,6 @@ namespace Manager.Infra.Data.Repositorios
         {
             var projetos = context.Projetos.OrderByDescending(p => p.Descricao);
             return projetos;
-        }
-
-        public IList<Projeto> ListarOrdenadoPor()
-        {
-            throw new NotImplementedException();
         }
 
         public IQueryable<Projeto> ListarPorNome(string nome)

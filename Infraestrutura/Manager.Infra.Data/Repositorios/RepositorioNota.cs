@@ -18,22 +18,23 @@ namespace Manager.Infra.Data.Repositorios
 
         public void Adicionar(Nota entidade)
         {
-            throw new NotImplementedException();
+            context.Notas.Add(entidade);
         }
 
         public void AdicionarLista(IEnumerable<Nota> entidades)
         {
-            throw new NotImplementedException();
+            context.Notas.AddRange(entidades);
         }
 
         public Nota CarregarObjetoPeloID(int id)
         {
-            throw new NotImplementedException();
+            Nota nota = context.Notas.FirstOrDefault(n => n.Id == id);
+            return nota;
         }
 
         public void Editar(Nota entidade)
         {
-            throw new NotImplementedException();
+            context.Notas.Update(entidade);
         }
 
         public bool ExisteEntidade(Nota entidade)
@@ -43,37 +44,36 @@ namespace Manager.Infra.Data.Repositorios
 
         public IQueryable<Nota> ListarNomeEmOrdemCrescente()
         {
-            throw new NotImplementedException();
+            var notas = context.Notas.OrderBy(n => n.Titulo);
+            return notas;
         }
 
         public IQueryable<Nota> ListarNomeEmOrdemDecrescente()
         {
-            throw new NotImplementedException();
-        }
-
-        public IList<Nota> ListarOrdenadoPor()
-        {
-            throw new NotImplementedException();
+            var notas = context.Notas.OrderByDescending(n => n.Titulo);
+            return notas;
         }
 
         public IQueryable<Nota> ListarPorNome(string nome)
         {
-            throw new NotImplementedException();
+            var notas = context.Notas.Where(n => n.Titulo.Contains(nome));
+            return notas;
         }
 
         public IList<Nota> ListarTodos()
         {
-            throw new NotImplementedException();
+            var notas = context.Notas.ToList();
+            return notas;
         }
 
         public void Remover(Nota entidade)
         {
-            throw new NotImplementedException();
+            context.Notas.Remove(entidade);
         }
 
         public void RemoverLista(IEnumerable<Nota> entidades)
         {
-            throw new NotImplementedException();
+            context.Notas.RemoveRange(entidades);
         }
     }
 }

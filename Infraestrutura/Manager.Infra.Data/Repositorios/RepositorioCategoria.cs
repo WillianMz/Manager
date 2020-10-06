@@ -66,11 +66,6 @@ namespace Manager.Infra.Data.Repositorios
             return existe;
         }
 
-        public IList<Categoria> ListarOrdenadoPor()
-        {
-            throw new NotImplementedException();
-        }
-
         /// <summary>
         /// Retorna da base de dados uma lista com todas as categorias ordenadas pelo Id
         /// </summary>

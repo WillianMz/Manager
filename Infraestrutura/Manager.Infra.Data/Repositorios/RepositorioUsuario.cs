@@ -45,17 +45,14 @@ namespace Manager.Infra.Data.Repositorios
 
         public IQueryable<Usuario> ListarNomeEmOrdemCrescente()
         {
-            throw new NotImplementedException();
+            var usuarios = context.Usuarios.OrderBy(u => u.Nome);
+            return usuarios;
         }
 
         public IQueryable<Usuario> ListarNomeEmOrdemDecrescente()
         {
-            throw new NotImplementedException();
-        }
-
-        public IList<Usuario> ListarOrdenadoPor()
-        {
-            throw new NotImplementedException();
+            var usuarios = context.Usuarios.OrderByDescending(u => u.Nome);
+            return usuarios;
         }
 
         public IQueryable<Usuario> ListarPorNome(string nome)

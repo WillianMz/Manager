@@ -1,7 +1,6 @@
 ﻿using Manager.Domain.Entidades;
 using Manager.Domain.Interfaces.Repositorios;
 using Manager.Infra.Data.Context;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -56,19 +55,16 @@ namespace Manager.Infra.Data.Repositorios
             return docs;
         }
 
-        public IList<Documento> ListarOrdenadoPor()
-        {
-            throw new NotImplementedException();
-        }
-
         public IQueryable<Documento> ListarPorNome(string nome)
         {
-            throw new NotImplementedException();
+            var documento = context.Documentos.Where(d => d.Titulo.Contains(nome));
+            return documento;
         }
 
         public IList<Documento> ListarTodos()
         {
-            throw new NotImplementedException();
+            var documento = context.Documentos.ToList();
+            return documento;
         }
 
         public void Remover(Documento entidade)

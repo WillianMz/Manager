@@ -43,11 +43,6 @@ namespace Manager.Infra.Data.Repositorios
             throw new NotImplementedException();
         }
 
-        public IList<Prioridade> ListarOrdenadoPor()
-        {
-            throw new NotImplementedException();
-        }
-
         public IQueryable<Prioridade> ListarPorNome(string nome)
         {
             throw new NotImplementedException();

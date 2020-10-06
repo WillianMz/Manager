@@ -42,11 +42,6 @@ namespace Manager.Infra.Data.Repositorios
             throw new System.NotImplementedException();
         }
 
-        public IList<Status> ListarOrdenadoPor()
-        {
-            throw new System.NotImplementedException();
-        }
-
         public IQueryable<Status> ListarPorNome(string nome)
         {
             throw new System.NotImplementedException();

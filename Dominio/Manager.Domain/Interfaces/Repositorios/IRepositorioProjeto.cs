@@ -6,7 +6,5 @@ namespace Manager.Domain.Interfaces.Repositorios
 {
     public interface IRepositorioProjeto : IRepositorioBase<Projeto>
     {
-        //void AdicionarDocumentoAoProjeto(Documento documento);
-        //void AdicionarDocumentos(IEnumerable<Documento> documentos);
     }
 }

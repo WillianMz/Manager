@@ -1,5 +1,6 @@
 ﻿using Manager.Domain.Entidades;
 using Manager.Domain.Interfaces.Repositorios;
+using Manager.Infra.Data.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,24 +9,32 @@ namespace Manager.Infra.Data.Repositorios
 {
     public class RepositorioRelease : IRepositorioRelease
     {
+        private readonly ManagerContext context;
+
+        public RepositorioRelease(ManagerContext managerContext)
+        {
+            context = managerContext;
+        }
+
         public void Adicionar(Release entidade)
         {
-            throw new NotImplementedException();
+            context.Releases.Add(entidade);
         }
 
         public void AdicionarLista(IEnumerable<Release> entidades)
         {
-            throw new NotImplementedException();
+            context.Releases.AddRange(entidades);
         }
 
         public Release CarregarObjetoPeloID(int id)
         {
-            throw new NotImplementedException();
+            Release release = context.Releases.FirstOrDefault(r => r.Id == id);
+            return release;
         }
 
         public void Editar(Release entidade)
         {
-            throw new NotImplementedException();
+            context.Releases.Update(entidade);
         }
 
         public bool ExisteEntidade(Release entidade)
@@ -35,37 +44,36 @@ namespace Manager.Infra.Data.Repositorios
 
         public IQueryable<Release> ListarNomeEmOrdemCrescente()
         {
-            throw new NotImplementedException();
+            var releases = context.Releases.OrderBy(r => r.Nome);
+            return releases;
         }
 
         public IQueryable<Release> ListarNomeEmOrdemDecrescente()
         {
-            throw new NotImplementedException();
-        }
-
-        public IList<Release> ListarOrdenadoPor()
-        {
-            throw new NotImplementedException();
+            var releases = context.Releases.OrderByDescending(r => r.Nome);
+            return releases;
         }
 
         public IQueryable<Release> ListarPorNome(string nome)
         {
-            throw new NotImplementedException();
+            var releases = context.Releases.Where(r => r.Nome.Contains(nome));
+            return releases;
         }
 
         public IList<Release> ListarTodos()
         {
-            throw new NotImplementedException();
+            var releases = context.Releases.ToList();
+            return releases;
         }
 
         public void Remover(Release entidade)
         {
-            throw new NotImplementedException();
+            context.Releases.Remove(entidade);
         }
 
         public void RemoverLista(IEnumerable<Release> entidades)
         {
-            throw new NotImplementedException();
+            context.Releases.RemoveRange(entidades);
         }
     }
 }
