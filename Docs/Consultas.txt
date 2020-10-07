@@ -1,0 +1,24 @@
+
+CATEGORIAS
+	-> Listar todos os tickets da categoria
+	
+TICKETS
+	->Pesquisar por nome
+	->Listar por categoria
+	->Listar anexos do ticket
+	->Listar notas do ticket
+	
+USUARIOS
+	->Pesquisar por nome
+	->Listar tickets do usuario
+	->Listar notas do usuário	
+	->Listar projetos do usuario
+	->Listar releases do usuario
+	
+PROJETOS
+	->Pesquisar por nome
+	->Listar documentos do projeto
+	->Listar releases do projeto
+	->Listar usuarios do projeto
+	->Listar tickets do projeto
+	

@@ -5,12 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Commands\**" />
-    <EmbeddedResource Remove="Commands\**" />
-    <None Remove="Commands\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Manager.Domain\Manager.Domain.csproj" />
     <ProjectReference Include="..\..\Infraestrutura\Manager.Infra.Data\Manager.Infra.Data.csproj" />
   </ItemGroup>
@@ -21,7 +15,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Comandos\" />
+    <Folder Include="Commands\Categoria\" />
+    <Folder Include="Commands\Projeto\" />
+    <Folder Include="Commands\Usuario\" />
+    <Folder Include="Handlers\" />
   </ItemGroup>
 
 </Project>
