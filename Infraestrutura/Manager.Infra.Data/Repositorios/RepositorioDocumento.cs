@@ -36,7 +36,7 @@ namespace Manager.Infra.Data.Repositorios
             context.Documentos.Update(entidade);
         }
 
-        public bool ExisteEntidade(Documento entidade)
+        public bool Existe(Documento entidade)
         {
             //teste
             var doc = context.Documentos.Where(d => d.Projeto == entidade.Projeto).Any(d => d.Titulo == entidade.Titulo);

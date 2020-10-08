@@ -37,7 +37,7 @@ namespace Manager.Infra.Data.Repositorios
             context.Notas.Update(entidade);
         }
 
-        public bool ExisteEntidade(Nota entidade)
+        public bool Existe(Nota entidade)
         {
             throw new NotImplementedException();
         }

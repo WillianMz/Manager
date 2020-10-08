@@ -10,7 +10,7 @@ namespace Manager.Domain.Interfaces.Repositorios.Base
         void Remover(TEntidade entidade);       
         void AdicionarLista(IEnumerable<TEntidade> entidades);
         void RemoverLista(IEnumerable<TEntidade> entidades);
-        bool ExisteEntidade(TEntidade entidade);
+        bool Existe(TEntidade entidade);
         TEntidade CarregarObjetoPeloID(int id);
 
         IList<TEntidade> ListarTodos();

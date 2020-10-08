@@ -37,7 +37,7 @@ namespace Manager.Infra.Data.Repositorios
             context.Tickets.Update(entidade);
         }
 
-        public bool ExisteEntidade(Ticket entidade)
+        public bool Existe(Ticket entidade)
         {
             throw new NotImplementedException();
         }

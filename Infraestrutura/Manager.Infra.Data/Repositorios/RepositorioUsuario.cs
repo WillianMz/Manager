@@ -37,9 +37,15 @@ namespace Manager.Infra.Data.Repositorios
             context.Usuarios.Update(entidade);
         }
 
-        public bool ExisteEntidade(Usuario entidade)
+        public bool Existe(Usuario entidade)
         {
             var existe = context.Usuarios.Any(u => u.Email == entidade.Email);
+            return existe;
+        }
+
+        public bool ExisteEmail(string email)
+        {
+            var existe = context.Usuarios.Any(u => u.Email == email);
             return existe;
         }
 

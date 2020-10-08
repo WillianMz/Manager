@@ -37,7 +37,7 @@ namespace Manager.Infra.Data.Repositorios
             context.Releases.Update(entidade);
         }
 
-        public bool ExisteEntidade(Release entidade)
+        public bool Existe(Release entidade)
         {
             throw new NotImplementedException();
         }

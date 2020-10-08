@@ -28,7 +28,7 @@ namespace Manager.Infra.Data.Repositorios
             throw new NotImplementedException();
         }
 
-        public bool ExisteEntidade(TipoUsuario entidade)
+        public bool Existe(TipoUsuario entidade)
         {
             throw new NotImplementedException();
         }

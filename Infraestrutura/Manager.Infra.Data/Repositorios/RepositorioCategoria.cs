@@ -60,7 +60,7 @@ namespace Manager.Infra.Data.Repositorios
         /// </summary>
         /// <param name="entidade"></param>
         /// <returns>True ou False</returns>
-        public bool ExisteEntidade(Categoria entidade)
+        public bool Existe(Categoria entidade)
         {
             var existe = context.Categorias.Any(c => c.Nome == entidade.Nome);
             return existe;

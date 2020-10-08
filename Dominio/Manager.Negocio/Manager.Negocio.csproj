@@ -5,20 +5,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Handlers\**" />
+    <EmbeddedResource Remove="Handlers\**" />
+    <None Remove="Handlers\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Manager.Domain\Manager.Domain.csproj" />
     <ProjectReference Include="..\..\Infraestrutura\Manager.Infra.Data\Manager.Infra.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MediatR" Version="8.1.0" />
-    <PackageReference Include="prmToolkit.NotificationPattern" Version="1.1.3" />
+    <PackageReference Include="Flunt" Version="1.0.5" />
+    <PackageReference Include="MediatR" Version="8.2.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\Categoria\" />
-    <Folder Include="Commands\Projeto\" />
-    <Folder Include="Commands\Usuario\" />
-    <Folder Include="Handlers\" />
+    <Folder Include="Commands\Categorias\" />
   </ItemGroup>
 
 </Project>
