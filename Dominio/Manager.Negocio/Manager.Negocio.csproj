@@ -20,4 +20,12 @@
     <PackageReference Include="MediatR" Version="8.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Comandos\Categorias\" />
+    <Folder Include="Comandos\Projetos\" />
+    <Folder Include="Comandos\Tickets\" />
+    <Folder Include="Comandos\Usuarios\" />
+    <Folder Include="Commands\Notas\" />
+  </ItemGroup>
+
 </Project>

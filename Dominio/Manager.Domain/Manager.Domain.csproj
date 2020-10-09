@@ -5,12 +5,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\Servicos\" />
-    <Folder Include="Interfaces\Validacoes\" />
+    <Compile Remove="Interfaces\Servicos\**" />
+    <Compile Remove="Interfaces\Validacoes\**" />
+    <EmbeddedResource Remove="Interfaces\Servicos\**" />
+    <EmbeddedResource Remove="Interfaces\Validacoes\**" />
+    <None Remove="Interfaces\Servicos\**" />
+    <None Remove="Interfaces\Validacoes\**" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Flunt" Version="1.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Eventos\" />
   </ItemGroup>
 
 </Project>
