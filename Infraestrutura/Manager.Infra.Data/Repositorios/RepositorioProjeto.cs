@@ -38,7 +38,7 @@ namespace Manager.Infra.Data.Repositorios
 
         public bool Existe(Projeto entidade)
         {
-            var existe = context.Projetos.Any(p => p.Descricao == entidade.Descricao);
+            var existe = context.Projetos.Any(p => p.Nome == entidade.Nome);
             return existe;
         }
 

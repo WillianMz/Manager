@@ -5,6 +5,5 @@ namespace Manager.Domain.Interfaces.Repositorios
 {
     public interface IRepositorioDocumento : IRepositorioBase<Documento>
     {
-         
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Flunt.Notifications;
 using Manager.Domain.Entidades;
 using Manager.Domain.Interfaces.Repositorios;
+using Manager.Negocio.Commands.Usuarios.Notificacoes;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;

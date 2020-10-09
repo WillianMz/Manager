@@ -4,6 +4,7 @@ using Manager.Infra.Data.Context;
 using Manager.Infra.Data.Repositorios;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 
 namespace Manager.Testes.ConsoleApp
 {
@@ -203,92 +204,92 @@ namespace Manager.Testes.ConsoleApp
                     #endregion
 
                     #region NOTAS
-                    IRepositorioCategoria repositorioCategoria = new RepositorioCategoria(database);
-                    IRepositorioProjeto repositorioProjeto = new RepositorioProjeto(database);
-                    IRepositorioUsuario repositorioUsuario = new RepositorioUsuario(database);
-                    IRepositorioTicket repositorioTicket = new RepositorioTicket(database);
+                    //IRepositorioCategoria repositorioCategoria = new RepositorioCategoria(database);
+                    //IRepositorioProjeto repositorioProjeto = new RepositorioProjeto(database);
+                    //IRepositorioUsuario repositorioUsuario = new RepositorioUsuario(database);
+                    //IRepositorioTicket repositorioTicket = new RepositorioTicket(database);
 
-                    var dataAtual = DateTime.Now;
-                    Usuario usuario = new Usuario("wn", "WILLIAN", "123456", "wn@wn.com");
-                    repositorioUsuario.Adicionar(usuario);
+                    //var dataAtual = DateTime.Now;
+                    //Usuario usuario = new Usuario("wn", "WILLIAN", "123456", "wn@wn.com");
+                    //repositorioUsuario.Adicionar(usuario);
 
-                    Projeto projeto = new Projeto("Tickets", "Software de Tickets");
-                    Documento documento = new Documento("Diagrama de classes", "c://aadfdafd.adf",projeto);
-                    Release release = new Release("Versao Inicial", "Versão para testes", "v1.0.0", projeto, usuario, dataAtual);
-                    projeto.AdicionarDocumento(documento);
-                    projeto.AdicionarRelease(release);
-                    projeto.AdicionarMembro(usuario);
-                    repositorioProjeto.Adicionar(projeto);
-                    
-
-                    Categoria categoria = new Categoria("Teste");
-                    repositorioCategoria.Adicionar(categoria);
-
-                    Ticket ticket = new Ticket("Erro ao gravar usuário", usuario, projeto, categoria);
-                    Nota nota = new Nota("Observa~ção", "Problema corrigido", ticket, usuario);
-                    Anexo anexo = new Anexo("Imagem", "Imagem com o erro ocorrido", ticket);
-                    ticket.AdicionarAnexo(anexo);
-                    ticket.AdicionarNota(nota);
-                    repositorioTicket.Adicionar(ticket);
-
-                    if (projeto.Invalid)
-                    {
-                        Console.WriteLine("------------PROJETO------------");
-                        foreach (var not in projeto.Notifications)
-                        {
-                            Console.WriteLine($"{not.Property} - {not.Message}");
-                        }
-                        
-                        Console.WriteLine("");
-                    }
-
-                    if (categoria.Invalid)
-                    {
-                        Console.WriteLine("-----------CATEGORIA----------");
-                        foreach (var not in categoria.Notifications)
-                        {
-                            Console.WriteLine($"{not.Property} - {not.Message}");
-                        }
-
-                        Console.WriteLine("");
-                    }
-
-                    if (usuario.Invalid)
-                    {
-                        Console.WriteLine("----------------USUARIO-----------------");
-                        foreach (var not in usuario.Notifications)
-                        {
-                            Console.WriteLine($"{not.Property} - {not.Message}");
-                        }
-
-                        Console.WriteLine("");
-                    }
-
-                    if (ticket.Invalid)
-                    {
-                        Console.WriteLine("----------------TICKET------------------");
-                        foreach (var not in ticket.Notifications)
-                        {
-                            Console.WriteLine($"{not.Property} - {not.Message}");
-                        }
-
-                        Console.WriteLine("");
-                    }
-
-                    if (nota.Invalid)
-                    {
-                        Console.WriteLine("-----------------NOTA-----------------");
-                        foreach (var not in nota.Notifications)
-                        {
-                            Console.WriteLine($"{not.Property} - {not.Message}");
-                        }
-
-                        Console.WriteLine("");
-                    }
+                    //Projeto projeto = new Projeto("Tickets", "Software de Tickets");
+                    //Documento documento = new Documento("Diagrama de classes", "c://aadfdafd.adf",projeto);
+                    //Release release = new Release("Versao Inicial", "Versão para testes", "v1.0.0", projeto, usuario, dataAtual);
+                    //projeto.AdicionarDocumento(documento);
+                    //projeto.AdicionarRelease(release);
+                    //projeto.AdicionarMembro(usuario);
+                    //repositorioProjeto.Adicionar(projeto);
 
 
+                    //Categoria categoria = new Categoria("Teste");
+                    //repositorioCategoria.Adicionar(categoria);
 
-                    database.SaveChanges();
+                    //Ticket ticket = new Ticket("Erro ao gravar usuário", usuario, projeto, categoria);
+                    //Nota nota = new Nota("Observa~ção", "Problema corrigido", ticket, usuario);
+                    //Anexo anexo = new Anexo("Imagem", "Imagem com o erro ocorrido", ticket);
+                    //ticket.AdicionarAnexo(anexo);
+                    //ticket.AdicionarNota(nota);
+                    //repositorioTicket.Adicionar(ticket);
+
+                    //if (projeto.Invalid)
+                    //{
+                    //    Console.WriteLine("------------PROJETO------------");
+                    //    foreach (var not in projeto.Notifications)
+                    //    {
+                    //        Console.WriteLine($"{not.Property} - {not.Message}");
+                    //    }
+
+                    //    Console.WriteLine("");
+                    //}
+
+                    //if (categoria.Invalid)
+                    //{
+                    //    Console.WriteLine("-----------CATEGORIA----------");
+                    //    foreach (var not in categoria.Notifications)
+                    //    {
+                    //        Console.WriteLine($"{not.Property} - {not.Message}");
+                    //    }
+
+                    //    Console.WriteLine("");
+                    //}
+
+                    //if (usuario.Invalid)
+                    //{
+                    //    Console.WriteLine("----------------USUARIO-----------------");
+                    //    foreach (var not in usuario.Notifications)
+                    //    {
+                    //        Console.WriteLine($"{not.Property} - {not.Message}");
+                    //    }
+
+                    //    Console.WriteLine("");
+                    //}
+
+                    //if (ticket.Invalid)
+                    //{
+                    //    Console.WriteLine("----------------TICKET------------------");
+                    //    foreach (var not in ticket.Notifications)
+                    //    {
+                    //        Console.WriteLine($"{not.Property} - {not.Message}");
+                    //    }
+
+                    //    Console.WriteLine("");
+                    //}
+
+                    //if (nota.Invalid)
+                    //{
+                    //    Console.WriteLine("-----------------NOTA-----------------");
+                    //    foreach (var not in nota.Notifications)
+                    //    {
+                    //        Console.WriteLine($"{not.Property} - {not.Message}");
+                    //    }
+
+                    //    Console.WriteLine("");
+                    //}
+
+
+
+                    //database.SaveChanges();
 
                     #endregion
 
@@ -320,6 +321,73 @@ namespace Manager.Testes.ConsoleApp
 
                     //Console.WriteLine("Fim das listagens Crescente e Decrescente");
                     //Console.WriteLine("-------------------------------------------");
+
+                    Console.WriteLine("Carregando projetos");
+                    IRepositorioProjeto repositorio = new RepositorioProjeto(database);
+                    IRepositorioUsuario repositorioUsuario = new RepositorioUsuario(database);
+                    IRepositorioDocumento repositorioDocumento = new RepositorioDocumento(database);
+
+                    //Usuario usuario = new Usuario("teste", "teste","adaf", "saa@ass.com");
+                    //repositorioUsuario.Adicionar(usuario);
+
+                    //Projeto p1 = new Projeto("Teste1", "Teste1");
+                    //Projeto p2 = new Projeto("Teste2", "Teste1");
+                    //Projeto p3 = new Projeto("Teste3", "Teste1");
+                    //Projeto p4 = new Projeto("Teste4", "Teste1");
+                    //Projeto p5 = new Projeto("Teste5", "Teste1");
+
+                    //p1.AdicionarDocumento(new Documento("teste", "teste", p1));
+                    //p1.AdicionarDocumento(new Documento("teste2", "teste2", p1));
+                    //p1.AdicionarRelease(new Release("teste1", "teste1", "teste1", p1, usuario, DateTime.Now));
+                    //p1.AdicionarRelease(new Release("teste2", "teste2", "teste2", p1, usuario, DateTime.Now));
+
+                    //List<Projeto> projetos1 = new List<Projeto>() { p1, p2, p3, p4, p5 };
+                    //repositorio.AdicionarLista(projetos1);
+
+                    //database.SaveChanges();
+
+                    var projetos = repositorio.ListarTodos();
+                    //var docsDoProjeto = repositorioDocumento.ListarDocumentosPorProjeto(projetos);
+
+                    Console.WriteLine("-------------LISTAGEM DE PROJETOS E DOCUMENTOS------------");
+                    foreach(Projeto p in projetos)
+                    {
+                        Console.WriteLine(p.Nome + " - " + p.Descricao);
+                        
+                    }
+
+                    Console.WriteLine("-------------------------");
+
+                    Projeto projeto = repositorio.CarregarObjetoPeloID(2);
+                    var docs = projeto.Documentos;
+                    var rel = projeto.Releases;
+
+                    Console.WriteLine(projeto.Nome + " - " + projeto.Descricao);
+
+                    Console.WriteLine("Listando releases do projeto " + projeto.Nome);
+                    foreach (Release r in rel)
+                        Console.WriteLine(r.Nome + " - " + r.Descricao);
+
+                    Console.WriteLine("Listando documentos do projeto " + projeto.Nome);
+                    foreach (Documento d in docs)
+                        Console.WriteLine(d.Titulo + " - " + d.URL);
+
+                    Console.WriteLine("-------------------------");
+
+                    //IRepositorioDocumento documentos = new RepositorioDocumento(database);
+                    //var docss = documentos.ListarTodos();
+
+                    //foreach(Projeto pj in projetos)
+                    //{
+                    //    foreach(Documento d in )
+                    //}
+
+                    Console.WriteLine("-------------------------");
+
+                    foreach (Projeto p in projetos)
+                    {
+                        Console.WriteLine(Convert.ToString(p.Id) + " - " + p.Nome + " - " + p.Descricao);
+                    }
 
                     #endregion
 

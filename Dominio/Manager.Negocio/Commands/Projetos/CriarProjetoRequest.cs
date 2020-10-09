@@ -1,4 +1,7 @@
-﻿using MediatR;
+﻿using Manager.Negocio.Commands.Documentos;
+using Manager.Negocio.Commands.Releases;
+using MediatR;
+using System.Collections.Generic;
 
 namespace Manager.Negocio.Commands.Projetos
 {
@@ -6,5 +9,8 @@ namespace Manager.Negocio.Commands.Projetos
     {
         public string Nome { get; set; }
         public string Descricao { get; set; }
+
+        public List<AdicionarDocumentoRequest> Documentos { get; set; }
+        public List<AdicionarReleaseRequest> Releases { get; set; }
     }
 }

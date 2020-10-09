@@ -1,7 +1,7 @@
 ﻿using Manager.Domain.Entidades;
 using MediatR;
 
-namespace Manager.Negocio.Commands.Usuarios
+namespace Manager.Negocio.Commands.Usuarios.Notificacoes
 {
     public class CriarUsuarioNotification : INotification
     {

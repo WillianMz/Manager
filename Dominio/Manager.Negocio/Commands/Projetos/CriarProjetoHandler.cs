@@ -22,10 +22,14 @@ namespace Manager.Negocio.Commands.Projetos
             if (request == null)
                 return new Response(false, "Informe os dados do projeto", request);
 
-            //verifica se o usuario é administrador
-
             //cria objeto
             Projeto projeto = new Projeto(request.Nome, request.Descricao);
+
+            //verifica se o usuario é administrador
+
+            if (_repositorioProjeto.Existe(projeto))
+                return new Response(false, "Já existe um projeto com este nome", request);
+            
 
             if (projeto.Invalid)
                 return new Response(false, "Projeto inválido!", projeto.Notifications);

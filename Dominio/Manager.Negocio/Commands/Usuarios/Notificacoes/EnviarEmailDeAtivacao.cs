@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Manager.Negocio.Commands.Usuarios
+namespace Manager.Negocio.Commands.Usuarios.Notificacoes
 {
     public class EnviarEmailDeAtivacao : INotificationHandler<CriarUsuarioNotification>
     {
