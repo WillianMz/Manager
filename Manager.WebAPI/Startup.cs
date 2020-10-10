@@ -1,15 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Manager.Infra.Data.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace Manager.WebAPI
 {
@@ -17,14 +12,25 @@ namespace Manager.WebAPI
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            //informa para a configuracao, qual é o arquivo de configuracao
+            var builder = new ConfigurationBuilder().AddJsonFile("Config.json");
+            Configuration = builder.Build();
         }
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //passa a string de conexao
+            var conexao = Configuration.GetConnectionString("ManagerDB");
+            /*
+                Adiciona o contexto, passa a configuracao do lazyLoading que esta sendo usada
+                Informa o banco de dados que esta sendo usado, neste caso o MySQL
+                Informa em qual projeto esta o EFCore
+            */
+            services.AddDbContext<ManagerContext>(option => option.UseLazyLoadingProxies().UseMySql(conexao, m => m.MigrationsAssembly("Manager.Infra.Data")));
+            services.AddMvcCore();
+
             services.AddControllers();
         }
 
