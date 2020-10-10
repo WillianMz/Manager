@@ -13,9 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Dominio\Manager.Domain\Manager.Domain.csproj" />
-    <ProjectReference Include="..\Dominio\Manager.Negocio\Manager.Negocio.csproj" />
-    <ProjectReference Include="..\Infraestrutura\Manager.Infra.Data\Manager.Infra.Data.csproj" />
+    <ProjectReference Include="..\Dominio\Manager.Domain\Manager.Domain.old.csproj" />
+    <ProjectReference Include="..\Dominio\Manager.Negocio\Manager.Negocio.old.csproj" />
+    <ProjectReference Include="..\Infraestrutura\Manager.Infra.Data\Manager.Infra.Data.old.csproj" />
   </ItemGroup>
 
 </Project>
