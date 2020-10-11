@@ -2,9 +2,9 @@
 
 namespace Manager.Domain.Core.Comandos.Categorias
 {
-    public class NovaCategoriaRequest : IRequest<Response>
+    public class CriarCategoria : IRequest<Response>
     {
-        public NovaCategoriaRequest(string nome)
+        public CriarCategoria(string nome)
         {
             Nome = nome;
         }

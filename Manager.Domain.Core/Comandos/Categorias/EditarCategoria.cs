@@ -2,9 +2,9 @@
 
 namespace Manager.Domain.Core.Comandos.Categorias
 {
-    public class EditarCategoriaRequest : IRequest<Response>
+    public class EditarCategoria : IRequest<Response>
     {
-        public EditarCategoriaRequest(int id, string nome)
+        public EditarCategoria(int id, string nome)
         {
             Id = id;
             Nome = nome;

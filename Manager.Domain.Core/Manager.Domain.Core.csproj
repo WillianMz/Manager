@@ -5,12 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Comandos\Usuarios\" />
-    <Folder Include="Comandos\Tickets\" />
-    <Folder Include="Comandos\Projetos\" />
+    <Folder Include="Eventos\" />
     <Folder Include="Interfaces\Servicos\" />
     <Folder Include="Interfaces\Repositorios\" />
-    <Folder Include="Eventos\" />
   </ItemGroup>
 
   <ItemGroup>

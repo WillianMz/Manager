@@ -1,4 +1,5 @@
 ﻿using Manager.Domain.Core.Comandos.Categorias;
+using Manager.Domain.Core.Comandos.Projetos;
 using Manager.Domain.Interfaces;
 using Manager.Domain.Interfaces.Repositorios;
 using Manager.Infra.Data.Context;
@@ -17,8 +18,9 @@ namespace Manager.API
     {
         public static void ConfigureMediatR(this IServiceCollection services)
         {
-           services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly, typeof(NovaCategoriaRequest).GetTypeInfo().Assembly);
-           services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly, typeof(EditarCategoriaRequest).GetTypeInfo().Assembly);
+           services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly, typeof(CriarCategoria).GetTypeInfo().Assembly);
+           services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly, typeof(EditarCategoria).GetTypeInfo().Assembly);
+           services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly, typeof(CriarProjeto).GetTypeInfo().Assembly);
         }
 
         public static void ConfigureRepositorios(this IServiceCollection services)
@@ -26,6 +28,7 @@ namespace Manager.API
             services.AddScoped<ManagerContext, ManagerContext>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IRepositorioCategoria, RepositorioCategoria>();
+            services.AddTransient<IRepositorioProjeto, RepositorioProjeto>();
         }
 
         public static void ConfigureSwagger(this IServiceCollection services)
