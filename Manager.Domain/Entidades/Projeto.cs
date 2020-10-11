@@ -88,5 +88,14 @@ namespace Manager.Domain.Entidades
                 AddNotification("Release", "Release informada é inválida");
         }
 
+        //public void EditarDocumento(Documento documento)
+        //{
+        //}
+
+        //public void EditarRelease(Release release)
+        //{
+
+        //}
+
     }
 }

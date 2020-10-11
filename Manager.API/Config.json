@@ -1,0 +1,5 @@
+{
+  "ConnectionStrings": {
+    "ManagerDB": "Server=localhost;userid=root;password=;database=ManagerDB"
+  }
+}
