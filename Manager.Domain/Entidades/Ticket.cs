@@ -73,6 +73,9 @@ namespace Manager.Domain.Entidades
             Usuario = usuario;
             Categoria = categoria;
 
+            if (usuario.Id != Usuario.Id)
+                AddNotification("Usuario", "Somento o usuário criador do ticket pode edita-lo!");
+
             AddNotifications(new Contract()
                 .Requires()
                 .IsNotNullOrEmpty(descricao, "Descricao", "Informe a descrição do Ticket")
@@ -87,8 +90,14 @@ namespace Manager.Domain.Entidades
                 StatusAtual = StatusEnum.Cancelado;
         }
 
-        public void Finalizar()
+        public void Finalizar(string solucao)
         {
+            Solucao = solucao?.Trim().ToUpper();
+            DataFechamento = DateTime.Now;
+
+            if (string.IsNullOrEmpty(solucao))
+                AddNotification("Solucao", "Descreva a solução aplicada neste ticket");
+
             if(StatusAtual == StatusEnum.Cancelado)
                 AddNotification("Finalizar", "Não é possível finalizar um ticket cancelado");
             else

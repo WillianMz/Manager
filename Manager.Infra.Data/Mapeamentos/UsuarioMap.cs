@@ -21,7 +21,6 @@ namespace Manager.Infra.Data.Mapeamentos
 
             //Relacionamentos 1 para Muitos
             builder.HasOne(u => u.TipoUsuario);
-            builder.HasMany(u => u.Notas).WithOne(n => n.Usuario);
             builder.HasMany(u => u.Tickets).WithOne(t => t.Usuario);
             builder.HasMany(u => u.Releases).WithOne(r => r.Usuario);
         }

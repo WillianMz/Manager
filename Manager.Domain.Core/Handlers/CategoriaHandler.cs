@@ -35,7 +35,7 @@ namespace Manager.Domain.Core.Handlers
 
             _repositorioCategoria.Adicionar(categoria);
 
-            var result = new Response(true, "Categoria criada com sucesso!", categoria);
+            var result = new Response(true, "Categoria criada com sucesso!", null);
             return await Task.FromResult(result);
         }
 
@@ -56,7 +56,7 @@ namespace Manager.Domain.Core.Handlers
 
             _repositorioCategoria.Editar(categoria);
 
-            var result = new Response(true, "Categoria atualizada com sucesso!", categoria);
+            var result = new Response(true, "Categoria atualizada com sucesso!", null);
             return await Task.FromResult(result);
         }
     }

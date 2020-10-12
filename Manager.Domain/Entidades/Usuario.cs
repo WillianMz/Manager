@@ -6,7 +6,6 @@ namespace Manager.Domain.Entidades
 {
     public class Usuario : EntidadeBase
     {
-        private List<Nota> _notas;
         private List<Ticket> _tickets;
         private List<Release> _releases;
         private List<ProjetoUsuario> _projetoUsuarios;
@@ -23,7 +22,6 @@ namespace Manager.Domain.Entidades
             Tipo = UsuarioEnum.Cliente;
 
             //Ativo = false;    
-            _notas = new List<Nota>();
             _tickets = new List<Ticket>();
             _releases = new List<Release>();
             _projetoUsuarios = new List<ProjetoUsuario>();
@@ -49,7 +47,6 @@ namespace Manager.Domain.Entidades
         public virtual TipoUsuario TipoUsuario { get; private set; }
 
         //relacionamento 1 para N
-        public virtual IReadOnlyCollection<Nota> Notas => _notas;
         public virtual IReadOnlyCollection<Ticket> Tickets => _tickets;
         public virtual IReadOnlyCollection<Release> Releases => _releases;
         public virtual IReadOnlyCollection<ProjetoUsuario> ProjetoUsuarios => _projetoUsuarios;
