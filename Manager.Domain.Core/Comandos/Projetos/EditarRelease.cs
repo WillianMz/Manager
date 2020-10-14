@@ -1,16 +1,11 @@
-﻿using MediatR;
-using System;
+﻿using Manager.Domain.Core.Comandos.Projetos.Modelos;
+using MediatR;
 
 namespace Manager.Domain.Core.Comandos.Projetos
 {
-    public class EditarRelease : IRequest<Response>
+    public class EditarRelease : ReleaseBase, IRequest<Response>
     {
-        public int Id { get; set; }
-        public string Nome { get; set; }
-        public string Descricao { get; set; }
-        public string Versao { get; set; }
-        //public int ProjetoId { get; set; }
-        //public int UsuarioId { get; set; }
-        public DateTime DataLiberacao { get; set; }
+        public int IdRelease { get; set; }
+        
     }
 }

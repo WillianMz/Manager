@@ -57,11 +57,12 @@ namespace Manager.Domain.Entidades
                 AddNotification("Descricao", "Informe uma descrição para o projeto");
         }
 
-        public void AdicionarMembro(Usuario usuario)
+        public void AdicionarMembro(Usuario usuario, bool gerente)
         {
             if (usuario.Valid)
             {
-                ProjetoUsuario projetoUsuario = new ProjetoUsuario(this, usuario);
+                _projetoUsuarios = new List<ProjetoUsuario>();
+                ProjetoUsuario projetoUsuario = new ProjetoUsuario(this, usuario, gerente);
                 _projetoUsuarios.Add(projetoUsuario);
             }
             else
@@ -90,6 +91,8 @@ namespace Manager.Domain.Entidades
 
         //public void EditarDocumento(Documento documento)
         //{
+        //    Documento documento1 = documento;
+        //    documento1.Editar(documento);
         //}
 
         //public void EditarRelease(Release release)

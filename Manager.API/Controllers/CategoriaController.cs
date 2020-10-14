@@ -1,64 +1,46 @@
-﻿using Manager.Domain.Core.Comandos;
-using Manager.Domain.Core.Comandos.Categorias;
+﻿using Manager.Domain.Core.Comandos.Categorias;
 using Manager.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Manager.API.Controllers
 {
-    public class CategoriaController : ControllerBase
+    public class CategoriaController : BaseController
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMediator _mediator;
 
-        public CategoriaController(IUnitOfWork unitOfWork, IMediator mediator)
+        public CategoriaController(IMediator mediator, IUnitOfWork unitOfWork) : base(unitOfWork)
         {
-            _unitOfWork = unitOfWork;
             _mediator = mediator;
         }
 
-        private async Task<IActionResult> ResponseAsync(Response response)
-        {
-            if(response.Mensagem.Any())
-            {
-                try
-                {
-                    _unitOfWork.SaveChanges();
-                    return Ok(response);
-                }
-                catch(Exception ex)
-                {
-                    return BadRequest($"Houve um problema interno com o servidor. Detalhes: " + ex.Message);
-                }
-            }
-            else
-            {
-                return Ok(response);
-            }
-        }
-
-        [AllowAnonymous]
-        [HttpPost]
-        [Route("api/Categoria/Adicionar")]
-        public async Task<IActionResult> AdicionarCategoria([FromBody] CriarCategoria request)
+        //teste
+        private async Task<IActionResult>ExecutarComando(CriarCategoria obj)
         {
             try
             {
-                var response = await _mediator.Send(request, CancellationToken.None);
+                var response = await _mediator.Send(obj, CancellationToken.None);
                 return await ResponseAsync(response);
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
-        [AllowAnonymous]
+        [AllowAnonymous]//para testes
+        [HttpPost]
+        [Route("api/Categoria/Adicionar")]
+        public async Task<IActionResult> AdicionarCategoria([FromBody] CriarCategoria request)
+        {
+            return await ExecutarComando(request);
+        }
+
+        [AllowAnonymous]//para testes
         [HttpPost]
         [Route("api/Categoria/Editar")]
         public async Task<IActionResult> EditarCategoria([FromBody] EditarCategoria request)
@@ -73,5 +55,6 @@ namespace Manager.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
     }
 }

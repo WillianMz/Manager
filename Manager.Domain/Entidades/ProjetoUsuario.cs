@@ -7,11 +7,11 @@ namespace Manager.Domain.Entidades
         //Para EFCore
         protected ProjetoUsuario() { }
 
-        public ProjetoUsuario(Projeto projeto, Usuario usuario)
+        public ProjetoUsuario(Projeto projeto, Usuario usuario, bool gerente)
         {
             Projeto = projeto;
             Usuario = usuario;
-            Gerente = false;
+            Gerente = gerente;
 
             AddNotifications(new Contract()
                 .Requires()

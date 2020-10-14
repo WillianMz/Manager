@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using MediatR;
 
 namespace Manager.Domain.Core.Comandos.Projetos
 {
-    class AdicionarUsuarioAoProjeto
+    public class AdicionarUsuarioAoProjeto : IRequest<Response>
     {
+        public int ProjetoId { get; set; }
+        public int UsuarioId { get; set; }
+        public bool Gerente { get; set; }
     }
 }

@@ -12,35 +12,13 @@ using System.Threading.Tasks;
 
 namespace Manager.API.Controllers
 {
-    public class ProjetoController : ControllerBase
+    public class ProjetoController : BaseController
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMediator _mediator;
 
-        public ProjetoController(IUnitOfWork unitOfWork, IMediator mediator)
+        public ProjetoController(IMediator mediator, IUnitOfWork unitOfWork): base(unitOfWork)
         {
-            _unitOfWork = unitOfWork;
             _mediator = mediator;
-        }
-
-        private async Task<IActionResult> ResponseAsync(Response response)
-        {
-            if (response.Mensagem.Any())
-            {
-                try
-                {
-                    _unitOfWork.SaveChanges();
-                    return Ok(response);
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest($"Houve um problema interno com o servidor. Detalhes: " + ex.Message);
-                }
-            }
-            else
-            {
-                return Ok(response);
-            }
         }
 
         [AllowAnonymous]
@@ -63,6 +41,30 @@ namespace Manager.API.Controllers
         [HttpPost]
         [Route("api/Projetos/Editar")]
         public async Task<IActionResult> EditarProjeto([FromBody] EditarProjeto request)
+        {
+            try
+            {
+                var response = await _mediator.Send(request, CancellationToken.None);
+                return await ResponseAsync(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpDelete]
+        [Route("api/Projetos/Excluir")]
+        public Task<IActionResult> ExcluirProjeto()
+        {
+            throw new NotImplementedException();
+        }
+
+        [AllowAnonymous]
+        [HttpPut]
+        [Route("api/Projetos/Membros")]
+        public async Task<IActionResult> AdicionarMembro([FromBody] AdicionarUsuarioAoProjeto request)
         {
             try
             {
