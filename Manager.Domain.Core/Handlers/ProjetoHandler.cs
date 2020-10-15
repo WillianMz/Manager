@@ -10,7 +10,7 @@ namespace Manager.Domain.Core.Handlers
 {
     public class ProjetoHandler : IRequestHandler<CriarProjeto, Response>,
                                   IRequestHandler<EditarProjeto, Response>,
-                                  IRequestHandler<AdicionarUsuarioAoProjeto, Response>
+                                  IRequestHandler<MembrosDoProjeto, Response>
     {
         private readonly IRepositorioProjeto _repositorioProjeto;
         private readonly IRepositorioUsuario _repositorioUsuario;
@@ -46,12 +46,10 @@ namespace Manager.Domain.Core.Handlers
 
             if (request.Releases != null)
             {
-                var rel = request.Releases;
+                var releases = request.Releases;
 
-                foreach(var r in rel)
+                foreach(var r in releases)
                 {
-                    //tem que mudar isso aqui
-                    //pega o id do usuario da request
                     var usuario = _repositorioUsuario.CarregarObjetoPeloID(r.UsuarioId);
 
                     if (usuario == null)
@@ -64,7 +62,23 @@ namespace Manager.Domain.Core.Handlers
             #endregion
 
             #region ADICIONAR MEMBROS DA EQUIPE NO PROJETO
+            if(request.MembrosDoProjeto != null)
+            {
+                var equipe = request.MembrosDoProjeto;
 
+                foreach(var usuarioEquipe in equipe)
+                {
+                    Usuario usuario = _repositorioUsuario.CarregarObjetoPeloID(usuarioEquipe.UsuarioId);
+
+                    if (usuario == null)
+                    {
+                        //adicionar a uma lista de notificacao, pois pode ser que apenas um usuario não exista
+                        //mas os demais sim
+                    }
+                    else
+                        projeto.AdicionarMembro(usuario, usuarioEquipe.Gerente);
+                }
+            }
             #endregion
 
 
@@ -123,7 +137,7 @@ namespace Manager.Domain.Core.Handlers
             return await Task.FromResult(result);
         }
 
-        public async Task<Response> Handle(AdicionarUsuarioAoProjeto request, CancellationToken cancellationToken)
+        public async Task<Response> Handle(MembrosDoProjeto request, CancellationToken cancellationToken)
         {
             if (request == null)
                 return new Response(false, "Informe o projeto e o usuário", request);

@@ -1,12 +1,9 @@
-﻿using Manager.Domain.Core.Comandos;
-using Manager.Domain.Core.Comandos.Projetos;
+﻿using Manager.Domain.Core.Comandos.Projetos;
 using Manager.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -38,7 +35,7 @@ namespace Manager.API.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost]
+        [HttpPut]
         [Route("api/Projetos/Editar")]
         public async Task<IActionResult> EditarProjeto([FromBody] EditarProjeto request)
         {
@@ -64,7 +61,7 @@ namespace Manager.API.Controllers
         [AllowAnonymous]
         [HttpPut]
         [Route("api/Projetos/Membros")]
-        public async Task<IActionResult> AdicionarMembro([FromBody] AdicionarUsuarioAoProjeto request)
+        public async Task<IActionResult> AdicionarMembro([FromBody] MembrosDoProjeto request)
         {
             try
             {
