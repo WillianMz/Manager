@@ -60,13 +60,15 @@ namespace Manager.Domain.Entidades
         public void AdicionarMembro(Usuario usuario, bool gerente)
         {
             if (usuario.Valid)
-            {
-                _projetoUsuarios = new List<ProjetoUsuario>();
+            {                
                 ProjetoUsuario projetoUsuario = new ProjetoUsuario(this, usuario, gerente);
                 _projetoUsuarios.Add(projetoUsuario);
             }
             else
+            {
                 AddNotification("Usuario", "Usuário informado é inválido");
+            }
+                
         }
 
         public void AdicionarDocumento(Documento documento)

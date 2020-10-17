@@ -1,16 +1,18 @@
-﻿using Manager.Domain.Core.Comandos;
+﻿using Flunt.Notifications;
+using Manager.Domain.Core.Comandos;
 using Manager.Domain.Core.Comandos.Projetos;
 using Manager.Domain.Entidades;
 using Manager.Domain.Interfaces.Repositorios;
 using MediatR;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Manager.Domain.Core.Handlers
 {
-    public class ProjetoHandler : IRequestHandler<CriarProjeto, Response>,
-                                  IRequestHandler<EditarProjeto, Response>,
-                                  IRequestHandler<MembrosDoProjeto, Response>
+    public class ProjetoHandler : Notifiable , IRequestHandler<CriarProjeto, Response>,
+                                               IRequestHandler<EditarProjeto, Response>,
+                                               IRequestHandler<MembrosDoProjeto, Response>
     {
         private readonly IRepositorioProjeto _repositorioProjeto;
         private readonly IRepositorioUsuario _repositorioUsuario;
@@ -62,25 +64,24 @@ namespace Manager.Domain.Core.Handlers
             #endregion
 
             #region ADICIONAR MEMBROS DA EQUIPE NO PROJETO
+
             if(request.MembrosDoProjeto != null)
             {
-                var equipe = request.MembrosDoProjeto;
+                List<MembrosDoProjeto> equipe = request.MembrosDoProjeto;
 
                 foreach(var usuarioEquipe in equipe)
                 {
                     Usuario usuario = _repositorioUsuario.CarregarObjetoPeloID(usuarioEquipe.UsuarioId);
 
-                    if (usuario == null)
-                    {
-                        //adicionar a uma lista de notificacao, pois pode ser que apenas um usuario não exista
-                        //mas os demais sim
-                    }
-                    else
+                    if (usuario != null)
                         projeto.AdicionarMembro(usuario, usuarioEquipe.Gerente);
+                    else
+                        AddNotification("Usuario", "Usuario com ID: " + usuarioEquipe.UsuarioId + " não foi encontrado!");
                 }
             }
-            #endregion
 
+            #endregion
+           
 
             if (projeto.Invalid)
                 return new Response(false, "Projeto inválido", projeto.Notifications);
@@ -92,7 +93,7 @@ namespace Manager.Domain.Core.Handlers
 
             _repositorioProjeto.Adicionar(projeto);
 
-            var result = new Response(true, "Projeto criado com sucesso!", null);
+            var result = new Response(true, "Projeto criado com sucesso!", this.Notifications);
             return await Task.FromResult(result);
         }
 
@@ -120,6 +121,11 @@ namespace Manager.Domain.Core.Handlers
             #endregion
 
             #region EDITAR MEMBROS DO PROJETO
+
+            //se o usuario existir
+            //verificar se ele ja pertence ao projeto
+            //se pertencer ignora comando de adicionar e passa para o proximo usuario da lista
+            //se nao pertencer ao projeto adicionar
 
             #endregion
 
