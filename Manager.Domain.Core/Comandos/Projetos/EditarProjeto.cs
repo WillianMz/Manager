@@ -8,8 +8,8 @@ namespace Manager.Domain.Core.Comandos.Projetos
     {
         public int IdProjeto { get; set; }
 
-        public List<EditarDocumento> Documentos { get; set; }
-        public List<EditarRelease> Releases { get; set; }
-        public List<EquipeDoProjeto> MembrosDoProjeto { get; set; }
+        //public List<EditarDocumento> Documentos { get; set; }
+        //public List<EditarRelease> Releases { get; set; }
+        //public List<EquipeDoProjeto> MembrosDoProjeto { get; set; }
     }
 }
