@@ -1,4 +1,8 @@
+using Flunt.Validations;
+using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Manager.Domain.Entidades
 {
@@ -22,11 +26,11 @@ namespace Manager.Domain.Entidades
             _tickets = new List<Ticket>();
             _projetoUsuarios = new List<ProjetoUsuario>();
 
-            if (string.IsNullOrEmpty(nome))
-                AddNotification("Nome", "Nome do projeto não pode estar vazio");
-
-            if (string.IsNullOrEmpty(descricao))
-                AddNotification("Descricao", "Informe uma descrição para o projeto");
+            AddNotifications(new Contract()
+                .Requires()
+                .IsNotNullOrEmpty(Nome,"Nome","Nome do projeto não pode estar vazio")
+                .IsNotNullOrEmpty(Descricao,"Descrição","Informe uma descrição para o projeto")
+            );
 
         }
 
@@ -44,31 +48,37 @@ namespace Manager.Domain.Entidades
         public virtual IReadOnlyCollection<ProjetoUsuario> ProjetoUsuarios => _projetoUsuarios;
 
 
-        //METODOS
+        #region METODOS PUBLICOS
+
         public void Editar(string nome, string descricao)
         {
             Nome = nome?.Trim().ToUpper();
             Descricao = descricao?.Trim().ToUpper();
-           
-            if (string.IsNullOrEmpty(nome))
-                AddNotification("Nome", "Nome do projeto não pode estar vazio");
 
-            if (string.IsNullOrEmpty(descricao))
-                AddNotification("Descricao", "Informe uma descrição para o projeto");
+            AddNotifications(new Contract()
+                .Requires()
+                .IsNotNullOrEmpty(Nome, "Nome","Nome do projeto não pode estar vazio")
+                .IsNotNullOrEmpty(Descricao,"Descrição","Informe a descrição do projeto")
+            );
         }
 
         public void AdicionarMembro(Usuario usuario, bool gerente)
         {
             if (usuario.Valid)
-            {                
-                ProjetoUsuario projetoUsuario = new ProjetoUsuario(this, usuario, gerente);
-                _projetoUsuarios.Add(projetoUsuario);
+            {
+                //ProjetoUsuario user = _projetoUsuarios.FirstOrDefault(p => p.UsuarioId == usuario.Id);
+                var existeUsuario = _projetoUsuarios.Any(p => p.UsuarioId == usuario.Id);
+
+                if (existeUsuario == false)
+                {
+                    ProjetoUsuario projetoUsuario = new ProjetoUsuario(this, usuario, gerente);
+                    _projetoUsuarios.Add(projetoUsuario);
+                }
+                else
+                    AddNotification("Usuario", "Usuário com id: " + usuario.Id + ", já faz parte deste projeto");
             }
             else
-            {
-                AddNotification("Usuario", "Usuário informado é inválido");
-            }
-                
+                AddNotification("Usuario", "Verifique o usuário informado");
         }
 
         public void AdicionarDocumento(Documento documento)
@@ -91,16 +101,37 @@ namespace Manager.Domain.Entidades
                 AddNotification("Release", "Release informada é inválida");
         }
 
-        //public void EditarDocumento(Documento documento)
-        //{
-        //    Documento documento1 = documento;
-        //    documento1.Editar(documento);
-        //}
+        public void EditarDocumento(int id, string titulo, string url)
+        {
+            Documento documento = _documentos.FirstOrDefault(d => d.Id == id);
 
-        //public void EditarRelease(Release release)
-        //{
+            if (documento == null)
+                AddNotification("Editar Documento", "Não é possivel editar o documento com id: " + id + ", o mesmo não pertence a este projeto.");
+            else
+                documento.Editar(titulo, url);
+        }
 
-        //}
+        public void EditarRelease(int id, string nome, string descricao, string versao, Usuario usuario, DateTime dataLiberacao)
+        {
+            Release release = _releases.FirstOrDefault(r => r.Id == id);
+
+            if (release == null)
+                AddNotification("Editar Release", "Não foi possivel editar a release com id: " + id + ", a mesma não pertence a este projeto");
+            else
+                release.Editar(nome, descricao, versao, usuario, dataLiberacao);
+        }
+
+        public void ExcluirMembroDoProjeto(Usuario usuario)
+        {
+            ProjetoUsuario user = _projetoUsuarios.FirstOrDefault(p => p.UsuarioId == usuario.Id);
+
+            if (user != null)
+                _projetoUsuarios.Remove(user);
+            else
+                AddNotification("Remover Membro do Projeto", "Usuário com id:" + usuario.Id + " não pertence a este projeto");
+        }
+
+        #endregion
 
     }
 }

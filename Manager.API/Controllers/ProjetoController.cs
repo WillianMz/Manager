@@ -61,7 +61,7 @@ namespace Manager.API.Controllers
         [AllowAnonymous]
         [HttpPut]
         [Route("api/Projetos/Membros")]
-        public async Task<IActionResult> AdicionarMembro([FromBody] MembrosDoProjeto request)
+        public async Task<IActionResult> AdicionarMembro([FromBody] EquipeDoProjeto request)
         {
             try
             {

@@ -8,7 +8,7 @@ namespace Manager.Domain.Core.Comandos.Projetos
     {
         public List<AdicionarRelease> Releases { get; set; }
         public List<AdicionarDocumento> Documentos { get; set; }
-        public List<MembrosDoProjeto> MembrosDoProjeto { get; set; }
+        public List<EquipeDoProjeto> MembrosDoProjeto { get; set; }
     }
 
 }

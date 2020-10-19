@@ -10,6 +10,6 @@ namespace Manager.Domain.Core.Comandos.Projetos
 
         public List<EditarDocumento> Documentos { get; set; }
         public List<EditarRelease> Releases { get; set; }
-        public List<MembrosDoProjeto> MembrosDoProjeto { get; set; }
+        public List<EquipeDoProjeto> MembrosDoProjeto { get; set; }
     }
 }
