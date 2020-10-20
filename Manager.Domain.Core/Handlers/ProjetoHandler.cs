@@ -5,6 +5,7 @@ using Manager.Domain.Entidades;
 using Manager.Domain.Interfaces.Repositorios;
 using MediatR;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,6 +13,7 @@ namespace Manager.Domain.Core.Handlers
 {
     public class ProjetoHandler : Notifiable , IRequestHandler<CriarProjeto, Response>,
                                                IRequestHandler<EditarProjeto, Response>,
+                                               IRequestHandler<ExcluirProjeto, Response>,
                                                IRequestHandler<MembrosDoProjeto, Response>
     {
         private readonly IRepositorioProjeto _repositorioProjeto;
@@ -39,9 +41,7 @@ namespace Manager.Domain.Core.Handlers
                 var docs = request.Documentos;
 
                 foreach(var d in docs)
-                {
                     projeto.AdicionarDocumento(new Documento(d.Titulo, d.URL, projeto));
-                }
             }
 
             #endregion
@@ -96,7 +96,7 @@ namespace Manager.Domain.Core.Handlers
 
             _repositorioProjeto.Adicionar(projeto);
 
-            var result = new Response(true, "Projeto criado com sucesso!", this.Notifications);
+            var result = new Response(true, "Projeto criado com sucesso!", Notifications);
             return await Task.FromResult(result);
 
             #endregion
@@ -171,37 +171,55 @@ namespace Manager.Domain.Core.Handlers
             return await Task.FromResult(result);
         }
 
+        //Exclui o projeto e todas as suas dependencias: Documentos/Releases/Equipe
+        public async Task<Response> Handle(ExcluirProjeto request, CancellationToken cancellationToken)
+        {
+            if (request == null)
+                return new Response(false, "Informe o projeto que deseja excluir", request);
+
+            Projeto projeto = _repositorioProjeto.CarregarObjetoPeloID(request.idProjeto);
+
+            if (projeto == null)
+                return new Response(false, "Nenhum projeto encontrado com este id", request.idProjeto);
+
+            _repositorioProjeto.Remover(projeto);
+
+            var result = new Response(true, "Projeto excluído com sucesso!", Notifications);
+            return await Task.FromResult(result);
+        }
+
         //Adicionar/Excluir membros do projeto
         public async Task<Response> Handle(MembrosDoProjeto request, CancellationToken cancellationToken)
         {
             if (request == null)
                 return new Response(false, "Informe o projeto e o usuário", request);
 
-            Projeto projeto = _repositorioProjeto.CarregarObjetoPeloID(request.ProjetoId);
-            //Usuario usuario = _repositorioUsuario.CarregarObjetoPeloID(request.UsuarioId);
+            Projeto projeto = _repositorioProjeto.CarregarObjetoPeloID(request.ProjetoId);            
 
             if (projeto == null)
                 return new Response(false, "Projeto não encontrado", null);
 
-            //if (usuario == null)
-            //    return new Response(false, "Usuário não encontrado", null);
-
-            //verificar se o usuario ja pertence ao projeto
-
             #region ADICIONAR MEMBROS
-
+          
             if (request.AdicionarMembros != null)
             {
                 List<EquipeDoProjeto> equipe = request.AdicionarMembros;
 
                 foreach (var membro in equipe)
                 {
-                    Usuario usuario = _repositorioUsuario.CarregarObjetoPeloID(membro.UsuarioId);
+                    Usuario novoMembro = _repositorioUsuario.CarregarObjetoPeloID(membro.UsuarioId);
+                    //retorna true caso o usuario acima esteja relacionado ao projeto
+                    var usuarioMembroProjeto = projeto.ProjetoUsuarios.Any(p => p.Usuario == novoMembro);
 
-                    if (usuario != null)
-                        projeto.AdicionarMembro(usuario, membro.Gerente);
+                    if(usuarioMembroProjeto == false)
+                    {
+                        if (novoMembro != null)
+                            projeto.AdicionarMembro(novoMembro, membro.Gerente);
+                        else
+                            AddNotification("Usuario", "Usuário com ID: " + membro.UsuarioId + " não foi encontrado!");
+                    }
                     else
-                        AddNotification("Usuario", "Usuario com ID: " + membro.UsuarioId + " não foi encontrado!");
+                        AddNotification("Usuario", "Usuário com ID: " + membro.UsuarioId + " ja pertence a este projeto");
                 }
             }
 
@@ -215,26 +233,33 @@ namespace Manager.Domain.Core.Handlers
 
                 foreach (var membro in equipe)
                 {
-                    Usuario usuario = _repositorioUsuario.CarregarObjetoPeloID(membro.UsuarioId);
+                    Usuario membroParaExcluir = _repositorioUsuario.CarregarObjetoPeloID(membro.UsuarioId);
+                    var usuarioMembroProjeto = projeto.ProjetoUsuarios.Any(p => p.Usuario == membroParaExcluir);
 
-                    if (usuario != null)
-                        projeto.ExcluirMembroDoProjeto(usuario);
+                    if (usuarioMembroProjeto == true)
+                    {
+                        if (membroParaExcluir != null)
+                            projeto.ExcluirMembroDoProjeto(membroParaExcluir);
+                        else
+                            AddNotification("Usuario", "Usuário com ID: " + membro.UsuarioId + " não foi encontrado!");
+                    }
                     else
-                        AddNotification("Usuario", "Usuario com ID: " + membro.UsuarioId + " não foi encontrado!");
+                        AddNotification("Usuario", "Usuário com ID: " + membro.UsuarioId + " não pertence a este projeto");
                 }
             }
 
             #endregion
-
 
             if (projeto.Invalid)
                 return new Response(false, "Projeto inválido", projeto.Notifications);
 
             _repositorioProjeto.Editar(projeto);
 
-            var result = new Response(true, "Usuário adicionado com sucesso", null);
+            var result = new Response(true, "Equipe do projeto alterada com sucesso!", Notifications);
             return await Task.FromResult(result);
             
         }
+
+        
     }
 }

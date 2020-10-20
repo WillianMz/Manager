@@ -53,15 +53,23 @@ namespace Manager.API.Controllers
         [AllowAnonymous]
         [HttpDelete]
         [Route("api/Projetos/Excluir")]
-        public Task<IActionResult> ExcluirProjeto()
+        public async Task<IActionResult> ExcluirProjeto([FromBody] ExcluirProjeto request)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var response = await _mediator.Send(request, CancellationToken.None);
+                return await ResponseAsync(response);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [AllowAnonymous]
         [HttpPut]
         [Route("api/Projetos/Membros")]
-        public async Task<IActionResult> AdicionarMembro([FromBody] EquipeDoProjeto request)
+        public async Task<IActionResult> AdicionarMembro([FromBody] MembrosDoProjeto request)
         {
             try
             {

@@ -7,7 +7,6 @@ namespace Manager.Domain.Core.Comandos.Projetos
     public class MembrosDoProjeto : MembroProjetoBase, IRequest<Response>
     {
         public  List<EquipeDoProjeto> AdicionarMembros { get; set; }
-        //List<EquipeDoProjeto> EditarMembros { get; set; }
         public List<EquipeDoProjeto> ExcluirMembros { get; set; }
 
     }

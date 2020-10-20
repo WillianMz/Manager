@@ -3,7 +3,9 @@ using MediatR;
 
 namespace Manager.Domain.Core.Comandos.Projetos
 {
-    public class EquipeDoProjeto : MembroProjetoBase, IRequest<Response>
+    public class EquipeDoProjeto : IRequest<Response>
     {
+        public int UsuarioId { get; set; }
+        public bool Gerente { get; set; }
     }
 }

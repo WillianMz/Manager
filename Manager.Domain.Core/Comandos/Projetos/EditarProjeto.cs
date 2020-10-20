@@ -1,6 +1,5 @@
 ﻿using Manager.Domain.Core.Comandos.Projetos.Modelos;
 using MediatR;
-using System.Collections.Generic;
 
 namespace Manager.Domain.Core.Comandos.Projetos
 {

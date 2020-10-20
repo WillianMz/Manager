@@ -1,5 +1,4 @@
 using Flunt.Validations;
-using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,17 +64,9 @@ namespace Manager.Domain.Entidades
         public void AdicionarMembro(Usuario usuario, bool gerente)
         {
             if (usuario.Valid)
-            {
-                //ProjetoUsuario user = _projetoUsuarios.FirstOrDefault(p => p.UsuarioId == usuario.Id);
-                var existeUsuario = _projetoUsuarios.Any(p => p.UsuarioId == usuario.Id);
-
-                if (existeUsuario == false)
-                {
-                    ProjetoUsuario projetoUsuario = new ProjetoUsuario(this, usuario, gerente);
-                    _projetoUsuarios.Add(projetoUsuario);
-                }
-                else
-                    AddNotification("Usuario", "Usuário com id: " + usuario.Id + ", já faz parte deste projeto");
+            {             
+                ProjetoUsuario projetoUsuario = new ProjetoUsuario(this, usuario, gerente);
+                _projetoUsuarios.Add(projetoUsuario);
             }
             else
                 AddNotification("Usuario", "Verifique o usuário informado");
@@ -123,12 +114,8 @@ namespace Manager.Domain.Entidades
 
         public void ExcluirMembroDoProjeto(Usuario usuario)
         {
-            ProjetoUsuario user = _projetoUsuarios.FirstOrDefault(p => p.UsuarioId == usuario.Id);
-
-            if (user != null)
-                _projetoUsuarios.Remove(user);
-            else
-                AddNotification("Remover Membro do Projeto", "Usuário com id:" + usuario.Id + " não pertence a este projeto");
+            ProjetoUsuario projetoUsuario = _projetoUsuarios.FirstOrDefault(p => p.Usuario == usuario);
+            _projetoUsuarios.Remove(projetoUsuario);
         }
 
         #endregion

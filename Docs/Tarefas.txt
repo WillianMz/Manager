@@ -1,18 +1,22 @@
 TAREFAS
 
 >PROJETOS
-	Criar Projeto (Permitir inserir junto: Documentos/Releases/Membros) - OK
-	Editar Projeto
-	Excluir Projeto (Documentos/Releases/Membros)
-	Adicionar Membros
-	Excluir Membros
+	Criar Projeto -> OK
+	(Permitir inserir junto: Documentos/Releases/Membros)
+	Editar Projeto -> OK
+	Excluir Projeto (Documentos/Releases/Membros) -> OK
 	
-	Adicionar Releases
+	Adicionar Membros -> OK
+	Excluir Membros   -> OK
+	
 	Adicionar Documentos
-	Editar Release do Projeto
-	Excluir Release do Projeto
 	Editar Documento do Projeto
 	Excluir Documento do Projeto
+	
+	Adicionar Releases
+	Editar Release do Projeto
+	Excluir Release do Projeto	
+	
 	
 >TICKETS
 	Novo ticket (Permitir inserir junto: Notas/Anexos)
