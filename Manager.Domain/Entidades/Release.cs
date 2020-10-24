@@ -1,6 +1,5 @@
 using Flunt.Validations;
 using System;
-using System.Collections.Generic;
 
 namespace Manager.Domain.Entidades
 {

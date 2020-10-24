@@ -9,13 +9,13 @@ TAREFAS
 	Adicionar Membros -> OK
 	Excluir Membros   -> OK
 	
-	Adicionar Documentos
-	Editar Documento do Projeto
-	Excluir Documento do Projeto
+	Adicionar Documento -> OK
+	Editar Documento do Projeto -> OK
+	Excluir Documento do Projeto -> OK
 	
-	Adicionar Releases
-	Editar Release do Projeto
-	Excluir Release do Projeto	
+	Adicionar Release -> OK
+	Editar Release do Projeto -> OK
+	Excluir Release do Projeto -> OK
 	
 	
 >TICKETS

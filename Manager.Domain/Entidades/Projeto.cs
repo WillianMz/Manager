@@ -1,5 +1,4 @@
 using Flunt.Validations;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -92,24 +91,16 @@ namespace Manager.Domain.Entidades
                 AddNotification("Release", "Release informada é inválida");
         }
 
-        public void EditarDocumento(int id, string titulo, string url)
+        public void ExcluirDocumento(Documento documento)
         {
-            Documento documento = _documentos.FirstOrDefault(d => d.Id == id);
-
-            if (documento == null)
-                AddNotification("Editar Documento", "Não é possivel editar o documento com id: " + id + ", o mesmo não pertence a este projeto.");
-            else
-                documento.Editar(titulo, url);
+            //Documento documento = _documentos.FirstOrDefault(d => d.Id == idDocumento);
+            //var teste = true;
+            _documentos.Remove(documento);
         }
 
-        public void EditarRelease(int id, string nome, string descricao, string versao, Usuario usuario, DateTime dataLiberacao)
+        public void ExcluirRealease(Release release)
         {
-            Release release = _releases.FirstOrDefault(r => r.Id == id);
-
-            if (release == null)
-                AddNotification("Editar Release", "Não foi possivel editar a release com id: " + id + ", a mesma não pertence a este projeto");
-            else
-                release.Editar(nome, descricao, versao, usuario, dataLiberacao);
+            _releases.Remove(release);
         }
 
         public void ExcluirMembroDoProjeto(Usuario usuario)

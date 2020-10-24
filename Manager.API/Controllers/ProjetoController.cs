@@ -82,5 +82,57 @@ namespace Manager.API.Controllers
             }
         }
 
+
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("api/Projetos/Documentos/Novo")]
+        public async Task<IActionResult> NovoDocumento([FromBody] AdicionarDocumento request)
+        {
+            try
+            {
+                var response = await _mediator.Send(request, CancellationToken.None);
+                return await ResponseAsync(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("api/Projetos/Documentos/Editar")]
+        public async Task<IActionResult> EditarDocumento([FromBody] EditarDocumento request)
+        {
+            try
+            {
+                var response = await _mediator.Send(request, CancellationToken.None);
+                return await ResponseAsync(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("api/Projetos/Documentos/Excluir")]
+        public async Task<IActionResult> ExcluirDocumento([FromBody] ExcluirDocumento request)
+        {
+            try
+            {
+                var response = await _mediator.Send(request, CancellationToken.None);
+                return await ResponseAsync(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }
