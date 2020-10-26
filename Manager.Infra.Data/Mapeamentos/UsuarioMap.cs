@@ -20,8 +20,8 @@ namespace Manager.Infra.Data.Mapeamentos
             builder.HasIndex(u => u.Email).IsUnique();
 
             //Relacionamentos 1 para Muitos
-            builder.HasOne(u => u.TipoUsuario);
-            builder.HasMany(u => u.Tickets).WithOne(t => t.Usuario);
+            //builder.HasOne(u => u.TipoUsuario);
+            builder.HasMany(u => u.Tickets).WithOne(t => t.Criador);
             builder.HasMany(u => u.Releases).WithOne(r => r.Usuario);
         }
     }

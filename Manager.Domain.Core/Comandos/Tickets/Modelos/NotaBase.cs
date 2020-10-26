@@ -1,8 +1,6 @@
-﻿using MediatR;
-
-namespace Manager.Domain.Core.Comandos.Tickets
+﻿namespace Manager.Domain.Core.Comandos.Tickets.Modelos
 {
-    public class CriarNota : IRequest<Response>
+    public abstract class NotaBase
     {
         public string Titulo { get; set; }
         public string Descricao { get; set; }

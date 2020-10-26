@@ -3,8 +3,7 @@ using MediatR;
 
 namespace Manager.Domain.Core.Comandos.Tickets
 {
-    public class EditarNota : NotaBase, IRequest<Response>
+    public class AdicionarNota : NotaBase, IRequest<Response>
     {
-        public int IdNota { get; set; }
     }
 }

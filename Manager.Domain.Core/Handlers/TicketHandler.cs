@@ -1,6 +1,8 @@
-﻿using Manager.Domain.Core.Comandos;
+﻿using Flunt.Notifications;
+using Manager.Domain.Core.Comandos;
 using Manager.Domain.Core.Comandos.Tickets;
 using Manager.Domain.Entidades;
+using Manager.Domain.Enums;
 using Manager.Domain.Interfaces.Repositorios;
 using MediatR;
 using System;
@@ -9,8 +11,10 @@ using System.Threading.Tasks;
 
 namespace Manager.Domain.Core.Handlers
 {
-    public class TicketHandler : IRequestHandler<CriarTicket, Response>, IRequestHandler<EditarTicket, Response>,
-                                 IRequestHandler<ExcluirTicket, Response>, IRequestHandler<FinalizarTicket, Response>
+    public class TicketHandler : Notifiable, IRequestHandler<CriarTicket, Response>, 
+                                             IRequestHandler<EditarTicket, Response>,
+                                             IRequestHandler<ExcluirTicket, Response>, 
+                                             IRequestHandler<FinalizarTicket, Response>
     {
         private readonly IRepositorioTicket _repositorioTicket;
         private readonly IRepositorioCategoria _repositorioCategoria;
@@ -33,21 +37,37 @@ namespace Manager.Domain.Core.Handlers
             if (request == null)
                 return new Response(false, "Informe todos os dados para criar um novo ticket", request);
 
-            var usuario = _repositorioUsuario.CarregarObjetoPeloID(request.UsuarioId);
-            var projeto = _repositorioProjeto.CarregarObjetoPeloID(request.ProjetoId);
-            var categoria = _repositorioCategoria.CarregarObjetoPeloID(request.CategoriaId);
+            Usuario criador = _repositorioUsuario.CarregarObjetoPeloID(request.CriadorId);
+            Projeto projeto = _repositorioProjeto.CarregarObjetoPeloID(request.ProjetoId);
+            Categoria categoria = _repositorioCategoria.CarregarObjetoPeloID(request.CategoriaId);
 
-            if (usuario == null | projeto == null | categoria == null)
-                return new Response(false, "Não foi encontrado nenhum objeto ", request);
+            #region VALIDACOES DE CRIADOR/PROJETO/CATEGORIA
 
-            Ticket ticket = new Ticket(request.Descricao, usuario, projeto, categoria);
+            if (criador == null)
+                //return new Response(false, "Usuário criador do ticket não encontrado", request);
+                AddNotification("Criador do Ticket", "Usuário criador do ticket não foi encontrado");
+
+            if (projeto == null)
+                //return new Response(false, "Projeto referenciado a este ticket não foi encontrado", request);
+                AddNotification("Projeto", "Projeto referenciado a este ticket não foi encontrado");
+
+            if (categoria == null)
+                //return new Response(false, "Categoria não encontrada", request);
+                AddNotification("Categoria", "Categoria não encontrada");
+
+            if (Invalid)
+                return new Response(false, "Verifique os erros e tente novamente", Notifications);
+
+            #endregion
+
+            Ticket ticket = new Ticket(request.Descricao, criador, projeto, categoria);
 
             if (ticket.Invalid)
                 return new Response(false, "Ticket inválido", ticket.Notifications);
 
-            _repositorioTicket.Adicionar(ticket);
+            _repositorioTicket.Adicionar(ticket);        
 
-            var result = new Response(true, "Ticket criado com sucesso!", null);
+            Response result = new Response(true, "Ticket criado com sucesso!", null);
             return await Task.FromResult(result);
 
         }
@@ -57,26 +77,63 @@ namespace Manager.Domain.Core.Handlers
             if (request == null)
                 return new Response(false, "Informe os dados do ticket que deseja alterar", request);
 
-            var usuario = _repositorioUsuario.CarregarObjetoPeloID(request.UsuarioId);
-            var categoria = _repositorioCategoria.CarregarObjetoPeloID(request.CategoriaId);
-            
-            if((usuario == null) | (categoria == null))
+            Usuario usuario = _repositorioUsuario.CarregarObjetoPeloID(request.UsuarioId);
+            Categoria categoria = _repositorioCategoria.CarregarObjetoPeloID(request.CategoriaId);
+            Ticket ticket = _repositorioTicket.CarregarObjetoPeloID(request.IdTicket);
+
+            if (usuario == null)
+                AddNotification("Usuário", "Usuário não foi encontrado");
+
+            if (categoria == null)
+                AddNotification("Categoria", "Categoria não encontrada");
+
+            if (ticket == null)
+                AddNotification("Ticket", "Ticket não localizado");
+
+            if (Invalid)
+                return new Response(false, "Verifique os dados informados e tente novamente", Notifications);
+
+            ticket.Editar(request.Descricao, categoria);
+
+            switch (request.Prioridade)
             {
-                //criar uma notificação para exibir no retorno
-                return new Response(false, "Passou auqui", null);
+                case 1:
+                    ticket.AlterarPrioridade(PrioridadeEnum.Baixo);
+                    break;
+                case 2:
+                    ticket.AlterarPrioridade(PrioridadeEnum.Normal);
+                    break;
+                case 3:
+                    ticket.AlterarPrioridade(PrioridadeEnum.Alto);
+                    break;
+                case 4:
+                    ticket.AlterarPrioridade(PrioridadeEnum.Urgente);
+                    break;
             }
 
-            Ticket ticket = _repositorioTicket.CarregarObjetoPeloID(request.Id);
-            ticket.Editar(request.Descricao, usuario, categoria);
+            switch (request.Status)
+            {
+                case 1:
+                    ticket.AlterarStatus(StatusEnum.Aberto);
+                    break;
+                case 2:
+                    ticket.AlterarStatus(StatusEnum.EmAndamento);
+                    break;
+                case 3:
+                    ticket.AlterarStatus(StatusEnum.Concluido);
+                    break;
+                case 4:
+                    ticket.AlterarStatus(StatusEnum.Cancelado);
+                    break;
+            }
 
             if (ticket.Invalid)
                 return new Response(false, "Ticket inválido", ticket.Notifications);
 
             _repositorioTicket.Editar(ticket);
 
-            var result = new Response(true, "Ticket alterado com sucesso!", null);
+            Response result = new Response(true, "Ticket alterado com sucesso!", null);
             return await Task.FromResult(result);
-
         }
 
         public async Task<Response> Handle(ExcluirTicket request, CancellationToken cancellationToken)
@@ -84,26 +141,27 @@ namespace Manager.Domain.Core.Handlers
             if (request == null)
                 return new Response(false, "Informe o ticket que deseja excluir!", request);
 
-            Ticket ticket = _repositorioTicket.CarregarObjetoPeloID(request.Id);
+            Ticket ticket = _repositorioTicket.CarregarObjetoPeloID(request.IdTicket);
 
             if (ticket == null)
-                return new Response(false, "Não foi encontrado nenhum ticket", null);
+                return new Response(false, "Ticket não localizado", request);
 
             _repositorioTicket.Remover(ticket);
 
-            var result = new Response(true, "Ticket excluído com sucesso!", null);
+            Response result = new Response(true, "Ticket excluído com sucesso!", null);
             return await Task.FromResult(result);
+
         }
 
         public async Task<Response> Handle(FinalizarTicket request, CancellationToken cancellationToken)
         {
-            if(request == null)
-                return new Response(false, "Informe o ticket que deseja finalizar", request);
+            if (request == null)
+                return new Response(false, "Informe os dados do ticket para finalizar", request);
 
             Ticket ticket = _repositorioTicket.CarregarObjetoPeloID(request.TicketId);
-            
+
             if (ticket == null)
-                return new Response(false, "Não foi encontrado nenhum ticket", null);
+                return new Response(false, "Ticket não localizado", request);
 
             ticket.Finalizar(request.Solucao);
 
@@ -112,7 +170,7 @@ namespace Manager.Domain.Core.Handlers
 
             _repositorioTicket.Editar(ticket);
 
-            var result = new Response(true, "Ticket finalizado com sucesso!", null);
+            Response result = new Response(true, "Ticket finalizado com sucesso!", null);
             return await Task.FromResult(result);
 
         }

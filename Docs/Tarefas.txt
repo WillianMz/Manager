@@ -1,5 +1,9 @@
 TAREFAS
 
+>CATEGORIAS
+	Adicionar Categoria -> OK
+	Editar Categoria -> OK
+
 >PROJETOS
 	Criar Projeto -> OK
 	(Permitir inserir junto: Documentos/Releases/Membros)
@@ -19,7 +23,8 @@ TAREFAS
 	
 	
 >TICKETS
-	Novo ticket (Permitir inserir junto: Notas/Anexos)
+	Novo ticket
+	(Permitir inserir junto: Notas/Anexos)
 	Editar ticket
 	Excluir ticket
 	Finalizar ticket
@@ -31,3 +36,10 @@ TAREFAS
 	
 	Adicionar Anexos
 	Excluir Anexos
+
+>USUARIOS
+	Novo usuario
+	Editar usuario
+	Excluir usuario
+	Ativar/Desativar usuario
+	Alterar Tipo de usuario
