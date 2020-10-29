@@ -55,10 +55,23 @@ namespace Manager.Domain.Core.Handlers
                 //return new Response(false, "Categoria não encontrada", request);
                 AddNotification("Categoria", "Categoria não encontrada");
 
+            #endregion
+
+            if(request.Notas != null)
+            {
+                var notas = request.Notas;
+
+                foreach(var n in notas)
+                    ticke
+            }
+
+            if (request.Anexos != null)
+            {
+
+            }
+
             if (Invalid)
                 return new Response(false, "Verifique os erros e tente novamente", Notifications);
-
-            #endregion
 
             Ticket ticket = new Ticket(request.Descricao, criador, projeto, categoria);
 
