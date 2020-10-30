@@ -23,11 +23,11 @@ TAREFAS
 	
 	
 >TICKETS
-	Novo ticket
+	Novo ticket -> OK
 	(Permitir inserir junto: Notas/Anexos)
-	Editar ticket
-	Excluir ticket
-	Finalizar ticket
+	Editar ticket -> OK
+	Excluir ticket -> OK
+	Finalizar ticket -> OK
 	Cancelar ticket
 	
 	Adicionar Notas

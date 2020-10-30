@@ -6,6 +6,7 @@ using Manager.Domain.Enums;
 using Manager.Domain.Interfaces.Repositorios;
 using MediatR;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -57,23 +58,27 @@ namespace Manager.Domain.Core.Handlers
 
             #endregion
 
-            if(request.Notas != null)
-            {
-                var notas = request.Notas;
-
-                foreach(var n in notas)
-                    ticke
-            }
-
-            if (request.Anexos != null)
-            {
-
-            }
-
             if (Invalid)
                 return new Response(false, "Verifique os erros e tente novamente", Notifications);
 
             Ticket ticket = new Ticket(request.Descricao, criador, projeto, categoria);
+
+            if (request.Notas != null)
+            {
+                List<AdicionarNota> notas = request.Notas;
+
+                foreach (var n in notas)
+                    ticket.AdicionarNota(new Nota(n.Titulo, n.Descricao, ticket, criador));
+            }
+
+            if (request.Anexos != null)
+            {
+                List<AdicionarAnexo> anexos = request.Anexos;
+
+                foreach (var a in anexos)
+                    ticket.AdicionarAnexo(new Anexo(a.Descricao, a.URL, ticket));
+
+            }
 
             if (ticket.Invalid)
                 return new Response(false, "Ticket inválido", ticket.Notifications);

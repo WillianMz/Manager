@@ -51,5 +51,21 @@ namespace Manager.API.Controllers
         }
 
 
+        [AllowAnonymous]
+        [HttpPut]
+        [Route("api/Ticket/Finalizar")]
+        public async Task<IActionResult> Finalizar([FromBody] FinalizarTicket request)
+        {
+            try
+            {
+                var response = await _mediator.Send(request, CancellationToken.None);
+                return await ResponseAsync(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }
