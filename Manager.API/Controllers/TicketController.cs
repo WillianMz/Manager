@@ -67,5 +67,21 @@ namespace Manager.API.Controllers
             }
         }
 
+        [AllowAnonymous]
+        [HttpPut]
+        [Route("api/Ticket/Cancelar")]
+        public async Task<IActionResult> Cancelar([FromBody] CancelarTicket request)
+        {
+            try
+            {
+                var response = await _mediator.Send(request, CancellationToken.None);
+                return await ResponseAsync(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }

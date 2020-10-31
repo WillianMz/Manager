@@ -13,52 +13,57 @@ namespace Manager.Domain.Entidades
         //Para o EFCore
         protected Ticket() { }
 
-        public Ticket(string descricao, Usuario criador, Projeto projeto, Categoria categoria)
+        public Ticket(string titulo, string descricao, Usuario criador, Projeto projeto, Categoria categoria)
         {
+            Titulo = titulo?.Trim().ToUpper();
             Descricao = descricao?.Trim().ToUpper();
             Criador = criador;
             Projeto = projeto;
             Categoria = categoria;
-
             StatusAtual = StatusEnum.Aberto;
             PrioridadeAtual = PrioridadeEnum.Normal;
+            DataAbertura = DateTime.Now;
 
             _notas = new List<Nota>();
-            _anexos = new List<Anexo>();
-
-            DataAbertura = DateTime.Now;
+            _anexos = new List<Anexo>();            
 
             AddNotifications(new Contract()
                 .Requires()
+                .IsNotNullOrEmpty(titulo,"Titulo","Informe um titulo para o ticket")
                 .IsNotNullOrEmpty(descricao, "Descricao", "Informe a descrição do Ticket")
                 .IsNotNull(criador, "Usuario", "Identifique o usuário criador do ticket")
                 .IsNotNull(projeto, "Projeto", "Informe o projeto relacionado a este ticket")
                 .IsNotNull(categoria, "Categoria", "Informe a categoria")
             );
-
         }
 
         public int Id { get; private set; }
         public DateTime DataAbertura { get; private set; }
-        public DateTime? DataFechamento { get; private set; }
-        public int Tempo { get; private set; }
+        public string Titulo { get; private set; }
         public string Descricao { get; private set; }
-        public string Solucao { get; private set; }             
-        public virtual Status Status { get; private set; }
-        public virtual Prioridade Prioridade { get; private set; }
-
         public StatusEnum StatusAtual { get; private set; }
         public PrioridadeEnum PrioridadeAtual { get; private set; }
+        public DateTime? DataFechamento { get; private set; }
+        public string Solucao { get; private set; }
+        public int Tempo { get; private set; }
+        public DateTime? DataCancelamento { get; private set; }
+        public string MotivoCancelamento { get; private set; }        
+
+        //public virtual Status Status { get; private set; }
+        //public virtual Prioridade Prioridade { get; private set; }        
 
         #region RELACIONAMENTOS
 
-        //relacionamentos
-        public int CriadorId { get; set; }  
-        public virtual Usuario Criador { get; set; }
-        public int ProjetoId { get; set; }
-        public virtual Projeto Projeto { get; set; }
-        public int CategoriaId { get; set; }
-        public virtual Categoria Categoria { get; set; }
+        public int CriadorId { get; private set; }  
+        public virtual Usuario Criador { get; private set; }
+        public int ProjetoId { get; private set; }
+        public virtual Projeto Projeto { get; private set; }
+        public int CategoriaId { get; private set; }
+        public virtual Categoria Categoria { get; private set; }
+        public int UsuarioFechamentoId { get; private set; }
+        public Usuario UsuarioFechamento { get; private set; }
+        public int UsuarioCancelamentoId { get; private set; }
+        public Usuario UsuarioCancelamento { get; private set; }
 
         #endregion
 
@@ -67,35 +72,47 @@ namespace Manager.Domain.Entidades
 
 
         //METODOS
-        public void Editar(string descricao, Categoria categoria )
+        public void Editar(string titulo, string descricao, Categoria categoria )
         {
+            Titulo = titulo?.Trim().ToUpper();
             Descricao = descricao?.Trim().ToUpper();            
             Categoria = categoria;
 
-            //if (usuario.Id != Usuario.Id)
-            //    AddNotification("Usuario", "Somento o usuário criador do ticket pode edita-lo!");
-
             AddNotifications(new Contract()
                 .Requires()
-                .IsNotNullOrEmpty(descricao, "Descricao", "Informe a descrição do Ticket")
-                //.IsNotNull(usuario, "Usuario", "Identifique o usuário criador do ticket")
+                .IsNotNullOrEmpty(titulo,"Titulo","Informe o titulo do ticket")
+                .IsNotNullOrEmpty(descricao, "Descricao", "Informe a descrição do Ticket")                
                 .IsNotNull(categoria, "Categoria", "Informe a categoria")
             );
         }
 
-        public void Cancelar()
+        public void Cancelar(string motivoCancelamento, Usuario usuarioQueCancelou)
         {
+            MotivoCancelamento = motivoCancelamento?.Trim().ToUpper();
+            UsuarioCancelamento = usuarioQueCancelou;
+            DataCancelamento = DateTime.Now;
+
             if(StatusAtual != StatusEnum.Cancelado)
                 StatusAtual = StatusEnum.Cancelado;
+
+            AddNotifications(new Contract()
+                .Requires()
+                .IsNotNullOrEmpty(motivoCancelamento,"Motivo de Cancelamento","Informe o motivo por estar cancelando este ticket")
+                .IsNotNull(usuarioQueCancelou,"Usuario","Identifique o usuário que esta cancelando este ticket")
+            );
         }
 
-        public void Finalizar(string solucao)
+        public void Finalizar(string solucao, Usuario usuarioFinalizador)
         {
             Solucao = solucao?.Trim().ToUpper();
             DataFechamento = DateTime.Now;
+            UsuarioFechamento = usuarioFinalizador;
 
-            if (string.IsNullOrEmpty(solucao))
-                AddNotification("Solucao", "Descreva a solução aplicada neste ticket");
+            AddNotifications(new Contract()
+                .Requires()
+                .IsNotNullOrEmpty(solucao,"Solução","Descreva a solução aplicada")
+                .IsNotNull(usuarioFinalizador,"Usuario","Informe o usuário que finalizou o ticket")
+            );
 
             if(StatusAtual == StatusEnum.Cancelado)
                 AddNotification("Finalizar", "Não é possível finalizar um ticket cancelado");

@@ -6,5 +6,6 @@ namespace Manager.Domain.Core.Comandos.Tickets
     {
         public int TicketId { get; set; }
         public string Solucao { get; set; }
+        public int UsuarioId { get; set; }
     }
 }

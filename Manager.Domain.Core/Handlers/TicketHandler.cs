@@ -15,7 +15,8 @@ namespace Manager.Domain.Core.Handlers
     public class TicketHandler : Notifiable, IRequestHandler<CriarTicket, Response>, 
                                              IRequestHandler<EditarTicket, Response>,
                                              IRequestHandler<ExcluirTicket, Response>, 
-                                             IRequestHandler<FinalizarTicket, Response>
+                                             IRequestHandler<FinalizarTicket, Response>,
+                                             IRequestHandler<CancelarTicket, Response>
     {
         private readonly IRepositorioTicket _repositorioTicket;
         private readonly IRepositorioCategoria _repositorioCategoria;
@@ -61,7 +62,7 @@ namespace Manager.Domain.Core.Handlers
             if (Invalid)
                 return new Response(false, "Verifique os erros e tente novamente", Notifications);
 
-            Ticket ticket = new Ticket(request.Descricao, criador, projeto, categoria);
+            Ticket ticket = new Ticket(request.Titulo, request.Descricao, criador, projeto, categoria);
 
             if (request.Notas != null)
             {
@@ -87,7 +88,6 @@ namespace Manager.Domain.Core.Handlers
 
             Response result = new Response(true, "Ticket criado com sucesso!", null);
             return await Task.FromResult(result);
-
         }
 
         public async Task<Response> Handle(EditarTicket request, CancellationToken cancellationToken)
@@ -111,7 +111,7 @@ namespace Manager.Domain.Core.Handlers
             if (Invalid)
                 return new Response(false, "Verifique os dados informados e tente novamente", Notifications);
 
-            ticket.Editar(request.Descricao, categoria);
+            ticket.Editar(request.Titulo, request.Descricao, categoria);
 
             switch (request.Prioridade)
             {
@@ -168,7 +168,6 @@ namespace Manager.Domain.Core.Handlers
 
             Response result = new Response(true, "Ticket excluído com sucesso!", null);
             return await Task.FromResult(result);
-
         }
 
         public async Task<Response> Handle(FinalizarTicket request, CancellationToken cancellationToken)
@@ -177,11 +176,15 @@ namespace Manager.Domain.Core.Handlers
                 return new Response(false, "Informe os dados do ticket para finalizar", request);
 
             Ticket ticket = _repositorioTicket.CarregarObjetoPeloID(request.TicketId);
+            Usuario usuario = _repositorioUsuario.CarregarObjetoPeloID(request.UsuarioId);
 
             if (ticket == null)
                 return new Response(false, "Ticket não localizado", request);
 
-            ticket.Finalizar(request.Solucao);
+            if (usuario == null)
+                return new Response(false, "Usuário não localizado", request);
+
+            ticket.Finalizar(request.Solucao, usuario);
 
             if (ticket.Invalid)
                 return new Response(false, "Ticket inválido", ticket.Notifications);
@@ -190,7 +193,24 @@ namespace Manager.Domain.Core.Handlers
 
             Response result = new Response(true, "Ticket finalizado com sucesso!", null);
             return await Task.FromResult(result);
+        }
 
+        public async Task<Response> Handle(CancelarTicket request, CancellationToken cancellationToken)
+        {
+            Ticket ticket = _repositorioTicket.CarregarObjetoPeloID(request.IdTicket);
+            Usuario usuario = _repositorioUsuario.CarregarObjetoPeloID(request.UsuarioId);
+            
+            if (ticket == null)
+                return new Response(false, "Ticket não localizado", request);
+
+            if (usuario == null)
+                return new Response(false, "Usuário não localizado", request);
+
+            ticket.Cancelar(request.Motivo, usuario);
+            _repositorioTicket.Editar(ticket);
+
+            Response result = new Response(true, "Ticket cancelado com sucesso!", null);
+            return await Task.FromResult(result);
         }
     }
 }
