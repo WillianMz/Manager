@@ -39,7 +39,7 @@ namespace Manager.ConsoleApp
                     Categoria categoria = repositorioCategoria.CarregarObjetoPeloID(4);
                     Projeto projeto = repositorioProjeto.CarregarObjetoPeloID(1);
 
-                    Ticket ticket = new Ticket("teste", usuario, projeto, categoria);
+                    Ticket ticket = new Ticket("teste","teste", usuario, projeto, categoria);
                     repositorioTicket.Adicionar(ticket);
 
                     database.SaveChanges();

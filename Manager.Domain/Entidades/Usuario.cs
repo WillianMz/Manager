@@ -7,6 +7,8 @@ namespace Manager.Domain.Entidades
     public class Usuario : EntidadeBase
     {
         private List<Ticket> _tickets;
+        private List<Ticket> _ticketsFinalizados;
+        private List<Ticket> _ticketsCancelados;
         private List<Release> _releases;
         private List<ProjetoUsuario> _projetoUsuarios;
 
@@ -23,6 +25,8 @@ namespace Manager.Domain.Entidades
 
             //Ativo = false;    
             _tickets = new List<Ticket>();
+            _ticketsCancelados = new List<Ticket>();
+            _ticketsFinalizados = new List<Ticket>();
             _releases = new List<Release>();
             _projetoUsuarios = new List<ProjetoUsuario>();
 
@@ -48,6 +52,8 @@ namespace Manager.Domain.Entidades
 
         //relacionamento 1 para N
         public virtual IReadOnlyCollection<Ticket> Tickets => _tickets;
+        public virtual IReadOnlyCollection<Ticket> TicketsFinalizados => _ticketsFinalizados;
+        public virtual IReadOnlyCollection<Ticket> TicketsCancelados => _ticketsCancelados;
         public virtual IReadOnlyCollection<Release> Releases => _releases;
         public virtual IReadOnlyCollection<ProjetoUsuario> ProjetoUsuarios => _projetoUsuarios;
 

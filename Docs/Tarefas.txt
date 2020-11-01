@@ -28,7 +28,7 @@ TAREFAS
 	Editar ticket -> OK
 	Excluir ticket -> OK
 	Finalizar ticket -> OK
-	Cancelar ticket
+	Cancelar ticket > OK
 	
 	Adicionar Notas
 	Editar Notas

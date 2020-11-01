@@ -30,6 +30,7 @@ namespace Manager.API.Controllers
                 catch(Exception ex)
                 {
                     return await Task.FromResult(BadRequest("Ocorreu um erro. Detalhes: " + ex.Message));
+                    //throw new Exception(ex.Message);
                     //return BadRequest("Ocorreu um problema. Detalhes: " + ex.Message);
                 }
             }

@@ -3,14 +3,16 @@ using System;
 using Manager.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Manager.Infra.Data.Migrations
 {
     [DbContext(typeof(ManagerContext))]
-    partial class ManagerContextModelSnapshot : ModelSnapshot
+    [Migration("20201031230423_AjusteNaClasseTicketEUsuario")]
+    partial class AjusteNaClasseTicketEUsuario
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -327,10 +329,10 @@ namespace Manager.Infra.Data.Migrations
                         .HasColumnType("varchar(30) CHARACTER SET utf8mb4")
                         .HasMaxLength(30);
 
-                    b.Property<int?>("UsuarioCancelamentoId")
+                    b.Property<int>("UsuarioCancelamentoId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UsuarioFechamentoId")
+                    b.Property<int>("UsuarioFechamentoId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -515,11 +517,15 @@ namespace Manager.Infra.Data.Migrations
 
                     b.HasOne("Manager.Domain.Entidades.Usuario", "UsuarioCancelamento")
                         .WithMany("TicketsCancelados")
-                        .HasForeignKey("UsuarioCancelamentoId");
+                        .HasForeignKey("UsuarioCancelamentoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Manager.Domain.Entidades.Usuario", "UsuarioFechamento")
                         .WithMany("TicketsFinalizados")
-                        .HasForeignKey("UsuarioFechamentoId");
+                        .HasForeignKey("UsuarioFechamentoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Manager.Domain.Entidades.Usuario", b =>

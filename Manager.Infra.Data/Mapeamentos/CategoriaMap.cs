@@ -15,7 +15,7 @@ namespace Manager.Infra.Data.Mapeamentos
 
             //relacionamento 1 para N
             //uma categoria possui varios tickts, 1 ticket pertence a 1 categoria
-            builder.HasMany(c => c.Tickets).WithOne(t => t.Categoria);
+            //builder.HasMany(c => c.Tickets).WithOne(t => t.Categoria);
         }
     }
 }

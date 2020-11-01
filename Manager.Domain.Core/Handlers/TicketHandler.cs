@@ -1,4 +1,5 @@
 ﻿using Flunt.Notifications;
+using Flunt.Validations;
 using Manager.Domain.Core.Comandos;
 using Manager.Domain.Core.Comandos.Tickets;
 using Manager.Domain.Entidades;
@@ -99,19 +100,12 @@ namespace Manager.Domain.Core.Handlers
             Categoria categoria = _repositorioCategoria.CarregarObjetoPeloID(request.CategoriaId);
             Ticket ticket = _repositorioTicket.CarregarObjetoPeloID(request.IdTicket);
 
-            if (usuario == null)
-                AddNotification("Usuário", "Usuário não foi encontrado");
-
-            if (categoria == null)
-                AddNotification("Categoria", "Categoria não encontrada");
-
-            if (ticket == null)
-                AddNotification("Ticket", "Ticket não localizado");
-
-            if (Invalid)
-                return new Response(false, "Verifique os dados informados e tente novamente", Notifications);
-
-            ticket.Editar(request.Titulo, request.Descricao, categoria);
+            AddNotifications(new Contract()
+                .Requires()
+                .IsNotNull(usuario,"Usuario","Usuário não foi encontrado")
+                .IsNotNull(categoria,"Categoria","Categoria não encontrada")
+                .IsNotNull(ticket,"Ticket","Ticket não encontrado")
+            );
 
             switch (request.Prioridade)
             {
@@ -126,6 +120,9 @@ namespace Manager.Domain.Core.Handlers
                     break;
                 case 4:
                     ticket.AlterarPrioridade(PrioridadeEnum.Urgente);
+                    break;
+                default:
+                    AddNotification("Prioridade", "Tipos de prioridades: 1=Baixo | 2=Normal | 3=Alto | 4=Urgente");
                     break;
             }
 
@@ -143,13 +140,20 @@ namespace Manager.Domain.Core.Handlers
                 case 4:
                     ticket.AlterarStatus(StatusEnum.Cancelado);
                     break;
+                default:
+                    AddNotification("Status", "Tipos de status: 1=Aberto | 2=Em andamento | 3=Concluído | 4=Cancelado");
+                    break;
             }
+
+            if (Invalid)
+                return new Response(false, "Verifique os dados informados e tente novamente", Notifications);
+
+            ticket.Editar(request.Titulo, request.Descricao, categoria);
 
             if (ticket.Invalid)
                 return new Response(false, "Ticket inválido", ticket.Notifications);
 
             _repositorioTicket.Editar(ticket);
-
             Response result = new Response(true, "Ticket alterado com sucesso!", null);
             return await Task.FromResult(result);
         }

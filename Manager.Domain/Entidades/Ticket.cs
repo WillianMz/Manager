@@ -60,10 +60,10 @@ namespace Manager.Domain.Entidades
         public virtual Projeto Projeto { get; private set; }
         public int CategoriaId { get; private set; }
         public virtual Categoria Categoria { get; private set; }
-        public int UsuarioFechamentoId { get; private set; }
-        public Usuario UsuarioFechamento { get; private set; }
-        public int UsuarioCancelamentoId { get; private set; }
-        public Usuario UsuarioCancelamento { get; private set; }
+        public int? UsuarioFechamentoId { get; private set; }
+        public virtual Usuario UsuarioFechamento { get; private set; }
+        public int? UsuarioCancelamentoId { get; private set; }
+        public virtual Usuario UsuarioCancelamento { get; private set; }
 
         #endregion
 
