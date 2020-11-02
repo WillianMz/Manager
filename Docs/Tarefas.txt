@@ -32,7 +32,7 @@ TAREFAS
 	
 	Adicionar Notas -> OK
 	Editar Notas -> OK
-	Excluir Notas -> OK
+	Excluir Notas -> OK	
 	
 	Adicionar Anexos
 	Excluir Anexos

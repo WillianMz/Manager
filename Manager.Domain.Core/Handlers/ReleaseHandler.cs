@@ -3,7 +3,6 @@ using Manager.Domain.Core.Comandos.Projetos;
 using Manager.Domain.Entidades;
 using Manager.Domain.Interfaces.Repositorios;
 using MediatR;
-using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -74,7 +73,7 @@ namespace Manager.Domain.Core.Handlers
 
             _repositorioProjeto.Editar(projeto);
 
-            var result = new Response(true, "Release adicionada com sucesso!", null);
+            var result = new Response(true, "Release alterada com sucesso!", null);
             return await Task.FromResult(result);
         }
 
@@ -92,7 +91,7 @@ namespace Manager.Domain.Core.Handlers
             projeto.ExcluirRealease(release);
             _repositorioProjeto.Editar(projeto);
 
-            var result = new Response(true, "Release adicionada com sucesso!", null);
+            var result = new Response(true, "Release excluída com sucesso!", null);
             return await Task.FromResult(result);
         }
     }
