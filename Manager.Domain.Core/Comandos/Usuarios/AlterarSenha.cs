@@ -2,7 +2,7 @@
 
 namespace Manager.Domain.Core.Comandos.Usuarios
 {
-    public class AlterarSenhaRequest : IRequest<Response>
+    public class AlterarSenha : IRequest<Response>
     {
         public int UsuarioId { get; set; }
         public string Email { get; set; }

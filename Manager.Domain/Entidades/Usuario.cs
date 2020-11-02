@@ -65,18 +65,21 @@ namespace Manager.Domain.Entidades
             //fazer validação e criptografia da senha do usuario
         }
 
-        public void Ativar()
+        public void AtivarDesativar(bool ativarDesativar)
         {
-
+            Ativo = ativarDesativar;
         }
 
-        public void Desativa()
+        public void EditarNome(string nome)
         {
+            Nome = nome?.Trim().ToUpper();
+            //Senha = senha;
 
-        }
-
-        public void Editar(string nome)
-        {
+            AddNotifications(new Contract()
+                .Requires()
+                .IsNotNullOrEmpty(nome, "Nome", "Informe o novo nome do usuário")
+                //.IsNotNullOrEmpty(senha,"Senha","Informe a senha do usuário")
+            );
 
         }
 

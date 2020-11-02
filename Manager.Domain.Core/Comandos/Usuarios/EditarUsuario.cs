@@ -6,5 +6,6 @@ namespace Manager.Domain.Core.Comandos.Usuarios
     {
         public int UsuarioId { get; set; }
         public string Nome { get; set; }
+        public string Senha { get; set; }
     }
 }
