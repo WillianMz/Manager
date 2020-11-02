@@ -28,11 +28,11 @@ TAREFAS
 	Editar ticket -> OK
 	Excluir ticket -> OK
 	Finalizar ticket -> OK
-	Cancelar ticket > OK
+	Cancelar ticket -> OK
 	
-	Adicionar Notas
-	Editar Notas
-	Excluir Notas
+	Adicionar Notas -> OK
+	Editar Notas -> OK
+	Excluir Notas -> OK
 	
 	Adicionar Anexos
 	Excluir Anexos
