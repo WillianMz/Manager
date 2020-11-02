@@ -34,8 +34,8 @@ TAREFAS
 	Editar Notas -> OK
 	Excluir Notas -> OK	
 	
-	Adicionar Anexos
-	Excluir Anexos
+	Adicionar Anexos -> OK
+	Excluir Anexos -> OK
 
 >USUARIOS
 	Novo usuario
