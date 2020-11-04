@@ -12,4 +12,8 @@
     <PackageReference Include="Flunt" Version="1.0.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Manager.Utilitario\Manager.Utilitario.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -38,8 +38,8 @@ TAREFAS
 	Excluir Anexos -> OK
 
 >USUARIOS
-	Novo usuario
-	Editar usuario
-	Excluir usuario
-	Ativar/Desativar usuario
+	Novo usuario -> OK
+	Editar usuario -> OK
+	Excluir usuario -> OK
+	Ativar/Desativar usuario -> OK
 	Alterar Tipo de usuario

@@ -1,5 +1,6 @@
 using Flunt.Validations;
 using Manager.Domain.Enums;
+using Manager.Utilitario;
 using System.Collections.Generic;
 
 namespace Manager.Domain.Entidades
@@ -22,8 +23,10 @@ namespace Manager.Domain.Entidades
             Senha = senha?.Trim();
             Email = email?.Trim().ToLower();
             Tipo = UsuarioEnum.Cliente;
+            Ativo = false;
 
-            //Ativo = false;    
+            ValidarSenha();
+                
             _tickets = new List<Ticket>();
             _ticketsCancelados = new List<Ticket>();
             _ticketsFinalizados = new List<Ticket>();
@@ -58,11 +61,21 @@ namespace Manager.Domain.Entidades
         public virtual IReadOnlyCollection<ProjetoUsuario> ProjetoUsuarios => _projetoUsuarios;
 
 
-        //METODOS
-
         private void ValidarSenha()
         {
-            //fazer validação e criptografia da senha do usuario
+            if (Senha == Nome)
+                AddNotification("Senha", "Senha não pode ser igual ao nome do usuário");
+
+            if (Senha == Email)
+                AddNotification("Senha", "Senha não pode ser o seu email de usuário");
+
+            if (Senha == Login)
+                AddNotification("Senha", "Senha não pode ser igual ao seu login de usuário");
+
+            if (Senha.Length < 6)
+                AddNotification("Senha", "A senha deve conter 6 ou mais caracteres!");
+
+            Senha.CriptografarSenha();
         }
 
         public void AtivarDesativar(bool ativarDesativar)
@@ -70,40 +83,41 @@ namespace Manager.Domain.Entidades
             Ativo = ativarDesativar;
         }
 
-        public void EditarNome(string nome)
+        public void Editar(string nome, string senha)
         {
             Nome = nome?.Trim().ToUpper();
-            //Senha = senha;
+            Senha = senha;
 
             AddNotifications(new Contract()
                 .Requires()
                 .IsNotNullOrEmpty(nome, "Nome", "Informe o novo nome do usuário")
-                //.IsNotNullOrEmpty(senha,"Senha","Informe a senha do usuário")
+                .IsNotNullOrEmpty(senha,"Senha","Informe a senha do usuário")
             );
 
         }
 
         public void AlterarSenha(string senhaAtual, string novaSenha)
         {
-            if(senhaAtual == Senha)
+            senhaAtual.CriptografarSenha();
+            novaSenha.CriptografarSenha();
+
+            AddNotifications(new Contract()
+                .Requires()
+                .IsNotNullOrEmpty(senhaAtual, "Senha Atual", "Para alterar a senha é necessário informar a senha atual")
+                .IsNotNullOrEmpty(novaSenha, "Nova Senha", "É necessário informar a nova senha")
+            );
+
+            if (senhaAtual == Senha)
             {
                 if (novaSenha != Senha)
-                {
-                    //fazer criptografia e troca de senha
-                }
+                    Senha = novaSenha;
                 else
-                    AddNotification("Senha", "A nova senha informada é a mesma da atual");
+                    AddNotification("Senha", "A nova senha não pode ser a atual");
             }
             else
             {
                 AddNotification("Senha", "A senha informada não confere com a atual, verifique");
-            }
-
-            AddNotifications(new Contract()
-                .Requires()
-                .IsNotNullOrEmpty(senhaAtual, "Senha Atual","Para alterar a senha é necessário informar a senha atual")
-                .IsNotNullOrEmpty(novaSenha, "Nova Senha","É necessário informar a nova senha")
-            );
+            }            
         }
 
     }

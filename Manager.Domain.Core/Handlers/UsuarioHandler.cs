@@ -4,7 +4,6 @@ using Manager.Domain.Core.Comandos.Usuarios;
 using Manager.Domain.Entidades;
 using Manager.Domain.Interfaces.Repositorios;
 using MediatR;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -38,7 +37,6 @@ namespace Manager.Domain.Core.Handlers
                 return new Response(false, "Usuário inváldo", usuario.Notifications);
 
             _repositorioUsuario.Adicionar(usuario);
-
             var result = new Response(true, "Usuário registrado com sucesso!", null);
             return await Task.FromResult(result);
 
@@ -53,21 +51,71 @@ namespace Manager.Domain.Core.Handlers
 
             if (usuario == null)
                 return new Response(false, "Usuário não encontrado", usuario);
+
+            usuario.Editar(request.Nome, request.Senha);
+
+            if (usuario.Invalid)
+                return new Response(false, "Usuário inválido", usuario.Notifications);
+
+            _repositorioUsuario.Editar(usuario);
+            var result = new Response(true, "Usuário alterado com sucesso", null);
+            return await Task.FromResult(result);
         }
 
-        public Task<Response> Handle(ExcluirUsuario request, CancellationToken cancellationToken)
+        public async Task<Response> Handle(ExcluirUsuario request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if (request == null)
+                return new Response(false, "Identifique o usuário", request);
+
+            Usuario usuario = _repositorioUsuario.CarregarObjetoPeloID(request.UsuarioId);
+
+            if (usuario == null)
+                return new Response(false, "Usuário não encontrado", usuario);
+
+            _repositorioUsuario.Remover(usuario);
+            var result = new Response(true, "Usuário excluído com sucesso", null);
+            return await Task.FromResult(result);
         }
 
-        public Task<Response> Handle(AlterarSenha request, CancellationToken cancellationToken)
+        public async Task<Response> Handle(AlterarSenha request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if (request == null)
+                return new Response(false, "Informe os dados", request);
+
+            Usuario usuario = _repositorioUsuario.CarregarObjetoPeloID(request.UsuarioId);
+
+            if (usuario == null)
+                return new Response(false, "Usuário não encontrado", usuario);
+
+            usuario.AlterarSenha(request.SenhaAtual, request.NovaSenha);
+
+            if (usuario.Invalid)
+                return new Response(false, "Usuário inválido", usuario.Notifications);
+
+            _repositorioUsuario.Remover(usuario);
+            var result = new Response(true, "Senha alterada com sucesso!", null);
+            return await Task.FromResult(result);
+
         }
 
-        public Task<Response> Handle(AtivarDestativarUsuario request, CancellationToken cancellationToken)
+        public async Task<Response> Handle(AtivarDestativarUsuario request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if (request == null)
+                return new Response(false, "Identifique o usuário", request);
+
+            Usuario usuario = _repositorioUsuario.CarregarObjetoPeloID(request.UsuarioId);
+
+            if (usuario == null)
+                return new Response(false, "Usuário não encontrado", usuario);
+
+            usuario.AtivarDesativar(request.Ativar);
+
+            if (usuario.Invalid)
+                return new Response(false, "Usuário inválido", usuario.Notifications);
+
+            _repositorioUsuario.Editar(usuario);
+            var result = new Response(true, "Usuário ativado/desativado com sucesso!", null);
+            return await Task.FromResult(result);
         }
     }
 }
