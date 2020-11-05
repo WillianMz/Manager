@@ -96,6 +96,11 @@ namespace Manager.Domain.Entidades
 
         }
 
+        public void AlterarTipoDeUsuario(UsuarioEnum tipoUsuario)
+        {
+            Tipo = tipoUsuario;
+        }
+
         public void AlterarSenha(string senhaAtual, string novaSenha)
         {
             senhaAtual.CriptografarSenha();

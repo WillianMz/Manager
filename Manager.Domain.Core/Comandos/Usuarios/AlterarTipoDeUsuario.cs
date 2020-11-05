@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using MediatR;
 
 namespace Manager.Domain.Core.Comandos.Usuarios
 {
-    class AlterarTipoDeUsuario
+    public class AlterarTipoDeUsuario : IRequest<Response>
     {
+        public int UsuarioId { get; set; }
+        public int TipoUsuario { get; set; }
     }
 }

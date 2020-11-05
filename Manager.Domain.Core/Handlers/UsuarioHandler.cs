@@ -2,6 +2,7 @@
 using Manager.Domain.Core.Comandos;
 using Manager.Domain.Core.Comandos.Usuarios;
 using Manager.Domain.Entidades;
+using Manager.Domain.Enums;
 using Manager.Domain.Interfaces.Repositorios;
 using MediatR;
 using System.Threading;
@@ -13,7 +14,8 @@ namespace Manager.Domain.Core.Handlers
                                               IRequestHandler<EditarUsuario, Response>,
                                               IRequestHandler<ExcluirUsuario, Response>,
                                               IRequestHandler<AlterarSenha, Response>,
-                                              IRequestHandler<AtivarDestativarUsuario, Response>
+                                              IRequestHandler<AtivarDestativarUsuario, Response>,
+                                              IRequestHandler<AlterarTipoDeUsuario, Response>
     {
         private readonly IRepositorioUsuario _repositorioUsuario;
 
@@ -115,6 +117,50 @@ namespace Manager.Domain.Core.Handlers
 
             _repositorioUsuario.Editar(usuario);
             var result = new Response(true, "Usuário ativado/desativado com sucesso!", null);
+            return await Task.FromResult(result);
+        }
+
+        public async Task<Response> Handle(AlterarTipoDeUsuario request, CancellationToken cancellationToken)
+        {
+            if (request == null)
+                return new Response(false, "Identifique o usuário", request);
+
+            Usuario usuario = _repositorioUsuario.CarregarObjetoPeloID(request.UsuarioId);
+
+            if (usuario == null)
+                return new Response(false, "Usuário não encontrado", usuario);
+
+            switch (request.TipoUsuario)
+            {
+                case 1:
+                    usuario.AlterarTipoDeUsuario(UsuarioEnum.Administrador);
+                    break;
+
+                case 2:
+                    usuario.AlterarTipoDeUsuario(UsuarioEnum.Gerente);
+                    break;
+
+                case 3:
+                    usuario.AlterarTipoDeUsuario(UsuarioEnum.MembroEquipe);
+                    break;
+
+                case 4:
+                    usuario.AlterarTipoDeUsuario(UsuarioEnum.Cliente);
+                    break;
+
+                default:
+                    AddNotification("Tipos de usuários", "1=Administrador | 2=Gerente | 3=Membro da equipe | 4=Cliente ");
+                    break;
+            }
+
+            if(Invalid)
+                return new Response(false, "Verifique os dados informados e tente novamente", Notifications);
+
+            if (usuario.Invalid)
+                return new Response(false, "Usuário inválido", usuario.Notifications);
+
+            _repositorioUsuario.Editar(usuario);
+            var result = new Response(true, "Tipo de usuário alterado com sucesso!", null);
             return await Task.FromResult(result);
         }
     }
