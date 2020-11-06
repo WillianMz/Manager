@@ -1,5 +1,7 @@
 TAREFAS
 
+-------------- COMANDOS -----------
+
 >CATEGORIAS
 	Adicionar Categoria -> OK
 	Editar Categoria -> OK
@@ -42,4 +44,13 @@ TAREFAS
 	Editar usuario -> OK
 	Excluir usuario -> OK
 	Ativar/Desativar usuario -> OK
-	Alterar Tipo de usuario
+	Alterar Tipo de usuario -> OK
+
+
+----------------- NOTIFICAÇÕES --------------------
+
+>Notificar criação de novos tickets
+>Notificar fechamento de tickets
+>Notificar criação de releases
+>Enviar email de ativação ao criar usuário
+>
