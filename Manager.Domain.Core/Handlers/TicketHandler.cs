@@ -6,7 +6,6 @@ using Manager.Domain.Entidades;
 using Manager.Domain.Enums;
 using Manager.Domain.Interfaces.Repositorios;
 using MediatR;
-using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;

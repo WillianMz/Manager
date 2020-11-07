@@ -16,7 +16,7 @@ namespace Manager.Domain.Core.Comandos.Usuarios.Eventos
 
         public async Task Handle(NovoUsuarioNotification notification, CancellationToken cancellationToken)
         {
-             _servicoEnviarEmail.EnviarEmail(notification.Usuario.Email, "Ativação de usuário", "dfs");
+            _servicoEnviarEmail.EnviarEmail(notification.Usuario.Email, "Ativação de usuário", "dfs");
         }
     }
 }

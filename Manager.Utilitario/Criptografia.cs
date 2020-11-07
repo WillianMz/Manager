@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Manager.Utilitario
+namespace Manager.Infra.Utilitario
 {
     public static class Criptografia
     {

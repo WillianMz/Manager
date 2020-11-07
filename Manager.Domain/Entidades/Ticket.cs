@@ -7,8 +7,8 @@ namespace Manager.Domain.Entidades
 {
     public class Ticket : EntidadeBase
     {
-        private List<Nota> _notas;
-        private List<Anexo> _anexos;
+        private readonly List<Nota> _notas;
+        private readonly List<Anexo> _anexos;
 
         //Para o EFCore
         protected Ticket() { }

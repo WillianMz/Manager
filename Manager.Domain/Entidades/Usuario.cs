@@ -1,17 +1,17 @@
 using Flunt.Validations;
 using Manager.Domain.Enums;
-using Manager.Utilitario;
+using Manager.Infra.Utilitario;
 using System.Collections.Generic;
 
 namespace Manager.Domain.Entidades
 {
     public class Usuario : EntidadeBase
     {
-        private List<Ticket> _tickets;
-        private List<Ticket> _ticketsFinalizados;
-        private List<Ticket> _ticketsCancelados;
-        private List<Release> _releases;
-        private List<ProjetoUsuario> _projetoUsuarios;
+        private readonly List<Ticket> _tickets;
+        private readonly List<Ticket> _ticketsFinalizados;
+        private readonly List<Ticket> _ticketsCancelados;
+        private readonly List<Release> _releases;
+        private readonly List<ProjetoUsuario> _projetoUsuarios;
 
         //Para o EFCore
         protected Usuario() { }

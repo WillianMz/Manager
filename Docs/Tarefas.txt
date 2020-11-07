@@ -52,5 +52,5 @@ TAREFAS
 >Notificar criação de novos tickets
 >Notificar fechamento de tickets
 >Notificar criação de releases
->Enviar email de ativação ao criar usuário
+>Enviar email de ativação com codigo para ativar usuario ao criar usuário
 >
