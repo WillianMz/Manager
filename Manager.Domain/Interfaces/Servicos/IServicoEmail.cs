@@ -1,6 +1,6 @@
 ﻿namespace Manager.Domain.Interfaces.Servicos
 {
-    public interface IServicoEnviarEmail
+    public interface IServicoEmail
     {
        void EnviarEmail(string destinatario, string titulo, string corpo);
     }

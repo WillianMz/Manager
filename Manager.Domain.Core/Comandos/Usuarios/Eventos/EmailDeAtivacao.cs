@@ -7,9 +7,9 @@ namespace Manager.Domain.Core.Comandos.Usuarios.Eventos
 {
     public class EmailDeAtivacao : INotificationHandler<NovoUsuarioNotification>
     {
-        private readonly IServicoEnviarEmail _servicoEnviarEmail;
+        private readonly IServicoEmail _servicoEnviarEmail;
 
-        public EmailDeAtivacao(IServicoEnviarEmail servicoEnviarEmail)
+        public EmailDeAtivacao(IServicoEmail servicoEnviarEmail)
         {
             _servicoEnviarEmail = servicoEnviarEmail;
         }
