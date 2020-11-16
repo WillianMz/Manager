@@ -48,28 +48,58 @@ namespace Manager.Infra.Data.Repositorios
             return existe;
         }
 
-        public IQueryable<Usuario> ListarNomeEmOrdemCrescente()
+        public Usuario ExisteUsuario(string email, string senha)
         {
-            var usuarios = context.Usuarios.OrderBy(u => u.Nome);
+            IQueryable<Usuario> user = context.Usuarios.Where(u => u.Email == email && u.Senha == senha);
+            return (Usuario)user;
+        }
+
+        public IList<Usuario> ListarNomeEmOrdemCrescente()
+        {
+            List<Usuario> usuarios = context.Usuarios.OrderBy(u => u.Id).ToList();
             return usuarios;
         }
 
-        public IQueryable<Usuario> ListarNomeEmOrdemDecrescente()
+        public IList<Usuario> ListarNomeEmOrdemDecrescente()
         {
-            var usuarios = context.Usuarios.OrderByDescending(u => u.Nome);
+            List<Usuario> usuarios = context.Usuarios.OrderByDescending(u => u.Id).ToList();
             return usuarios;
         }
 
-        public IQueryable<Usuario> ListarPorNome(string nome)
+        public IList<Usuario> ListarPorNome(string nome)
         {
-            var usuariosPorNome = context.Usuarios.Where(u => u.Nome == nome);
-            return usuariosPorNome;
+            List<Usuario> usuarios = context.Usuarios.OrderBy(u => u.Nome).ToList();
+            return usuarios;
         }
+
+        //public IQueryable<Usuario> ListarNomeEmOrdemCrescente()
+        //{
+        //    var usuarios = context.Usuarios.OrderBy(u => u.Nome);
+        //    return usuarios;
+        //}
+
+        //public IQueryable<Usuario> ListarNomeEmOrdemDecrescente()
+        //{
+        //    var usuarios = context.Usuarios.OrderByDescending(u => u.Nome);
+        //    return usuarios;
+        //}
+
+        //public IQueryable<Usuario> ListarPorNome(string nome)
+        //{
+        //    var usuariosPorNome = context.Usuarios.Where(u => u.Nome == nome);
+        //    return usuariosPorNome;
+        //}
 
         public IList<Usuario> ListarTodos()
         {
             var usuarios = context.Usuarios.ToList();
             return usuarios;
+        }
+
+        public Usuario ObterUsuarioPorEmail(string email)
+        {
+            Usuario usuario = context.Usuarios.FirstOrDefault(u => u.Email == email);
+            return usuario;
         }
 
         public void Remover(Usuario entidade)
@@ -81,5 +111,6 @@ namespace Manager.Infra.Data.Repositorios
         {
             context.Usuarios.RemoveRange(entidades);
         }
+
     }
 }

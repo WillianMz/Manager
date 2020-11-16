@@ -1,4 +1,5 @@
 ﻿using Manager.Domain.Core.Comandos.Categorias;
+using Manager.Domain.Core.Consultas.Categorias;
 using Manager.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -55,6 +56,23 @@ namespace Manager.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [AllowAnonymous]//para testes
+        [HttpPost]
+        [Route("api/Categoria")]
+        public async Task<IActionResult> ListarCategorias([FromBody] ListarCategorias request)
+        {
+            try
+            {
+                var response = await _mediator.Send(request, CancellationToken.None);
+                return await ResponseAsync(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
     }
 }

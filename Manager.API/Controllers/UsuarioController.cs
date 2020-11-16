@@ -36,23 +36,6 @@ namespace Manager.API.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost]
-        [Route("api/Usuario/Novo")]
-        public async Task<IActionResult> NovoUsuario([FromBody] RegistrarNovoUsuario request)
-        {
-            try
-            {
-                var response = await _mediator.Send(request, CancellationToken.None);
-                return await ResponseAsync(response);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-
-        [AllowAnonymous]
         [HttpPut]
         [Route("api/Usuario/Editar")]
         public async Task<IActionResult> EditarUsuario([FromBody] EditarUsuario request)
@@ -72,6 +55,22 @@ namespace Manager.API.Controllers
         [HttpDelete]
         [Route("api/Usuario/Excluir")]
         public async Task<IActionResult> ExcluirUsuario([FromBody] ExcluirUsuario request)
+        {
+            try
+            {
+                var response = await _mediator.Send(request, CancellationToken.None);
+                return await ResponseAsync(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpPut]
+        [Route("api/Usuario/Ativar")]
+        public async Task<IActionResult> AtivarUsuario([FromBody] AtivarUsuario request)
         {
             try
             {

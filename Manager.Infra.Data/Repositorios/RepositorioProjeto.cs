@@ -42,21 +42,21 @@ namespace Manager.Infra.Data.Repositorios
             return existe;
         }
 
-        public IQueryable<Projeto> ListarNomeEmOrdemCrescente()
+        public IList<Projeto> ListarNomeEmOrdemCrescente()
         {
-            var projetos = context.Projetos.OrderBy(p => p.Descricao);
+            var projetos = context.Projetos.OrderBy(p => p.Descricao).ToList();
             return projetos;
         }
 
-        public IQueryable<Projeto> ListarNomeEmOrdemDecrescente()
+        public IList<Projeto> ListarNomeEmOrdemDecrescente()
         {
-            var projetos = context.Projetos.OrderByDescending(p => p.Descricao);
+            var projetos = context.Projetos.OrderByDescending(p => p.Descricao).ToList();
             return projetos;
         }
 
-        public IQueryable<Projeto> ListarPorNome(string nome)
+        public IList<Projeto> ListarPorNome(string nome)
         {
-            var projetos = context.Projetos.OrderBy(p => p.Descricao);
+            var projetos = context.Projetos.OrderBy(p => p.Descricao).ToList();
             return projetos;
         }
 

@@ -1,7 +1,9 @@
 using Flunt.Validations;
 using Manager.Domain.Enums;
 using Manager.Infra.Utilitario;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Manager.Domain.Entidades
 {
@@ -12,6 +14,7 @@ namespace Manager.Domain.Entidades
         private readonly List<Ticket> _ticketsCancelados;
         private readonly List<Release> _releases;
         private readonly List<ProjetoUsuario> _projetoUsuarios;
+        private readonly List<UsuarioAtivacao> _usuarioAtivacoes;
 
         //Para o EFCore
         protected Usuario() { }
@@ -23,15 +26,17 @@ namespace Manager.Domain.Entidades
             Senha = senha?.Trim();
             Email = email?.Trim().ToLower();
             Tipo = UsuarioEnum.Cliente;
-            Ativo = false;
-
-            ValidarSenha();
+            Ativo = false;           
                 
             _tickets = new List<Ticket>();
             _ticketsCancelados = new List<Ticket>();
             _ticketsFinalizados = new List<Ticket>();
             _releases = new List<Release>();
             _projetoUsuarios = new List<ProjetoUsuario>();
+            _usuarioAtivacoes = new List<UsuarioAtivacao>();
+
+            ValidarSenha();
+            GerarAtivacao(this);
 
             AddNotifications(new Contract()
                 .Requires()
@@ -51,14 +56,13 @@ namespace Manager.Domain.Entidades
         public bool Ativo { get; private set; }
         public UsuarioEnum Tipo { get; private set; }
 
-        public virtual TipoUsuario TipoUsuario { get; private set; }
-
         //relacionamento 1 para N
         public virtual IReadOnlyCollection<Ticket> Tickets => _tickets;
         public virtual IReadOnlyCollection<Ticket> TicketsFinalizados => _ticketsFinalizados;
         public virtual IReadOnlyCollection<Ticket> TicketsCancelados => _ticketsCancelados;
         public virtual IReadOnlyCollection<Release> Releases => _releases;
         public virtual IReadOnlyCollection<ProjetoUsuario> ProjetoUsuarios => _projetoUsuarios;
+        public virtual IReadOnlyCollection<UsuarioAtivacao> UsuarioAtivacoes => _usuarioAtivacoes;
 
 
         private void ValidarSenha()
@@ -75,12 +79,34 @@ namespace Manager.Domain.Entidades
             if (Senha.Length < 6)
                 AddNotification("Senha", "A senha deve conter 6 ou mais caracteres!");
 
-            Senha.CriptografarSenha();
+            Senha = Senha.CriptografarSenha();
+        }
+
+        private void GerarAtivacao(Usuario usuario)
+        {
+            UsuarioAtivacao usuarioAtivacao = new UsuarioAtivacao(usuario);
+            _usuarioAtivacoes.Add(usuarioAtivacao);
         }
 
         public void AtivarDesativar(bool ativarDesativar)
         {
             Ativo = ativarDesativar;
+        }
+
+        public void Ativar(string codigo)
+        {
+            var dataAtual = DateTime.Now;
+            var usuarioAtivacao = _usuarioAtivacoes.FirstOrDefault(c => c.CodigoAtivacao == codigo);
+
+            if (usuarioAtivacao != null)
+            {
+                if (usuarioAtivacao.DataValidade <= dataAtual)
+                    Ativo = true;
+                else
+                    AddNotification("Ativação", "Código de ativação expirado. Solicite ao administrador um novo código");
+            }
+            else
+                AddNotification("Ativação de usuário", "Código de ativação inválido");
         }
 
         public void Editar(string nome, string senha)

@@ -1,4 +1,4 @@
-﻿namespace Manager.Domain.Core.Comandos
+﻿namespace Manager.Domain.Core
 {
     public class Response
     {

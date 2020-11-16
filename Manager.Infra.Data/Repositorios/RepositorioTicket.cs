@@ -42,20 +42,22 @@ namespace Manager.Infra.Data.Repositorios
             throw new NotImplementedException();
         }
 
-        public IQueryable<Ticket> ListarNomeEmOrdemCrescente()
+        public IList<Ticket> ListarNomeEmOrdemCrescente()
         {
-            throw new NotImplementedException();
+            List<Ticket> tickets = context.Tickets.OrderBy(t => t.Id).ToList();
+            return tickets;
         }
 
-        public IQueryable<Ticket> ListarNomeEmOrdemDecrescente()
+        public IList<Ticket> ListarNomeEmOrdemDecrescente()
         {
-            throw new NotImplementedException();
+            List<Ticket> tickets = context.Tickets.OrderByDescending(t => t.Id).ToList();
+            return tickets;
         }
 
-        public IQueryable<Ticket> ListarPorNome(string nome)
+        public IList<Ticket> ListarPorNome(string nome)
         {
-            var ticketsPorDescricao = context.Tickets.Where(t => t.Descricao.Contains(nome));
-            return ticketsPorDescricao;
+            List<Ticket> tickets = context.Tickets.OrderBy(t => t.Titulo).ToList();
+            return tickets;
         }
 
         public IList<Ticket> ListarTodos()

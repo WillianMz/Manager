@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Manager.Domain.Core\Manager.Domain.Core.csproj" />
     <ProjectReference Include="..\Manager.Infra.Data\Manager.Infra.Data.csproj" />
+    <ProjectReference Include="..\Manager.Infra.Services\Manager.Infra.Services.csproj" />
   </ItemGroup>
 
 </Project>

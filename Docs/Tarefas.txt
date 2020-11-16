@@ -45,6 +45,7 @@ TAREFAS
 	Excluir usuario -> OK
 	Ativar/Desativar usuario -> OK
 	Alterar Tipo de usuario -> OK
+	Autenticação com JWT
 
 
 ----------------- NOTIFICAÇÕES --------------------

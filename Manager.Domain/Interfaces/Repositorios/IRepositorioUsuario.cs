@@ -6,5 +6,6 @@ namespace Manager.Domain.Interfaces.Repositorios
     {
         bool ExisteEmail(string email);
         Usuario ExisteUsuario(string email, string senha);
+        Usuario ObterUsuarioPorEmail(string email);
     }
 }

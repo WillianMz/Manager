@@ -1,4 +1,4 @@
-﻿using Manager.Domain.Core.Comandos;
+﻿using Manager.Domain.Core;
 using Manager.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Internal;

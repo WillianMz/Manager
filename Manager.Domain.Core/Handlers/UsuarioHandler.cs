@@ -1,10 +1,13 @@
 ﻿using Flunt.Notifications;
 using Manager.Domain.Core.Comandos;
 using Manager.Domain.Core.Comandos.Usuarios;
+using Manager.Domain.Core.Eventos;
 using Manager.Domain.Entidades;
 using Manager.Domain.Enums;
 using Manager.Domain.Interfaces.Repositorios;
+using Manager.Domain.Interfaces.Servicos;
 using MediatR;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,13 +18,18 @@ namespace Manager.Domain.Core.Handlers
                                               IRequestHandler<ExcluirUsuario, Response>,
                                               IRequestHandler<AlterarSenha, Response>,
                                               IRequestHandler<AtivarDestativarUsuario, Response>,
-                                              IRequestHandler<AlterarTipoDeUsuario, Response>
+                                              IRequestHandler<AlterarTipoDeUsuario, Response>,
+                                              IRequestHandler<AtivarUsuario, Response>
     {
         private readonly IRepositorioUsuario _repositorioUsuario;
+        private readonly IMediator _mediator;
+        private readonly IServicoEmail _servicoEmail;
 
-        public UsuarioHandler(IRepositorioUsuario repositorioUsuario)
+        public UsuarioHandler(IRepositorioUsuario repositorioUsuario, IMediator mediator, IServicoEmail servicoEmail)
         {
             _repositorioUsuario = repositorioUsuario;
+            _mediator = mediator;
+            _servicoEmail = servicoEmail;
         }
 
         public async Task<Response> Handle(RegistrarNovoUsuario request, CancellationToken cancellationToken)
@@ -39,9 +47,12 @@ namespace Manager.Domain.Core.Handlers
                 return new Response(false, "Usuário inváldo", usuario.Notifications);
 
             _repositorioUsuario.Adicionar(usuario);
+            var codigoAtivacao = usuario.UsuarioAtivacoes.Last().CodigoAtivacao;
+            EmailDeAtivacaoUsuario emailDeAtivacaoUsuario = new EmailDeAtivacaoUsuario(_servicoEmail);
+            emailDeAtivacaoUsuario.EnviarEmail(usuario, codigoAtivacao);
+
             var result = new Response(true, "Usuário registrado com sucesso!", null);
             return await Task.FromResult(result);
-
         }
 
         public async Task<Response> Handle(EditarUsuario request, CancellationToken cancellationToken)
@@ -161,6 +172,27 @@ namespace Manager.Domain.Core.Handlers
 
             _repositorioUsuario.Editar(usuario);
             var result = new Response(true, "Tipo de usuário alterado com sucesso!", null);
+            return await Task.FromResult(result);
+        }
+
+        public async Task<Response> Handle(AtivarUsuario request, CancellationToken cancellationToken)
+        {
+            if (request == null)
+                return new Response(false, "Identifique o usuário", null);
+
+            Usuario usuario = _repositorioUsuario.ObterUsuarioPorEmail(request.Email);
+            //var cod = usuario.UsuarioAtivacoes.FirstOrDefault(a => a.CodigoAtivacao == request.CodigoDeAtivacao);
+
+            if (usuario == null)
+                return new Response(false, "Usuário não encontrado", request.Email);
+
+            usuario.Ativar(request.CodigoDeAtivacao);
+
+            if (usuario.Invalid)
+                return new Response(false, "Usuário inválido", usuario.Notifications);
+
+            _repositorioUsuario.Editar(usuario);
+            var result = new Response(true, "Usuário ativado com sucesso", null);
             return await Task.FromResult(result);
         }
     }

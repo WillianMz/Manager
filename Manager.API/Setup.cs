@@ -3,9 +3,11 @@ using Manager.Domain.Core.Comandos.Projetos;
 using Manager.Domain.Core.Comandos.Tickets;
 using Manager.Domain.Interfaces;
 using Manager.Domain.Interfaces.Repositorios;
+using Manager.Domain.Interfaces.Servicos;
 using Manager.Infra.Data.Context;
 using Manager.Infra.Data.Repositorios;
 using Manager.Infra.Data.Transacoes;
+using Manager.Infra.Services.Email;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,6 +27,7 @@ namespace Manager.API
            services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly, typeof(CriarTicket).GetTypeInfo().Assembly);
         }
 
+        //INJENCAO DE DEPENDENCIAS
         public static void ConfigureRepositorios(this IServiceCollection services)
         {
             services.AddScoped<ManagerContext, ManagerContext>();
@@ -33,6 +36,11 @@ namespace Manager.API
             services.AddTransient<IRepositorioProjeto, RepositorioProjeto>();
             services.AddTransient<IRepositorioTicket, RepositorioTicket>();
             services.AddTransient<IRepositorioUsuario, RepositorioUsuario>();
+
+            //consultas
+            services.AddTransient<IConsultaCategoria, RepositorioCategoria>();
+
+            services.AddTransient<IServicoEmail, ServicoEmail>();
         }
 
         public static void ConfigureSwagger(this IServiceCollection services)

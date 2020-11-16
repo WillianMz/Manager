@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Manager.Domain.Interfaces.Repositorios
 {
@@ -14,8 +13,8 @@ namespace Manager.Domain.Interfaces.Repositorios
         TEntidade CarregarObjetoPeloID(int id);
 
         IList<TEntidade> ListarTodos();
-        IQueryable<TEntidade> ListarPorNome(string nome);
-        IQueryable<TEntidade> ListarNomeEmOrdemCrescente();
-        IQueryable<TEntidade> ListarNomeEmOrdemDecrescente();
+        IList<TEntidade> ListarPorNome(string nome);
+        IList<TEntidade> ListarNomeEmOrdemCrescente();
+        IList<TEntidade> ListarNomeEmOrdemDecrescente();
     }
 }
