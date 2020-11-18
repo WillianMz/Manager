@@ -2,9 +2,8 @@
 
 namespace Manager.Domain.Queries.Consultas.Categorias
 {
-    public class CategoriaRequest : IRequest<CategoriaResponse>
+    public class CategoriaPorNome : IRequest<ResponseQueries>
     {
-        public int? Id { get; set; }
         public string Nome { get; set; }
     }
 }

@@ -1,13 +1,15 @@
-﻿using Manager.Domain.Interfaces.Repositorios;
+﻿using Manager.Domain.Core;
+using Manager.Domain.Interfaces.Repositorios;
 using Manager.Domain.Queries.Consultas.Categorias;
 using MediatR;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Manager.Domain.Queries.Handles
 {
-    public class CategoriaHandler : IRequestHandler<CategoriaRequest, CategoriaResponse>
+    public class CategoriaHandler : IRequestHandler<CategoriaRequest, ResponseQueries>
     {
         private readonly IConsultaCategoria _consultaCategoria;
 
@@ -16,10 +18,9 @@ namespace Manager.Domain.Queries.Handles
             _consultaCategoria = consultaCategoria;
         }
 
-        public async Task<CategoriaResponse> Handle(CategoriaRequest request, CancellationToken cancellationToken)
+        public Task<RespoopnseQueries> Handle(CategoriaRequest request, CancellationToken cancellationToken)
         {
-            
-
+            throw new NotImplementedException();
         }
     }
 }

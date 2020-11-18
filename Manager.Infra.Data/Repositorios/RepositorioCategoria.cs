@@ -1,7 +1,8 @@
 ﻿using Manager.Domain.Entidades;
 using Manager.Domain.Interfaces.Repositorios;
+using Manager.Domain.Queries.Consultas.Categorias;
+using Manager.Domain.Queries.Interfaces;
 using Manager.Infra.Data.Context;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -53,77 +54,52 @@ namespace Manager.Infra.Data.Repositorios
             context.Categorias.RemoveRange(entidades);
         }
 
-        //public IList<Categoria> ListarNomeEmOrdemCrescente()
-        //{
-        //    var categorias = context.Categorias.OrderBy(c => c.Nome).ToList();
-        //    return categorias;
-        //}
 
-        //public IList<Categoria> ListarNomeEmOrdemDecrescente()
-        //{
-        //    var categorias = context.Categorias.OrderByDescending(c => c.Nome).ToList();
-        //    return categorias;
-        //}
+        #region CONSULTAS
 
-        //public IList<Categoria> ListarPorNome(string nome)
-        //{
-        //    var categorias = context.Categorias.Where(c => c.Nome.Contains(nome)).ToList();
-        //    return categorias;
-        //}
-
-        //public IList<Categoria> ListarTodos()
-        //{
-        //    var categorias = context.Categorias.ToList();
-        //    return categorias;
-        //}
-
-        //CONSULTAS DA INTERFACE IConsultaCategoria -> Projeto Manager.Domain.Queries
-        public IList<Categoria> ListarNomeEmOrdemCrescente()
+        public List<CategoriaDTO> Listar()
         {
-            List<Categoria> categorias = context.Categorias.OrderBy(c => c.Nome).ToList();
-            return categorias;
+            var categorias = context.Categorias.OrderBy(c => c.Id).ToList();
+            List<CategoriaDTO> categoriaDTOs = new List<CategoriaDTO>();
+
+            foreach (var c in categorias)
+            {
+                CategoriaDTO DTO = new CategoriaDTO() { Id = c.Id, Nome = c.Nome };
+                categoriaDTOs.Add(DTO);
+            }
+
+            return categoriaDTOs;
         }
 
-        public IList<Categoria> ListarNomeEmOrdemDecrescente()
+        public List<CategoriaDTO> ListarPorNome(string nome)
         {
-            List<Categoria> categorias = context.Categorias.OrderByDescending(c => c.Nome).ToList();
-            return categorias;
+            //contains = caracter coringa do SQL, pesquisa o paramento NOME
+            var categorias = context.Categorias.Where(c => c.Nome.Contains(nome)).ToList();
+            categorias.OrderBy(c => c.Nome).ToList();
+            List<CategoriaDTO> categoriaDTOs = new List<CategoriaDTO>();
+
+            foreach (var c in categorias)
+            {
+                CategoriaDTO DTO = new CategoriaDTO(){ Id = c.Id, Nome = c.Nome };
+                categoriaDTOs.Add(DTO);
+            }
+
+            return categoriaDTOs;
         }
 
-        public Categoria ListarPorId(int id)
+        public CategoriaDTO ProcurarPorID(int id)
         {
-            Categoria categoria = context.Categorias.FirstOrDefault(c => c.Id == id);
-            return categoria;
+            var categoria = context.Categorias.FirstOrDefault(c => c.Id == id);
+
+            if (categoria == null)
+                return null;
+
+            CategoriaDTO categoriaDTO = new CategoriaDTO() { Id = categoria.Id, Nome = categoria.Nome };
+            return categoriaDTO;
         }
 
-        public IList<Categoria> ListarPorIdCrescente()
-        {
-            List<Categoria> categorias = context.Categorias.OrderBy(c => c.Id).ToList();
-            return categorias;
-        }
 
-        public IList<Categoria> ListarPorIdDecrescente()
-        {
-            List<Categoria> categorias = context.Categorias.OrderByDescending(c => c.Id).ToList();
-            return categorias;
-        }
-
-        public IList<Categoria> ListarPorNome(string nome)
-        {
-            List<Categoria> categorias = context.Categorias.OrderByDescending(c => c.Nome).ToList();
-            return categorias;
-        }
-
-        public IList<Categoria> ListarTodos()
-        {
-            List<Categoria> categorias = context.Categorias.ToList();
-            return categorias;
-        }
-
-        public IList<Categoria> ListarTodos(bool ativo)
-        {
-            throw new NotImplementedException();
-        }
+        #endregion
 
     }
 }

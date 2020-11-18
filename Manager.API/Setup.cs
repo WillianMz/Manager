@@ -4,6 +4,8 @@ using Manager.Domain.Core.Comandos.Tickets;
 using Manager.Domain.Interfaces;
 using Manager.Domain.Interfaces.Repositorios;
 using Manager.Domain.Interfaces.Servicos;
+using Manager.Domain.Queries.Consultas.Categorias;
+using Manager.Domain.Queries.Interfaces;
 using Manager.Infra.Data.Context;
 using Manager.Infra.Data.Repositorios;
 using Manager.Infra.Data.Transacoes;
@@ -25,6 +27,7 @@ namespace Manager.API
            services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly, typeof(EditarCategoria).GetTypeInfo().Assembly);
            services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly, typeof(CriarProjeto).GetTypeInfo().Assembly);
            services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly, typeof(CriarTicket).GetTypeInfo().Assembly);
+           services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly, typeof(ListarCategorias).GetTypeInfo().Assembly);
         }
 
         //INJENCAO DE DEPENDENCIAS
@@ -52,7 +55,7 @@ namespace Manager.API
                     Version = "v1",
                     Title = "ManagerTickets",
                     Description = "Teste de descrição",
-                    TermsOfService = new Uri("https://managertickets.com.br/termos"),
+                    TermsOfService = new Uri("https://managertickets.com.br"),
                     Contact = new OpenApiContact
                     {
                         Name = "Willian",
@@ -61,7 +64,7 @@ namespace Manager.API
                     License = new OpenApiLicense
                     {
                         Name = "Termos de licença",
-                        Url = new Uri("https://managertickets.com.br/licenca")
+                        Url = new Uri("https://managertickets.com.br")
                     }
                 });
             });

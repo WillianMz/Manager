@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Handles\CategoriaHandler.cs" />
+    <Compile Remove="Handles\ResponseQueries.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Consultas\Projetos\" />
     <Folder Include="Consultas\Tickets\" />
     <Folder Include="Consultas\Usuarios\" />

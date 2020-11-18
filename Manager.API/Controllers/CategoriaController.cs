@@ -1,6 +1,6 @@
 ﻿using Manager.Domain.Core.Comandos.Categorias;
-using Manager.Domain.Core.Consultas.Categorias;
 using Manager.Domain.Interfaces;
+using Manager.Domain.Queries.Consultas.Categorias;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +18,60 @@ namespace Manager.API.Controllers
         {
             _mediator = mediator;
         }
+
+        #region SERVICO DE CONSULTAS
+
+        [AllowAnonymous]//para testes
+        [HttpGet]
+        [Route("api/Categoria/Listar")]
+        public async Task<IActionResult> Listar()
+        {
+            try
+            {
+                var request = new ListarCategorias();
+                var response = await _mediator.Send(request, CancellationToken.None);
+                return await ResponseQuerieAsync(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [AllowAnonymous]//para testes
+        [HttpGet]
+        [Route("api/Categoria/Nome")]
+        public async Task<IActionResult> ProcurarPorNome([FromQuery] CategoriaPorNome request)
+        {
+            try
+            {
+                var response = await _mediator.Send(request, CancellationToken.None);
+                return await ResponseQuerieAsync(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [AllowAnonymous]//para testes
+        [HttpGet]
+        [Route("api/Categoria/ID")]
+        public async Task<IActionResult> ProcurarPorId([FromQuery] CategoriaPorID request)
+        {
+            try
+            {                
+                var response = await _mediator.Send(request, CancellationToken.None);
+                return await ResponseQuerieAsync(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        #endregion
 
         //teste
         private async Task<IActionResult>ExecutarComando(CriarCategoria obj)
@@ -45,22 +99,6 @@ namespace Manager.API.Controllers
         [HttpPost]
         [Route("api/Categoria/Editar")]
         public async Task<IActionResult> EditarCategoria([FromBody] EditarCategoria request)
-        {
-            try
-            {
-                var response = await _mediator.Send(request, CancellationToken.None);
-                return await ResponseAsync(response);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [AllowAnonymous]//para testes
-        [HttpPost]
-        [Route("api/Categoria")]
-        public async Task<IActionResult> ListarCategorias([FromBody] ListarCategorias request)
         {
             try
             {

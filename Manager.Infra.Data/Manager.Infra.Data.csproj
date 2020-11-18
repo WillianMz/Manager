@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Manager.Domain.Queries\Manager.Domain.Queries.csproj" />
     <ProjectReference Include="..\Manager.Domain\Manager.Domain.csproj" />
   </ItemGroup>
 

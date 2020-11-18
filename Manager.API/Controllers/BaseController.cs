@@ -1,5 +1,6 @@
 ﻿using Manager.Domain.Core;
 using Manager.Domain.Interfaces;
+using Manager.Domain.Queries;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Internal;
 using System;
@@ -38,6 +39,27 @@ namespace Manager.API.Controllers
             {
                 return await Task.FromResult(Ok(response));
                 //return Ok(response);
+            }
+        }
+
+
+        public async Task<IActionResult> ResponseQuerieAsync(ResponseQueries response)
+        {
+            if (response.Mensagem.Any())
+            {
+                try
+                {
+                    return await Task.FromResult(Ok(response));
+
+                }
+                catch (Exception ex)
+                {
+                    return await Task.FromResult(BadRequest("Ocorreu um erro. Detalhes: " + ex.Message));
+                }
+            }
+            else
+            {
+                return await Task.FromResult(Ok(response));
             }
         }
 
