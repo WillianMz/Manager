@@ -10,7 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Consultas\Projetos\" />
     <Folder Include="Consultas\Tickets\" />
     <Folder Include="Consultas\Usuarios\" />
   </ItemGroup>

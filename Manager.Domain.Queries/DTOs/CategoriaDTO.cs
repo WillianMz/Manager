@@ -1,4 +1,4 @@
-﻿namespace Manager.Domain.Queries.Consultas.Categorias
+﻿namespace Manager.Domain.Queries.DTOs
 {
     public class CategoriaDTO
     {

@@ -1,5 +1,4 @@
-﻿using Manager.Domain.Entidades;
-using Manager.Domain.Queries.Consultas.Categorias;
+﻿using Manager.Domain.Queries.DTOs;
 
 namespace Manager.Domain.Queries.Interfaces
 {

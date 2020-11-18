@@ -1,6 +1,6 @@
 ﻿using Manager.Domain.Entidades;
 using Manager.Domain.Interfaces.Repositorios;
-using Manager.Domain.Queries.Consultas.Categorias;
+using Manager.Domain.Queries.DTOs;
 using Manager.Domain.Queries.Interfaces;
 using Manager.Infra.Data.Context;
 using System.Collections.Generic;
