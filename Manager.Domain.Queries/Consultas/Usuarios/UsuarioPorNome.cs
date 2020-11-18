@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using MediatR;
 
 namespace Manager.Domain.Queries.Consultas.Usuarios
 {
-    class UsuarioPorNome
+    public class UsuarioPorNome : IRequest<ResponseQueries>
     {
+        public string Nome { get; set; }
     }
 }

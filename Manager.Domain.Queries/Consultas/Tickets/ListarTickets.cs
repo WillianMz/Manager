@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using MediatR;
 
 namespace Manager.Domain.Queries.Consultas.Tickets
 {
-    class ListarTickets
+    public class ListarTickets : IRequest<ResponseQueries>
     {
     }
 }

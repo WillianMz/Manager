@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using MediatR;
 
 namespace Manager.Domain.Queries.Consultas.Tickets
 {
-    class TicketPorNome
+    public class TicketPorNome : IRequest<ResponseQueries>
     {
+        public string Nome { get; set; }
     }
 }

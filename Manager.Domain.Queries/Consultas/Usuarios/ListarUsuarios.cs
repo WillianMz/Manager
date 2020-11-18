@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using MediatR;
 
 namespace Manager.Domain.Queries.Consultas.Usuarios
 {
-    class ListarUsuarios
+    public class ListarUsuarios : IRequest<ResponseQueries>
     {
     }
 }
