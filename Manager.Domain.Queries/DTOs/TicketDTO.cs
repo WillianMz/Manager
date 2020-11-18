@@ -1,4 +1,6 @@
-﻿namespace Manager.Domain.Queries.DTOs
+﻿using System.Collections.Generic;
+
+namespace Manager.Domain.Queries.DTOs
 {
     public class TicketDTO
     {
@@ -18,5 +20,8 @@
         public string Categoria { get; set; }
         public string UsuarioFechamento { get; set; }
         public string UsuarioCancelamento { get; set; }
+
+        public List<NotaDTO> Notas { get; set; }
+        public List<AnexoDTO> Anexos { get; set; }
     }
 }

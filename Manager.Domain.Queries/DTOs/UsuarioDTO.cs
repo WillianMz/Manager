@@ -1,4 +1,6 @@
-﻿namespace Manager.Domain.Queries.DTOs
+﻿using System.Collections.Generic;
+
+namespace Manager.Domain.Queries.DTOs
 {
     public class UsuarioDTO
     {
@@ -9,5 +11,8 @@
         public string Email { get; set; }
         public bool Ativo { get; set; }
         public string Tipo { get; set; }
+
+        public List<TicketDTO> Tickets { get; set; }
+        public List<ProjetoDTO> Projetos { get; set; }
     }
 }

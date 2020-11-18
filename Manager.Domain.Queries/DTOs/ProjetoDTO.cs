@@ -10,5 +10,6 @@ namespace Manager.Domain.Queries.DTOs
 
         public List<DocumentoDTO> Documentos { get; set; }
         public List<ReleaseDTO> Releases { get; set; }
+        public List<ProjetoUsuarioDTO> Equipe { get; set; }
     }
 }
