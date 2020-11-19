@@ -1,5 +1,6 @@
 ﻿using Manager.Domain.Core.Comandos.Projetos;
 using Manager.Domain.Interfaces;
+using Manager.Domain.Queries.Consultas.Projetos;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +18,58 @@ namespace Manager.API.Controllers
         {
             _mediator = mediator;
         }
+
+
+        [AllowAnonymous]//para testes
+        [HttpGet]
+        [Route("api/Projetos/Listar")]
+        public async Task<IActionResult> Listar()
+        {
+            try
+            {
+                var request = new ListarProjetos();
+                var response = await _mediator.Send(request, CancellationToken.None);
+                return await ResponseQuerieAsync(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [AllowAnonymous]//para testes
+        [HttpGet]
+        [Route("api/Projetos/Nome")]
+        public async Task<IActionResult> ProcurarPorNome([FromQuery] ProjetosPorNome request)
+        {
+            try
+            {
+                var response = await _mediator.Send(request, CancellationToken.None);
+                return await ResponseQuerieAsync(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [AllowAnonymous]//para testes
+        [HttpGet]
+        [Route("api/Projetos/ID")]
+        public async Task<IActionResult> ProcurarPorID([FromQuery] ProjetosPorID request)
+        {
+            try
+            {
+                var response = await _mediator.Send(request, CancellationToken.None);
+                return await ResponseQuerieAsync(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
         [AllowAnonymous]
         [HttpPost]

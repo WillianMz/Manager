@@ -42,6 +42,9 @@ namespace Manager.API
 
             //consultas
             services.AddTransient<IConsultaCategoria, RepositorioCategoria>();
+            services.AddTransient<IConsultaProjeto, RepositorioProjeto>();
+            services.AddTransient<IConsultaTicket, RepositorioTicket>();
+            services.AddTransient<IConsultaUsuario, RepositorioUsuario>();
 
             services.AddTransient<IServicoEmail, ServicoEmail>();
         }
