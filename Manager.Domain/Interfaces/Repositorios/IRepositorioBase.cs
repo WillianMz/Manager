@@ -11,10 +11,5 @@ namespace Manager.Domain.Interfaces.Repositorios
         void RemoverLista(IEnumerable<TEntidade> entidades);
         bool Existe(TEntidade entidade);
         TEntidade CarregarObjetoPeloID(int id);
-
-        IList<TEntidade> ListarTodos();
-        IList<TEntidade> ListarPorNome(string nome);
-        IList<TEntidade> ListarNomeEmOrdemCrescente();
-        IList<TEntidade> ListarNomeEmOrdemDecrescente();
     }
 }

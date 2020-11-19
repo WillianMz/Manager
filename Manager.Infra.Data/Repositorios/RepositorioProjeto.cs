@@ -1,12 +1,14 @@
 ﻿using Manager.Domain.Entidades;
 using Manager.Domain.Interfaces.Repositorios;
+using Manager.Domain.Queries.DTOs;
+using Manager.Domain.Queries.Interfaces;
 using Manager.Infra.Data.Context;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Manager.Infra.Data.Repositorios
 {
-    public class RepositorioProjeto : IRepositorioProjeto
+    public class RepositorioProjeto : IRepositorioProjeto, IConsultaProjeto
     {
         private readonly ManagerContext context;
 
@@ -42,30 +44,6 @@ namespace Manager.Infra.Data.Repositorios
             return existe;
         }
 
-        public IList<Projeto> ListarNomeEmOrdemCrescente()
-        {
-            var projetos = context.Projetos.OrderBy(p => p.Descricao).ToList();
-            return projetos;
-        }
-
-        public IList<Projeto> ListarNomeEmOrdemDecrescente()
-        {
-            var projetos = context.Projetos.OrderByDescending(p => p.Descricao).ToList();
-            return projetos;
-        }
-
-        public IList<Projeto> ListarPorNome(string nome)
-        {
-            var projetos = context.Projetos.OrderBy(p => p.Descricao).ToList();
-            return projetos;
-        }
-
-        public IList<Projeto> ListarTodos()
-        {
-            var projetos = context.Projetos.ToList();
-            return projetos;
-        }
-
         public void Remover(Projeto entidade)
         {
             context.Projetos.Remove(entidade);
@@ -75,5 +53,45 @@ namespace Manager.Infra.Data.Repositorios
         {
             context.Projetos.RemoveRange(entidades);
         }
+
+
+        #region CONSULTAS
+       
+        public List<ProjetoDTO> Listar()
+        {
+            var projetos = context.Projetos.OrderBy(p => p.Id).ToList();
+            List<ProjetoDTO> projetoDTOs = new List<ProjetoDTO>();
+
+            foreach (var p in projetos)
+            {
+                projetoDTOs.Add(new ProjetoDTO() { Id = p.Id, Nome = p.Nome, Descricao = p.Descricao });
+            }
+
+            return projetoDTOs;
+        }
+
+        public List<ProjetoDTO> ListarPorNome(string nome)
+        {
+            var projetos = context.Projetos.Where(p => p.Nome.Contains(nome)).ToList();
+            projetos.OrderBy(p => p.Nome);
+            List<ProjetoDTO> projetoDTOs = new List<ProjetoDTO>();
+
+            foreach (var p in projetos)
+            {
+                projetoDTOs.Add(new ProjetoDTO() { Id = p.Id, Nome = p.Nome, Descricao = p.Descricao });
+            }
+
+            return projetoDTOs;
+        }
+
+        public ProjetoDTO ProcurarPorID(int id)
+        {
+            var projeto = context.Projetos.FirstOrDefault(p => p.Id == id);
+            ProjetoDTO DTO = new ProjetoDTO() { Id = projeto.Id, Descricao = projeto.Descricao, Nome = projeto.Nome };
+            return DTO;
+        }
+
+        #endregion
+
     }
 }

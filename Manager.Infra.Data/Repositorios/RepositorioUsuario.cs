@@ -1,12 +1,14 @@
 ﻿using Manager.Domain.Entidades;
 using Manager.Domain.Interfaces.Repositorios;
+using Manager.Domain.Queries.DTOs;
+using Manager.Domain.Queries.Interfaces;
 using Manager.Infra.Data.Context;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Manager.Infra.Data.Repositorios
 {
-    public class RepositorioUsuario : IRepositorioUsuario
+    public class RepositorioUsuario : IRepositorioUsuario, IConsultaUsuario
     {
         private readonly ManagerContext context;
 
@@ -54,48 +56,6 @@ namespace Manager.Infra.Data.Repositorios
             return (Usuario)user;
         }
 
-        public IList<Usuario> ListarNomeEmOrdemCrescente()
-        {
-            List<Usuario> usuarios = context.Usuarios.OrderBy(u => u.Id).ToList();
-            return usuarios;
-        }
-
-        public IList<Usuario> ListarNomeEmOrdemDecrescente()
-        {
-            List<Usuario> usuarios = context.Usuarios.OrderByDescending(u => u.Id).ToList();
-            return usuarios;
-        }
-
-        public IList<Usuario> ListarPorNome(string nome)
-        {
-            List<Usuario> usuarios = context.Usuarios.OrderBy(u => u.Nome).ToList();
-            return usuarios;
-        }
-
-        //public IQueryable<Usuario> ListarNomeEmOrdemCrescente()
-        //{
-        //    var usuarios = context.Usuarios.OrderBy(u => u.Nome);
-        //    return usuarios;
-        //}
-
-        //public IQueryable<Usuario> ListarNomeEmOrdemDecrescente()
-        //{
-        //    var usuarios = context.Usuarios.OrderByDescending(u => u.Nome);
-        //    return usuarios;
-        //}
-
-        //public IQueryable<Usuario> ListarPorNome(string nome)
-        //{
-        //    var usuariosPorNome = context.Usuarios.Where(u => u.Nome == nome);
-        //    return usuariosPorNome;
-        //}
-
-        public IList<Usuario> ListarTodos()
-        {
-            var usuarios = context.Usuarios.ToList();
-            return usuarios;
-        }
-
         public Usuario ObterUsuarioPorEmail(string email)
         {
             Usuario usuario = context.Usuarios.FirstOrDefault(u => u.Email == email);
@@ -112,5 +72,63 @@ namespace Manager.Infra.Data.Repositorios
             context.Usuarios.RemoveRange(entidades);
         }
 
+
+        #region CONSULTAS
+
+        public List<UsuarioDTO> Listar()
+        {
+            var usuarios = context.Usuarios.OrderBy(u => u.Id).ToList();
+            List<UsuarioDTO> usuarioDTOs = new List<UsuarioDTO>();
+
+            foreach (var u in usuarios)
+            {
+                UsuarioDTO usuarioDTO = new UsuarioDTO()
+                {
+                    Id = u.Id,
+                    Nome = u.Nome,
+                    Email = u.Email
+                };
+
+                usuarioDTOs.Add(usuarioDTO);
+            }
+
+            return usuarioDTOs;
+        }
+
+        public List<UsuarioDTO> ListarPorNome(string nome)
+        {
+            var usuarios = context.Usuarios.Where(u => u.Nome.Contains(nome)).ToList();
+            usuarios.OrderBy(u => u.Nome);
+            List<UsuarioDTO> usuarioDTOs = new List<UsuarioDTO>();
+
+            foreach (var u in usuarios)
+            {
+                UsuarioDTO usuarioDTO = new UsuarioDTO()
+                {
+                    Id = u.Id,
+                    Nome = u.Nome,
+                    Email = u.Email
+                };
+
+                usuarioDTOs.Add(usuarioDTO);
+            }
+
+            return usuarioDTOs;
+        }
+
+        public UsuarioDTO ProcurarPorID(int id)
+        {
+            var usuario = context.Usuarios.FirstOrDefault(u => u.Id == id);
+            UsuarioDTO usuarioDTO = new UsuarioDTO()
+            {
+                Id = usuario.Id,
+                Nome = usuario.Nome,
+                Email = usuario.Email
+            };
+
+            return usuarioDTO;
+        }
+
+        #endregion
     }
 }
