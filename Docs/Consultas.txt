@@ -3,20 +3,20 @@ CATEGORIAS
 	-> Listar todos os tickets da categoria
 	
 TICKETS
-	->Pesquisar por nome
+	->Pesquisar por nome - ok
 	->Listar por categoria
 	->Listar anexos do ticket
 	->Listar notas do ticket
 	
 USUARIOS
-	->Pesquisar por nome
+	->Pesquisar por nome - ok
 	->Listar tickets do usuario
 	->Listar notas do usuário	
 	->Listar projetos do usuario
 	->Listar releases do usuario
 	
 PROJETOS
-	->Pesquisar por nome
+	->Pesquisar por nome - ok
 	->Listar documentos do projeto
 	->Listar releases do projeto
 	->Listar usuarios do projeto

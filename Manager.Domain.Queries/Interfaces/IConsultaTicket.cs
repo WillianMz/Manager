@@ -4,5 +4,6 @@ namespace Manager.Domain.Queries.Interfaces
 {
     public interface IConsultaTicket : IConsultaBase<TicketDTO>
     {
+        TicketDTO ConsultarDetalhes(int id);
     }
 }

@@ -3,6 +3,7 @@ using Manager.Domain.Interfaces.Repositorios;
 using Manager.Domain.Queries.DTOs;
 using Manager.Domain.Queries.Interfaces;
 using Manager.Infra.Data.Context;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -71,7 +72,9 @@ namespace Manager.Infra.Data.Repositorios
                     DataAbertura = Convert.ToString(t.DataAbertura),
                     Categoria = t.Categoria.Nome,
                     Prioridade = t.PrioridadeAtual.ToString(),
-                    Criador = t.Criador.Nome
+                    StatusAtual = t.StatusAtual.ToString(),
+                    Criador = t.Criador.Nome,
+                    Projeto = t.Projeto.Nome
                 };
 
                 ticketDTOs.Add(DTO);
@@ -118,6 +121,39 @@ namespace Manager.Infra.Data.Repositorios
                 Prioridade = ticket.PrioridadeAtual.ToString(),
                 Criador = ticket.Criador.Nome
             };
+
+            return ticketDTO;
+        }
+
+        public TicketDTO ConsultarDetalhes(int id)
+        {
+            var ticket = context.Tickets.FirstOrDefault(t => t.Id == id);
+
+            TicketDTO ticketDTO = new TicketDTO()
+            {
+                Id = ticket.Id,
+                DataAbertura = Convert.ToString(ticket.DataAbertura),
+                Titulo = ticket.Titulo,
+                Descricao = ticket.Descricao,
+                StatusAtual = ticket.StatusAtual.ToString(),
+                Prioridade = ticket.PrioridadeAtual.ToString(),
+                DataFechamento = ticket.DataFechamento.ToString(),
+                Tempo = ticket.Tempo.ToString(),
+                DataCancelamento = ticket.DataCancelamento.ToString(),
+                MotivoCancelamento = ticket.MotivoCancelamento,
+                Criador = ticket.Criador.Nome,
+                Projeto = ticket.Projeto.Nome,
+                Categoria = ticket.Categoria.Nome,
+                UsuarioFechamento = ticket.UsuarioFechamento.Nome,
+                UsuarioCancelamento = ticket.UsuarioCancelamento.Nome
+            };
+   
+
+
+            NotaDTO notaDTO = new NotaDTO();
+            AnexoDTO anexoDTO = new AnexoDTO();
+
+            
 
             return ticketDTO;
         }
