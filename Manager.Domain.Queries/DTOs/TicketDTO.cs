@@ -21,7 +21,7 @@ namespace Manager.Domain.Queries.DTOs
         public string UsuarioFechamento { get; set; }
         public string UsuarioCancelamento { get; set; }
 
-        public List<NotaDTO> Notas { get; set; }
-        public List<AnexoDTO> Anexos { get; set; }
+        public List<NotaDTO> Notas { get; set; } = new List<NotaDTO>();
+        public List<AnexoDTO> Anexos { get; set; } = new List<AnexoDTO>();
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Manager.Domain.Interfaces.Repositorios
 {
@@ -11,5 +12,6 @@ namespace Manager.Domain.Interfaces.Repositorios
         void RemoverLista(IEnumerable<TEntidade> entidades);
         bool Existe(TEntidade entidade);
         TEntidade CarregarObjetoPeloID(int id);
+       
     }
 }

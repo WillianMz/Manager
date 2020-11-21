@@ -19,6 +19,8 @@ namespace Manager.API.Controllers
             _mediator = mediator;
         }
 
+        #region CONSULTAS
+
         [AllowAnonymous]//para testes
         [HttpGet]
         [Route("api/Tickets/Listar")]
@@ -69,6 +71,25 @@ namespace Manager.API.Controllers
             }
         }
 
+        [AllowAnonymous]//para testes
+        [HttpGet]
+        [Route("api/Tickets/Detalhes/ID")]
+        public async Task<IActionResult> DetalhesDoTicket([FromQuery] DetalhesDoTicket request)
+        {
+            try
+            {
+                var response = await _mediator.Send(request, CancellationToken.None);
+                return await ResponseQuerieAsync(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        #endregion
+
+        #region TICKETS
 
         [AllowAnonymous]
         [HttpPost]
@@ -134,6 +155,97 @@ namespace Manager.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        #endregion
+
+        #region NOTAS
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("api/Ticket/Nota/Novo")]
+        public async Task<IActionResult> NovaNota([FromBody] AdicionarNota request)
+        {
+            try
+            {
+                var response = await _mediator.Send(request, CancellationToken.None);
+                return await ResponseAsync(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpPut]
+        [Route("api/Ticket/Nota/Editar/ID")]
+        public async Task<IActionResult> EditarNota([FromBody] EditarNota request)
+        {
+            try
+            {
+                var response = await _mediator.Send(request, CancellationToken.None);
+                return await ResponseAsync(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpDelete]
+        [Route("api/Ticket/Nota/Excluir")]
+        public async Task<IActionResult> ExcluirNota([FromBody] ExcluirNota request)
+        {
+            try
+            {
+                var response = await _mediator.Send(request, CancellationToken.None);
+                return await ResponseAsync(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        #endregion
+
+        #region ANEXOS
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("api/Ticket/Anexo/Novo")]
+        public async Task<IActionResult> NovoAnexo([FromBody] AdicionarAnexo request)
+        {
+            try
+            {
+                var response = await _mediator.Send(request, CancellationToken.None);
+                return await ResponseAsync(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpDelete]
+        [Route("api/Ticket/Anexo/Excluir/ID")]
+        public async Task<IActionResult> ExcluirAnexo([FromBody] ExcluirAnexo request)
+        {
+            try
+            {
+                var response = await _mediator.Send(request, CancellationToken.None);
+                return await ResponseAsync(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        #endregion
 
     }
 }

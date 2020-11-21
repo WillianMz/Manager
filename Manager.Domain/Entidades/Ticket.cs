@@ -135,7 +135,8 @@ namespace Manager.Domain.Entidades
 
         public void AdicionarNota(Nota nota)
         {
-            if(nota.Valid)
+            List<Nota> _notas = new List<Nota>();
+            if (nota.Valid)
                 _notas.Add(nota);
             else
                 AddNotification("Nota", "A nota adicionada é invalida");
@@ -143,6 +144,7 @@ namespace Manager.Domain.Entidades
 
         public void AdicionarAnexo(Anexo anexo)
         {
+            List<Anexo> _anexos = new List<Anexo>();
             if (anexo.Valid)
                 _anexos.Add(anexo);
             else

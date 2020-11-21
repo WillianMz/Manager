@@ -29,8 +29,8 @@ namespace Manager.Domain.Core.Handlers
             if (request == null)
                 return new Response(false, "Informe os dados da nota", null);
 
-            Usuario usuario = _repositorioUsuario.CarregarObjetoPeloID(request.UsuarioId);
-            Ticket ticket = _repositorioTicket.CarregarObjetoPeloID(request.TicketId);
+            Usuario usuario = await _repositorioUsuario.GetByID(request.UsuarioId);
+            Ticket ticket = await _repositorioTicket.GetByID(request.TicketId);
 
             AddNotifications(new Contract()
                 .Requires()

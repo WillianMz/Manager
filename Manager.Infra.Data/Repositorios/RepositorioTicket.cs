@@ -3,10 +3,10 @@ using Manager.Domain.Interfaces.Repositorios;
 using Manager.Domain.Queries.DTOs;
 using Manager.Domain.Queries.Interfaces;
 using Manager.Infra.Data.Context;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Manager.Infra.Data.Repositorios
 {
@@ -111,6 +111,10 @@ namespace Manager.Infra.Data.Repositorios
         public TicketDTO ProcurarPorID(int id)
         {
             var ticket = context.Tickets.FirstOrDefault(t => t.Id == id);
+
+            if (ticket == null)
+                return null;
+
             TicketDTO ticketDTO = new TicketDTO()
             {
                 Id = ticket.Id,
@@ -129,6 +133,9 @@ namespace Manager.Infra.Data.Repositorios
         {
             var ticket = context.Tickets.FirstOrDefault(t => t.Id == id);
 
+            if (ticket == null)
+                return null;
+
             TicketDTO ticketDTO = new TicketDTO()
             {
                 Id = ticket.Id,
@@ -144,18 +151,42 @@ namespace Manager.Infra.Data.Repositorios
                 Criador = ticket.Criador.Nome,
                 Projeto = ticket.Projeto.Nome,
                 Categoria = ticket.Categoria.Nome,
-                UsuarioFechamento = ticket.UsuarioFechamento.Nome,
-                UsuarioCancelamento = ticket.UsuarioCancelamento.Nome
+                //se o ticket estiver aberto não possui usuario que fechou ou cancelou           
+                UsuarioFechamento = ticket.UsuarioFechamento == null ? "null" : ticket.UsuarioFechamento.Nome,
+                UsuarioCancelamento = ticket.UsuarioCancelamento == null ? "null" : ticket.UsuarioCancelamento.Nome
             };
-   
 
+            foreach (var n in ticket.Notas)
+            {
+                NotaDTO notaDTO = new NotaDTO
+                {
+                    Id = n.Id,
+                    Titulo = n.Titulo,
+                    Descricao = n.Descricao,
+                    DataCriacao = null,
+                    Usuario = n.Usuario.Nome
+                };
+                ticketDTO.Notas.Add(notaDTO);
+            }
 
-            NotaDTO notaDTO = new NotaDTO();
-            AnexoDTO anexoDTO = new AnexoDTO();
-
-            
+            foreach (var a in ticket.Anexos)
+            {
+                AnexoDTO anexoDTO = new AnexoDTO
+                {
+                    Id = a.Id,
+                    Nome = a.Nome,
+                    URL = a.URL
+                };
+                ticketDTO.Anexos.Add(anexoDTO);                
+            }
 
             return ticketDTO;
+        }
+
+        public async Task<Ticket> GetByID(int id)
+        {
+            Ticket ticket = context.Tickets.FirstOrDefault(t => t.Id == id);
+            return await Task.FromResult(ticket);
         }
 
         #endregion

@@ -1,7 +1,6 @@
 ﻿using Manager.Domain.Queries.Consultas.Tickets;
 using Manager.Domain.Queries.Interfaces;
 using MediatR;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -9,7 +8,8 @@ namespace Manager.Domain.Queries.Handles
 {
     public class ConsultaTicketHandler : IRequestHandler<ListarTickets, ResponseQueries>,
                                          IRequestHandler<TicketPorID, ResponseQueries>,
-                                         IRequestHandler<TicketPorNome, ResponseQueries>
+                                         IRequestHandler<TicketPorNome, ResponseQueries>,
+                                         IRequestHandler<DetalhesDoTicket, ResponseQueries>
     {
         private readonly IConsultaTicket _consultaTicket;
 
@@ -33,7 +33,7 @@ namespace Manager.Domain.Queries.Handles
             if (request == null)
                 return new ResponseQueries(false, "Informe o ID do ticket", null);
 
-            var ticket = _consultaTicket.ProcurarPorID(request.Id);
+            var ticket = _consultaTicket.ProcurarPorID(request.Id);            
 
             if (ticket == null)
                 return new ResponseQueries(false, "Nenhum ticket encontrado com o ID: " + request.Id, null);
@@ -52,6 +52,19 @@ namespace Manager.Domain.Queries.Handles
                 return new ResponseQueries(false, "Nenhum ticket encontrado", null);
 
             return await ResponseHandlerBase.RetornoDaConsulta(true, "Tickets", tickets);
+        }
+
+        public async Task<ResponseQueries> Handle(DetalhesDoTicket request, CancellationToken cancellationToken)
+        {
+            if (request == null)
+                return new ResponseQueries(false, "Informe o ID do ticket", null);
+
+            var ticket = _consultaTicket.ConsultarDetalhes(request.Id);
+
+            if (ticket == null)
+                return new ResponseQueries(false, "Nenhum ticket encontrado com o ID: " + request.Id, null);
+
+            return await ResponseHandlerBase.RetornoDaConsulta(true, "Ticket", ticket);
         }
     }
 }

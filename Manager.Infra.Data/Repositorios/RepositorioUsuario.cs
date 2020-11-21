@@ -5,6 +5,7 @@ using Manager.Domain.Queries.Interfaces;
 using Manager.Infra.Data.Context;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Manager.Infra.Data.Repositorios
 {
@@ -128,6 +129,13 @@ namespace Manager.Infra.Data.Repositorios
 
             return usuarioDTO;
         }
+
+        public async Task<Usuario> GetByID(int id)
+        {
+            Usuario usuario = context.Usuarios.FirstOrDefault(u => u.Id == id);
+            return await Task.FromResult(usuario);
+        }
+
 
         #endregion
     }
