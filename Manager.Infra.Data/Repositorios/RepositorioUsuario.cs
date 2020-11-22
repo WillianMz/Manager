@@ -28,10 +28,10 @@ namespace Manager.Infra.Data.Repositorios
             context.Usuarios.AddRange(entidades);
         }
 
-        public Usuario CarregarObjetoPeloID(int id)
+        public async Task<Usuario> CarregarObjetoPeloID(int id)
         {
             Usuario usuario = context.Usuarios.FirstOrDefault(u => u.Id == id);
-            return usuario;
+            return await Task.FromResult(usuario);
         }
 
         public void Editar(Usuario entidade)
@@ -39,28 +39,28 @@ namespace Manager.Infra.Data.Repositorios
             context.Usuarios.Update(entidade);
         }
 
-        public bool Existe(Usuario entidade)
+        public async Task<bool> Existe(Usuario entidade)
         {
             var existe = context.Usuarios.Any(u => u.Email == entidade.Email);
-            return existe;
+            return await Task.FromResult(existe);
         }
 
-        public bool ExisteEmail(string email)
+        public async Task<bool> ExisteEmail(string email)
         {
             var existe = context.Usuarios.Any(u => u.Email == email);
-            return existe;
+            return await Task.FromResult(existe);
         }
 
-        public Usuario ExisteUsuario(string email, string senha)
+        public async Task<Usuario> ExisteUsuario(string email, string senha)
         {
-            IQueryable<Usuario> user = context.Usuarios.Where(u => u.Email == email && u.Senha == senha);
-            return (Usuario)user;
+            var usuario = context.Usuarios.FirstOrDefault(u => u.Email == email && u.Senha == senha);
+            return await Task.FromResult(usuario);
         }
 
-        public Usuario ObterUsuarioPorEmail(string email)
+        public async Task<Usuario> ObterUsuarioPorEmail(string email)
         {
             Usuario usuario = context.Usuarios.FirstOrDefault(u => u.Email == email);
-            return usuario;
+            return await Task.FromResult(usuario);
         }
 
         public void Remover(Usuario entidade)
@@ -76,7 +76,7 @@ namespace Manager.Infra.Data.Repositorios
 
         #region CONSULTAS
 
-        public List<UsuarioDTO> Listar()
+        public async Task<List<UsuarioDTO>> Listar()
         {
             var usuarios = context.Usuarios.OrderBy(u => u.Id).ToList();
             List<UsuarioDTO> usuarioDTOs = new List<UsuarioDTO>();
@@ -93,10 +93,10 @@ namespace Manager.Infra.Data.Repositorios
                 usuarioDTOs.Add(usuarioDTO);
             }
 
-            return usuarioDTOs;
+            return await Task.FromResult(usuarioDTOs);
         }
 
-        public List<UsuarioDTO> ListarPorNome(string nome)
+        public async Task<List<UsuarioDTO>> ListarPorNome(string nome)
         {
             var usuarios = context.Usuarios.Where(u => u.Nome.Contains(nome)).ToList();
             usuarios.OrderBy(u => u.Nome);
@@ -114,10 +114,10 @@ namespace Manager.Infra.Data.Repositorios
                 usuarioDTOs.Add(usuarioDTO);
             }
 
-            return usuarioDTOs;
+            return await Task.FromResult(usuarioDTOs);
         }
 
-        public UsuarioDTO ProcurarPorID(int id)
+        public async Task<UsuarioDTO> ProcurarPorID(int id)
         {
             var usuario = context.Usuarios.FirstOrDefault(u => u.Id == id);
             UsuarioDTO usuarioDTO = new UsuarioDTO()
@@ -127,15 +127,8 @@ namespace Manager.Infra.Data.Repositorios
                 Email = usuario.Email
             };
 
-            return usuarioDTO;
+            return await Task.FromResult(usuarioDTO);
         }
-
-        public async Task<Usuario> GetByID(int id)
-        {
-            Usuario usuario = context.Usuarios.FirstOrDefault(u => u.Id == id);
-            return await Task.FromResult(usuario);
-        }
-
 
         #endregion
     }

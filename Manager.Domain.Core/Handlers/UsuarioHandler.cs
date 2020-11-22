@@ -1,5 +1,4 @@
 ﻿using Flunt.Notifications;
-using Manager.Domain.Core.Comandos;
 using Manager.Domain.Core.Comandos.Usuarios;
 using Manager.Domain.Core.Eventos;
 using Manager.Domain.Entidades;
@@ -38,7 +37,7 @@ namespace Manager.Domain.Core.Handlers
                 return new Response(false, "Informe os dados do usuário", request);
 
             Usuario usuario = new Usuario(request.Nome, request.Login, request.Senha, request.Email);
-            var emailExistente = _repositorioUsuario.ExisteEmail(request.Email);
+            var emailExistente = await _repositorioUsuario.ExisteEmail(request.Email);
 
             if (emailExistente == true)
                 return new Response(false, "Já existe algum usuário com este email", request.Email);
@@ -60,7 +59,7 @@ namespace Manager.Domain.Core.Handlers
             if (request == null)
                 return new Response(false, "Informe os dados do usuário", request);
 
-            Usuario usuario = _repositorioUsuario.CarregarObjetoPeloID(request.UsuarioId);
+            Usuario usuario = await _repositorioUsuario.CarregarObjetoPeloID(request.UsuarioId);
 
             if (usuario == null)
                 return new Response(false, "Usuário não encontrado", usuario);
@@ -80,7 +79,7 @@ namespace Manager.Domain.Core.Handlers
             if (request == null)
                 return new Response(false, "Identifique o usuário", request);
 
-            Usuario usuario = _repositorioUsuario.CarregarObjetoPeloID(request.UsuarioId);
+            Usuario usuario = await _repositorioUsuario.CarregarObjetoPeloID(request.UsuarioId);
 
             if (usuario == null)
                 return new Response(false, "Usuário não encontrado", usuario);
@@ -95,7 +94,7 @@ namespace Manager.Domain.Core.Handlers
             if (request == null)
                 return new Response(false, "Informe os dados", request);
 
-            Usuario usuario = _repositorioUsuario.CarregarObjetoPeloID(request.UsuarioId);
+            Usuario usuario = await _repositorioUsuario.CarregarObjetoPeloID(request.UsuarioId);
 
             if (usuario == null)
                 return new Response(false, "Usuário não encontrado", usuario);
@@ -116,7 +115,7 @@ namespace Manager.Domain.Core.Handlers
             if (request == null)
                 return new Response(false, "Identifique o usuário", request);
 
-            Usuario usuario = _repositorioUsuario.CarregarObjetoPeloID(request.UsuarioId);
+            Usuario usuario = await _repositorioUsuario.CarregarObjetoPeloID(request.UsuarioId);
 
             if (usuario == null)
                 return new Response(false, "Usuário não encontrado", usuario);
@@ -136,7 +135,7 @@ namespace Manager.Domain.Core.Handlers
             if (request == null)
                 return new Response(false, "Identifique o usuário", request);
 
-            Usuario usuario = _repositorioUsuario.CarregarObjetoPeloID(request.UsuarioId);
+            Usuario usuario = await _repositorioUsuario.CarregarObjetoPeloID(request.UsuarioId);
 
             if (usuario == null)
                 return new Response(false, "Usuário não encontrado", usuario);
@@ -180,7 +179,7 @@ namespace Manager.Domain.Core.Handlers
             if (request == null)
                 return new Response(false, "Identifique o usuário", null);
 
-            Usuario usuario = _repositorioUsuario.ObterUsuarioPorEmail(request.Email);
+            Usuario usuario = await _repositorioUsuario.ObterUsuarioPorEmail(request.Email);
             //var cod = usuario.UsuarioAtivacoes.FirstOrDefault(a => a.CodigoAtivacao == request.CodigoDeAtivacao);
 
             if (usuario == null)

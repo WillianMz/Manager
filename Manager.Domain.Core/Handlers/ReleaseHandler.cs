@@ -1,5 +1,4 @@
-﻿using Manager.Domain.Core.Comandos;
-using Manager.Domain.Core.Comandos.Projetos;
+﻿using Manager.Domain.Core.Comandos.Projetos;
 using Manager.Domain.Entidades;
 using Manager.Domain.Interfaces.Repositorios;
 using MediatR;
@@ -15,11 +14,13 @@ namespace Manager.Domain.Core.Handlers
     {
         private readonly IRepositorioProjeto _repositorioProjeto;
         private readonly IRepositorioUsuario _repositorioUsuario;
+        private readonly IRepositorioRelease _repositorioRelease;
 
-        public ReleaseHandler(IRepositorioProjeto repositorioProjeto, IRepositorioUsuario repositorioUsuario)
+        public ReleaseHandler(IRepositorioProjeto repositorioProjeto, IRepositorioUsuario repositorioUsuario, IRepositorioRelease repositorioRelease)
         {
             _repositorioProjeto = repositorioProjeto;
             _repositorioUsuario = repositorioUsuario;
+            _repositorioRelease = repositorioRelease;
         }
 
         public async Task<Response> Handle(AdicionarRelease request, CancellationToken cancellationToken)
@@ -27,27 +28,25 @@ namespace Manager.Domain.Core.Handlers
             if (request == null)
                 return new Response(false, "Informe os dados da release", request);
 
-            Usuario usuario = _repositorioUsuario.CarregarObjetoPeloID(request.UsuarioId);
+            Usuario usuario = await _repositorioUsuario.CarregarObjetoPeloID(request.UsuarioId);
+            Projeto projeto = await _repositorioProjeto.CarregarObjetoPeloID(request.ProjetoId);
+            Release release = new Release(request.Nome, request.Descricao, request.Versao, projeto, usuario, request.DataLiberacao);
+            //projeto.AdicionarRelease(release);
 
-            if(usuario == null)
+            if (usuario == null)
                 return new Response(false, "Usuário não encontrado", request);
-
-            Projeto projeto = _repositorioProjeto.CarregarObjetoPeloID(request.ProjetoId);
 
             if (projeto == null)
                 return new Response(false, "Projeto não encontrado", request);
 
-            Release release = new Release(request.Nome, request.Descricao, request.Versao, projeto, usuario, request.DataLiberacao);
-            projeto.AdicionarRelease(release);
+            if (release.Invalid)
+                return new Response(false, "Release invalida", release.Notifications);
 
-            if (projeto.Invalid)
-                return new Response(false, "Projeto invalido", projeto.Notifications);
-
-            _repositorioProjeto.Editar(projeto);
+            //_repositorioProjeto.Editar(projeto);
+            _repositorioRelease.Adicionar(release);
 
             var result = new Response(true, "Release adicionada com sucesso!", null);
             return await Task.FromResult(result);
-
         }
 
         public async Task<Response> Handle(EditarRelease request, CancellationToken cancellationToken)
@@ -55,13 +54,13 @@ namespace Manager.Domain.Core.Handlers
             if (request == null)
                 return new Response(false, "Informe os dados da release", request);
             
-            Usuario usuario = _repositorioUsuario.CarregarObjetoPeloID(request.UsuarioId);
+            Usuario usuario = await _repositorioUsuario.CarregarObjetoPeloID(request.UsuarioId);
+            Projeto projeto = await _repositorioProjeto.CarregarObjetoPeloID(request.ProjetoId);
+            //Release release = projeto.Releases.FirstOrDefault(r => r.Id == request.IdRelease);
+            Release release = await _repositorioRelease.CarregarObjetoPeloID(request.IdRelease);
 
             if (usuario == null)
                 return new Response(false, "Usuário não encontrado", request);
-
-            Projeto projeto = _repositorioProjeto.CarregarObjetoPeloID(request.ProjetoId);
-            Release release = projeto.Releases.FirstOrDefault(r => r.Id == request.IdRelease);
 
             if (projeto == null)
                 return new Response(false, "Projeto não encontrado", request);
@@ -71,7 +70,8 @@ namespace Manager.Domain.Core.Handlers
 
             release.Editar(request.Nome, request.Descricao, request.Versao, usuario, request.DataLiberacao);
 
-            _repositorioProjeto.Editar(projeto);
+            //_repositorioProjeto.Editar(projeto);
+            _repositorioRelease.Editar(release);
 
             var result = new Response(true, "Release alterada com sucesso!", null);
             return await Task.FromResult(result);
@@ -82,14 +82,16 @@ namespace Manager.Domain.Core.Handlers
             if (request == null)
                 return new Response(false, "Informe os dados da release", request);
 
-            Projeto projeto = _repositorioProjeto.CarregarObjetoPeloID(request.ProjetoId);
-            Release release = projeto.Releases.FirstOrDefault(r => r.Id == request.idRelease);
+            //projeto projeto = await _repositorioProjeto.CarregarObjetoPeloID(request.ProjetoId);
+            //Release release = projeto.Releases.FirstOrDefault(r => r.Id == request.idRelease);
+            Release release = await _repositorioRelease.CarregarObjetoPeloID(request.idRelease);
 
-            if (projeto == null)
-                return new Response(false, "Projeto não encontrado", request);
+            if (release == null)
+                return new Response(false, "Release não encontrada", request);
 
-            projeto.ExcluirRealease(release);
-            _repositorioProjeto.Editar(projeto);
+            //projeto.ExcluirRealease(release);
+            //_repositorioProjeto.Editar(projeto);
+            _repositorioRelease.Remover(release);
 
             var result = new Response(true, "Release excluída com sucesso!", null);
             return await Task.FromResult(result);

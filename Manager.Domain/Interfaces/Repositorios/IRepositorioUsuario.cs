@@ -5,9 +5,8 @@ namespace Manager.Domain.Interfaces.Repositorios
 {
     public interface IRepositorioUsuario : IRepositorioBase<Usuario>
     {
-        bool ExisteEmail(string email);
-        Usuario ExisteUsuario(string email, string senha);
-        Usuario ObterUsuarioPorEmail(string email);
-        Task<Usuario> GetByID(int id);
+        Task<bool> ExisteEmail(string email);
+        Task<Usuario> ExisteUsuario(string email, string senha);
+        Task<Usuario> ObterUsuarioPorEmail(string email);
     }
 }

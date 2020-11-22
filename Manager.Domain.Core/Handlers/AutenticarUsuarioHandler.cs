@@ -1,5 +1,4 @@
 ﻿using Flunt.Notifications;
-using Manager.Domain.Core.Comandos;
 using Manager.Domain.Core.Comandos.Usuarios;
 using Manager.Domain.Entidades;
 using Manager.Domain.Interfaces.Repositorios;
@@ -24,12 +23,12 @@ namespace Manager.Domain.Core.Handlers
             if (request == null)
                 return new Response(false, "Identifique-se", null);
 
-            var login = _repositorioUsuario.ExisteEmail(request.Email);
+            var login = await _repositorioUsuario.ExisteEmail(request.Email);
 
             if (login == false)
                 return new Response(false, "Usuário não encontrado", null);
             
-            Usuario usuario = _repositorioUsuario.ExisteUsuario(request.Email, request.Senha.CriptografarSenha());
+            Usuario usuario = await _repositorioUsuario.ExisteUsuario(request.Email, request.Senha.CriptografarSenha());
 
             if (usuario == null)
                 return new Response(false, "Usuário ou senha inválidos", null);            

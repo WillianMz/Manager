@@ -32,7 +32,7 @@ namespace Manager.Domain.Queries.Handles
             if (request == null)
                 return new ResponseQueries(false, "Informe o tipo de filtro para a pesquisa", null);
 
-            var categorias = _consultaCategoria.ListarPorNome(request.Nome);
+            var categorias = await _consultaCategoria.ListarPorNome(request.Nome);
 
             if (categorias.Count == 0)
                 return new ResponseQueries(false, "Nenhuma categoria encontrado com o filtro: " + request.Nome, null);

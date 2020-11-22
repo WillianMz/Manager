@@ -1,6 +1,5 @@
 ﻿using Flunt.Notifications;
 using Flunt.Validations;
-using Manager.Domain.Core.Comandos;
 using Manager.Domain.Core.Comandos.Tickets;
 using Manager.Domain.Entidades;
 using Manager.Domain.Enums;
@@ -39,9 +38,9 @@ namespace Manager.Domain.Core.Handlers
             if (request == null)
                 return new Response(false, "Informe todos os dados para criar um novo ticket", request);
 
-            Usuario criador = _repositorioUsuario.CarregarObjetoPeloID(request.CriadorId);
-            Projeto projeto = _repositorioProjeto.CarregarObjetoPeloID(request.ProjetoId);
-            Categoria categoria = _repositorioCategoria.CarregarObjetoPeloID(request.CategoriaId);
+            Usuario criador = await _repositorioUsuario.CarregarObjetoPeloID(request.CriadorId);
+            Projeto projeto = await _repositorioProjeto.CarregarObjetoPeloID(request.ProjetoId);
+            Categoria categoria = await _repositorioCategoria.CarregarObjetoPeloID(request.CategoriaId);
 
             #region VALIDACOES DE CRIADOR/PROJETO/CATEGORIA
 
@@ -95,9 +94,9 @@ namespace Manager.Domain.Core.Handlers
             if (request == null)
                 return new Response(false, "Informe os dados do ticket que deseja alterar", request);
 
-            Usuario usuario = _repositorioUsuario.CarregarObjetoPeloID(request.UsuarioId);
-            Categoria categoria = _repositorioCategoria.CarregarObjetoPeloID(request.CategoriaId);
-            Ticket ticket = _repositorioTicket.CarregarObjetoPeloID(request.IdTicket);
+            Usuario usuario = await _repositorioUsuario.CarregarObjetoPeloID(request.UsuarioId);
+            Categoria categoria = await _repositorioCategoria.CarregarObjetoPeloID(request.CategoriaId);
+            Ticket ticket = await _repositorioTicket.CarregarObjetoPeloID(request.IdTicket);
 
             AddNotifications(new Contract()
                 .Requires()
@@ -162,7 +161,7 @@ namespace Manager.Domain.Core.Handlers
             if (request == null)
                 return new Response(false, "Informe o ticket que deseja excluir!", request);
 
-            Ticket ticket = _repositorioTicket.CarregarObjetoPeloID(request.IdTicket);
+            Ticket ticket = await _repositorioTicket.CarregarObjetoPeloID(request.IdTicket);
 
             if (ticket == null)
                 return new Response(false, "Ticket não localizado", request);
@@ -178,8 +177,8 @@ namespace Manager.Domain.Core.Handlers
             if (request == null)
                 return new Response(false, "Informe os dados do ticket para finalizar", request);
 
-            Ticket ticket = _repositorioTicket.CarregarObjetoPeloID(request.TicketId);
-            Usuario usuario = _repositorioUsuario.CarregarObjetoPeloID(request.UsuarioId);
+            Ticket ticket = await _repositorioTicket.CarregarObjetoPeloID(request.TicketId);
+            Usuario usuario = await _repositorioUsuario.CarregarObjetoPeloID(request.UsuarioId);
 
             if (ticket == null)
                 return new Response(false, "Ticket não localizado", request);
@@ -200,8 +199,8 @@ namespace Manager.Domain.Core.Handlers
 
         public async Task<Response> Handle(CancelarTicket request, CancellationToken cancellationToken)
         {
-            Ticket ticket = _repositorioTicket.CarregarObjetoPeloID(request.IdTicket);
-            Usuario usuario = _repositorioUsuario.CarregarObjetoPeloID(request.UsuarioId);
+            Ticket ticket = await _repositorioTicket.CarregarObjetoPeloID(request.IdTicket);
+            Usuario usuario = await _repositorioUsuario.CarregarObjetoPeloID(request.UsuarioId);
             
             if (ticket == null)
                 return new Response(false, "Ticket não localizado", request);

@@ -5,6 +5,7 @@ using Manager.Domain.Queries.Interfaces;
 using Manager.Infra.Data.Context;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Manager.Infra.Data.Repositorios
 {
@@ -27,10 +28,10 @@ namespace Manager.Infra.Data.Repositorios
             context.Categorias.AddRange(entidades);
         }
 
-        public Categoria CarregarObjetoPeloID(int id)
+        public async Task<Categoria> CarregarObjetoPeloID(int id)
         {
             Categoria categoria = context.Categorias.FirstOrDefault(c => c.Id == id);
-            return categoria;
+            return await Task.FromResult(categoria);
         }
 
         public void Editar(Categoria entidade)
@@ -38,10 +39,10 @@ namespace Manager.Infra.Data.Repositorios
             context.Categorias.Update(entidade);
         }
 
-        public bool Existe(Categoria entidade)
+        public async Task<bool> Existe(Categoria entidade)
         {
             var existe = context.Categorias.Any(c => c.Nome == entidade.Nome);
-            return existe;
+            return await Task.FromResult(existe);
         }
 
         public void Remover(Categoria entidade)
@@ -57,7 +58,7 @@ namespace Manager.Infra.Data.Repositorios
 
         #region CONSULTAS
 
-        public List<CategoriaDTO> Listar()
+        public async Task<List<CategoriaDTO>> Listar()
         {
             var categorias = context.Categorias.OrderBy(c => c.Id).ToList();
             List<CategoriaDTO> categoriaDTOs = new List<CategoriaDTO>();
@@ -68,10 +69,10 @@ namespace Manager.Infra.Data.Repositorios
                 categoriaDTOs.Add(DTO);
             }
 
-            return categoriaDTOs;
+            return await Task.FromResult(categoriaDTOs);
         }
 
-        public List<CategoriaDTO> ListarPorNome(string nome)
+        public async Task<List<CategoriaDTO>> ListarPorNome(string nome)
         {
             //contains = caracter coringa do SQL, pesquisa o paramento NOME
             var categorias = context.Categorias.Where(c => c.Nome.Contains(nome)).ToList();
@@ -84,10 +85,10 @@ namespace Manager.Infra.Data.Repositorios
                 categoriaDTOs.Add(DTO);
             }
 
-            return categoriaDTOs;
+            return await Task.FromResult(categoriaDTOs);
         }
 
-        public CategoriaDTO ProcurarPorID(int id)
+        public async Task<CategoriaDTO> ProcurarPorID(int id)
         {
             var categoria = context.Categorias.FirstOrDefault(c => c.Id == id);
 
@@ -95,7 +96,7 @@ namespace Manager.Infra.Data.Repositorios
                 return null;
 
             CategoriaDTO categoriaDTO = new CategoriaDTO() { Id = categoria.Id, Nome = categoria.Nome };
-            return categoriaDTO;
+            return await Task.FromResult(categoriaDTO);
         }
 
 

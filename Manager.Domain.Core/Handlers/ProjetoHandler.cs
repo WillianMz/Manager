@@ -54,7 +54,7 @@ namespace Manager.Domain.Core.Handlers
 
                 foreach(var r in releases)
                 {
-                    var usuario = _repositorioUsuario.CarregarObjetoPeloID(r.UsuarioId);
+                    var usuario = await _repositorioUsuario.CarregarObjetoPeloID(r.UsuarioId);
 
                     if (usuario == null)
                         return new Response(false, "Usuário não encontrado", null);
@@ -73,7 +73,7 @@ namespace Manager.Domain.Core.Handlers
 
                 foreach(var usuarioEquipe in equipe)
                 {
-                    Usuario usuario = _repositorioUsuario.CarregarObjetoPeloID(usuarioEquipe.UsuarioId);
+                    Usuario usuario = await _repositorioUsuario.CarregarObjetoPeloID(usuarioEquipe.UsuarioId);
 
                     if (usuario != null)
                         projeto.AdicionarMembro(usuario, usuarioEquipe.Gerente);
@@ -89,7 +89,7 @@ namespace Manager.Domain.Core.Handlers
             if (projeto.Invalid)
                 return new Response(false, "Projeto inválido", projeto.Notifications);
 
-            var existe = _repositorioProjeto.Existe(projeto);
+            var existe = await _repositorioProjeto.Existe(projeto);
 
             if (existe == true)
                 return new Response(false, "Já existe um projeto com o mesmo nome", existe);
@@ -107,55 +107,7 @@ namespace Manager.Domain.Core.Handlers
             if (request == null)
                 return new Response(false, "Informe os dados do projeto que deseja alterar", request);
 
-            Projeto projeto = _repositorioProjeto.CarregarObjetoPeloID(request.IdProjeto);
-
-            #region EDITAR DOCUMENTOS
-            
-            //if (request.Documentos != null)
-            //{
-            //    var documentos = request.Documentos;
-
-            //    foreach(var doc in documentos)
-            //    {
-            //        if (doc.IdDocumento != 0)
-            //        {
-            //            projeto.EditarDocumento(doc.IdDocumento, doc.Titulo, doc.URL);
-            //        }
-            //        else
-            //            AddNotification("Documento", "Documento com Id igual 0 ou nulo");
-            //    }
-            //}
-            
-            #endregion
-
-            #region EDITAR RELEASES
-
-            //if(request.Releases != null)
-            //{
-            //    var releases = request.Releases;
-
-            //    foreach(var rel in releases)
-            //    {
-            //        if (rel.IdRelease != 0)
-            //            projeto.EditarRelease(rel.IdRelease, rel.Nome, rel.Descricao, rel.UsuarioId, rel.DataLiberacao);
-            //    }
-            //}
-
-            #endregion
-
-            #region EDITAR MEMBROS DO PROJETO
-
-            //se o usuario existir
-            //verificar se ele ja pertence ao projeto
-            //se pertencer ignora comando de adicionar e passa para o proximo usuario da lista
-            //se nao pertencer ao projeto adicionar
-
-            //if(request.MembrosDoProjeto != null)
-            //{
-
-            //}
-
-            #endregion
+            Projeto projeto = await _repositorioProjeto.CarregarObjetoPeloID(request.IdProjeto);
 
             if (projeto == null)
                 return new Response(false, "Nenhum projeto encontrado com este Id", request.IdProjeto);
@@ -177,7 +129,7 @@ namespace Manager.Domain.Core.Handlers
             if (request == null)
                 return new Response(false, "Informe o projeto que deseja excluir", request);
 
-            Projeto projeto = _repositorioProjeto.CarregarObjetoPeloID(request.idProjeto);
+            Projeto projeto = await _repositorioProjeto.CarregarObjetoPeloID(request.idProjeto);
 
             if (projeto == null)
                 return new Response(false, "Nenhum projeto encontrado com este id", request.idProjeto);
@@ -194,7 +146,7 @@ namespace Manager.Domain.Core.Handlers
             if (request == null)
                 return new Response(false, "Informe o projeto e o usuário", request);
 
-            Projeto projeto = _repositorioProjeto.CarregarObjetoPeloID(request.ProjetoId);            
+            Projeto projeto = await _repositorioProjeto.CarregarObjetoPeloID(request.ProjetoId);            
 
             if (projeto == null)
                 return new Response(false, "Projeto não encontrado", null);
@@ -207,7 +159,7 @@ namespace Manager.Domain.Core.Handlers
 
                 foreach (var membro in equipe)
                 {
-                    Usuario novoMembro = _repositorioUsuario.CarregarObjetoPeloID(membro.UsuarioId);
+                    Usuario novoMembro = await _repositorioUsuario.CarregarObjetoPeloID(membro.UsuarioId);
                     //retorna true caso o usuario acima esteja relacionado ao projeto
                     var usuarioMembroProjeto = projeto.ProjetoUsuarios.Any(p => p.Usuario == novoMembro);
 
@@ -233,7 +185,7 @@ namespace Manager.Domain.Core.Handlers
 
                 foreach (var membro in equipe)
                 {
-                    Usuario membroParaExcluir = _repositorioUsuario.CarregarObjetoPeloID(membro.UsuarioId);
+                    Usuario membroParaExcluir = await _repositorioUsuario.CarregarObjetoPeloID(membro.UsuarioId);
                     var usuarioMembroProjeto = projeto.ProjetoUsuarios.Any(p => p.Usuario == membroParaExcluir);
 
                     if (usuarioMembroProjeto == true)
@@ -260,6 +212,5 @@ namespace Manager.Domain.Core.Handlers
             
         }
 
-        
     }
 }

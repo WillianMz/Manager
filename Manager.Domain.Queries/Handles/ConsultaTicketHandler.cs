@@ -20,7 +20,7 @@ namespace Manager.Domain.Queries.Handles
 
         public async Task<ResponseQueries> Handle(ListarTickets request, CancellationToken cancellationToken)
         {
-            var tickets = _consultaTicket.Listar();
+            var tickets = await _consultaTicket.Listar();
 
             if (tickets.Count == 0)
                 return new ResponseQueries(false, "Nenhum ticket encontrado", null);
@@ -33,7 +33,7 @@ namespace Manager.Domain.Queries.Handles
             if (request == null)
                 return new ResponseQueries(false, "Informe o ID do ticket", null);
 
-            var ticket = _consultaTicket.ProcurarPorID(request.Id);            
+            var ticket = await _consultaTicket.ProcurarPorID(request.Id);            
 
             if (ticket == null)
                 return new ResponseQueries(false, "Nenhum ticket encontrado com o ID: " + request.Id, null);
@@ -46,7 +46,7 @@ namespace Manager.Domain.Queries.Handles
             if (request == null)
                 return new ResponseQueries(false, "Informe um nome para pesquisar", null);
 
-            var tickets = _consultaTicket.ListarPorNome(request.Nome);
+            var tickets = await _consultaTicket.ListarPorNome(request.Nome);
 
             if (tickets.Count == 0)
                 return new ResponseQueries(false, "Nenhum ticket encontrado", null);
@@ -59,7 +59,7 @@ namespace Manager.Domain.Queries.Handles
             if (request == null)
                 return new ResponseQueries(false, "Informe o ID do ticket", null);
 
-            var ticket = _consultaTicket.ConsultarDetalhes(request.Id);
+            var ticket = await _consultaTicket.ConsultarDetalhes(request.Id);
 
             if (ticket == null)
                 return new ResponseQueries(false, "Nenhum ticket encontrado com o ID: " + request.Id, null);

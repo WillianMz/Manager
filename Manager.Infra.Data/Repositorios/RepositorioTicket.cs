@@ -29,10 +29,10 @@ namespace Manager.Infra.Data.Repositorios
             context.Tickets.AddRange(entidades);
         }
 
-        public Ticket CarregarObjetoPeloID(int id)
+        public async Task<Ticket> CarregarObjetoPeloID(int id)
         {
             Ticket ticket = context.Tickets.FirstOrDefault(t => t.Id == id);
-            return ticket;
+            return await Task.FromResult(ticket);
         }
 
         public void Editar(Ticket entidade)
@@ -40,7 +40,7 @@ namespace Manager.Infra.Data.Repositorios
             context.Tickets.Update(entidade);
         }
 
-        public bool Existe(Ticket entidade)
+        public Task<bool> Existe(Ticket entidade)
         {
             throw new NotImplementedException();
         }
@@ -57,7 +57,7 @@ namespace Manager.Infra.Data.Repositorios
 
         #region CONSULTAS
 
-        public List<TicketDTO> Listar()
+        public async Task<List<TicketDTO>> Listar()
         {
             var tickets = context.Tickets.OrderBy(t => t.Id).ToList();
             List<TicketDTO> ticketDTOs = new List<TicketDTO>();
@@ -80,10 +80,10 @@ namespace Manager.Infra.Data.Repositorios
                 ticketDTOs.Add(DTO);
             }
 
-            return ticketDTOs;
+            return await Task.FromResult(ticketDTOs);
         }
 
-        public List<TicketDTO> ListarPorNome(string nome)
+        public async Task<List<TicketDTO>> ListarPorNome(string nome)
         {
             var tickets = context.Tickets.Where(t => t.Titulo.Contains(nome)).ToList();
             tickets.OrderBy(t => t.Titulo);
@@ -105,10 +105,10 @@ namespace Manager.Infra.Data.Repositorios
                 ticketDTOs.Add(DTO);
             }
 
-            return ticketDTOs;
+            return await Task.FromResult(ticketDTOs);
         }
 
-        public TicketDTO ProcurarPorID(int id)
+        public async Task<TicketDTO> ProcurarPorID(int id)
         {
             var ticket = context.Tickets.FirstOrDefault(t => t.Id == id);
 
@@ -126,10 +126,10 @@ namespace Manager.Infra.Data.Repositorios
                 Criador = ticket.Criador.Nome
             };
 
-            return ticketDTO;
+            return await Task.FromResult(ticketDTO);
         }
 
-        public TicketDTO ConsultarDetalhes(int id)
+        public async Task<TicketDTO> ConsultarDetalhes(int id)
         {
             var ticket = context.Tickets.FirstOrDefault(t => t.Id == id);
 
@@ -180,13 +180,7 @@ namespace Manager.Infra.Data.Repositorios
                 ticketDTO.Anexos.Add(anexoDTO);                
             }
 
-            return ticketDTO;
-        }
-
-        public async Task<Ticket> GetByID(int id)
-        {
-            Ticket ticket = context.Tickets.FirstOrDefault(t => t.Id == id);
-            return await Task.FromResult(ticket);
+            return await Task.FromResult(ticketDTO);
         }
 
         #endregion

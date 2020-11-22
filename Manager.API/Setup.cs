@@ -39,6 +39,10 @@ namespace Manager.API
             services.AddTransient<IRepositorioProjeto, RepositorioProjeto>();
             services.AddTransient<IRepositorioTicket, RepositorioTicket>();
             services.AddTransient<IRepositorioUsuario, RepositorioUsuario>();
+            services.AddTransient<IRepositorioAnexo, RepositorioAnexo>();
+            services.AddTransient<IRepositorioNota, RepositorioNota>();
+            services.AddTransient<IRepositorioDocumento, RepositorioDocumento>();
+            services.AddTransient<IRepositorioRelease, RepositorioRelease>();
 
             //consultas
             services.AddTransient<IConsultaCategoria, RepositorioCategoria>();

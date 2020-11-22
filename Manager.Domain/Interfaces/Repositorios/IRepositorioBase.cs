@@ -10,8 +10,8 @@ namespace Manager.Domain.Interfaces.Repositorios
         void Remover(TEntidade entidade);       
         void AdicionarLista(IEnumerable<TEntidade> entidades);
         void RemoverLista(IEnumerable<TEntidade> entidades);
-        bool Existe(TEntidade entidade);
-        TEntidade CarregarObjetoPeloID(int id);
+        Task<bool> Existe(TEntidade entidade);
+        Task<TEntidade> CarregarObjetoPeloID(int id);
        
     }
 }

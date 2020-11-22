@@ -5,6 +5,7 @@ using Manager.Domain.Queries.Interfaces;
 using Manager.Infra.Data.Context;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Manager.Infra.Data.Repositorios
 {
@@ -27,10 +28,10 @@ namespace Manager.Infra.Data.Repositorios
             context.Projetos.AddRange(entidades);
         }
 
-        public Projeto CarregarObjetoPeloID(int id)
+        public async Task<Projeto> CarregarObjetoPeloID(int id)
         {
             Projeto projeto = context.Projetos.FirstOrDefault(p => p.Id == id);
-            return projeto;
+            return await Task.FromResult(projeto);
         }
 
         public void Editar(Projeto entidade)
@@ -38,10 +39,10 @@ namespace Manager.Infra.Data.Repositorios
             context.Projetos.Update(entidade);
         }
 
-        public bool Existe(Projeto entidade)
+        public async Task<bool> Existe(Projeto entidade)
         {
             var existe = context.Projetos.Any(p => p.Nome == entidade.Nome);
-            return existe;
+            return await Task.FromResult(existe);
         }
 
         public void Remover(Projeto entidade)
@@ -57,7 +58,7 @@ namespace Manager.Infra.Data.Repositorios
 
         #region CONSULTAS
        
-        public List<ProjetoDTO> Listar()
+        public async Task<List<ProjetoDTO>> Listar()
         {
             var projetos = context.Projetos.OrderBy(p => p.Id).ToList();
             List<ProjetoDTO> projetoDTOs = new List<ProjetoDTO>();
@@ -67,10 +68,10 @@ namespace Manager.Infra.Data.Repositorios
                 projetoDTOs.Add(new ProjetoDTO() { Id = p.Id, Nome = p.Nome, Descricao = p.Descricao });
             }
 
-            return projetoDTOs;
+            return await Task.FromResult(projetoDTOs);
         }
 
-        public List<ProjetoDTO> ListarPorNome(string nome)
+        public async Task<List<ProjetoDTO>> ListarPorNome(string nome)
         {
             var projetos = context.Projetos.Where(p => p.Nome.Contains(nome)).ToList();
             projetos.OrderBy(p => p.Nome);
@@ -81,14 +82,14 @@ namespace Manager.Infra.Data.Repositorios
                 projetoDTOs.Add(new ProjetoDTO() { Id = p.Id, Nome = p.Nome, Descricao = p.Descricao });
             }
 
-            return projetoDTOs;
+            return await Task.FromResult(projetoDTOs);
         }
 
-        public ProjetoDTO ProcurarPorID(int id)
+        public async Task<ProjetoDTO> ProcurarPorID(int id)
         {
             var projeto = context.Projetos.FirstOrDefault(p => p.Id == id);
             ProjetoDTO DTO = new ProjetoDTO() { Id = projeto.Id, Descricao = projeto.Descricao, Nome = projeto.Nome };
-            return DTO;
+            return await Task.FromResult(DTO);
         }
 
         #endregion

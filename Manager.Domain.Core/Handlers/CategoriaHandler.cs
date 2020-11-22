@@ -1,5 +1,4 @@
-﻿using Manager.Domain.Core.Comandos;
-using Manager.Domain.Core.Comandos.Categorias;
+﻿using Manager.Domain.Core.Comandos.Categorias;
 using Manager.Domain.Entidades;
 using Manager.Domain.Interfaces.Repositorios;
 using MediatR;
@@ -12,12 +11,10 @@ namespace Manager.Domain.Core.Handlers
                                     IRequestHandler<EditarCategoria, Response>
     {
         private readonly IRepositorioCategoria _repositorioCategoria;
-        private readonly IMediator _mediator;
 
-        public CategoriaHandler(IRepositorioCategoria repositorioCategoria, IMediator mediator)
+        public CategoriaHandler(IRepositorioCategoria repositorioCategoria)
         {
             _repositorioCategoria = repositorioCategoria;
-            _mediator = mediator;
         }
 
         public async Task<Response> Handle(CriarCategoria request, CancellationToken cancellationToken)
@@ -30,7 +27,7 @@ namespace Manager.Domain.Core.Handlers
             if (categoria.Invalid)
                 return new Response(false, "Categoria inválida! Verifique os erros.", categoria.Notifications);
 
-            if (_repositorioCategoria.Existe(categoria))
+            if (await _repositorioCategoria.Existe(categoria))
                 return new Response(false, "Já existe uma categoria com este nome!", request);
 
             _repositorioCategoria.Adicionar(categoria);
@@ -44,7 +41,7 @@ namespace Manager.Domain.Core.Handlers
             if (request == null)
                 return new Response(false, "Informe os dados necessários", request);
 
-            Categoria categoria = _repositorioCategoria.CarregarObjetoPeloID(request.Id);
+            Categoria categoria = await _repositorioCategoria.CarregarObjetoPeloID(request.Id);
 
             if (categoria == null)
                 return new Response(false, "Nenhuma categoria encontrada", request);

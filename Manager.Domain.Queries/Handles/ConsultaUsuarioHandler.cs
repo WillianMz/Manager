@@ -1,7 +1,6 @@
 ﻿using Manager.Domain.Queries.Consultas.Usuarios;
 using Manager.Domain.Queries.Interfaces;
 using MediatR;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,7 +19,7 @@ namespace Manager.Domain.Queries.Handles
 
         public async Task<ResponseQueries> Handle(ListarUsuarios request, CancellationToken cancellationToken)
         {
-            var usuarios = _consultaUsuario.Listar();
+            var usuarios = await _consultaUsuario.Listar();
 
             if (usuarios.Count == 0)
                 return new ResponseQueries(false, "Nenhum usuário encontrado", null);
@@ -33,7 +32,7 @@ namespace Manager.Domain.Queries.Handles
             if (request == null)
                 return new ResponseQueries(false, "Informe o ID do usuário", null);
 
-            var usuario = _consultaUsuario.ProcurarPorID(request.Id);
+            var usuario = await _consultaUsuario.ProcurarPorID(request.Id);
 
             if (usuario == null)
                 return new ResponseQueries(false, "Nenhum usuário encontrado com o ID: " + request.Id, null);
@@ -46,7 +45,7 @@ namespace Manager.Domain.Queries.Handles
             if (request == null)
                 return new ResponseQueries(false, "Informe um nome para pesquisa", null);
 
-            var usuarios = _consultaUsuario.ListarPorNome(request.Nome);
+            var usuarios = await _consultaUsuario.ListarPorNome(request.Nome);
 
             if (usuarios.Count == 0)
                 return new ResponseQueries(false, "Nenhum usuário encontrado", null);

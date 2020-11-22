@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Manager.Domain.Queries.Interfaces
 {
     public interface IConsultaBase<TEntidade>
     {
-        List<TEntidade> Listar();
-        List<TEntidade> ListarPorNome(string nome);
-        TEntidade ProcurarPorID(int id);
+        Task<List<TEntidade>> Listar();
+        Task<List<TEntidade>> ListarPorNome(string nome);
+        Task<TEntidade> ProcurarPorID(int id);
     }
 }
