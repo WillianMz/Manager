@@ -8,6 +8,7 @@ issue trackers ou simplesmente, sistema de chamados.
 
 ``` bash
 .NET Core;
+Entity Framework Core
 MySQL
 ```
 
