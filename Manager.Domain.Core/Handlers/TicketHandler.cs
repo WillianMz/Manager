@@ -4,6 +4,7 @@ using Manager.Domain.Core.Comandos.Tickets;
 using Manager.Domain.Entidades;
 using Manager.Domain.Enums;
 using Manager.Domain.Interfaces.Repositorios;
+using Manager.Domain.Interfaces.Servicos;
 using MediatR;
 using System.Collections.Generic;
 using System.Threading;
@@ -21,16 +22,21 @@ namespace Manager.Domain.Core.Handlers
         private readonly IRepositorioCategoria _repositorioCategoria;
         private readonly IRepositorioProjeto _repositorioProjeto;
         private readonly IRepositorioUsuario _repositorioUsuario;
-        private readonly IMediator _mediator;
+        //private readonly IMediator _mediator;
+        //private readonly IServicoEmail _servicoEmail;
+        private readonly INotificarTicket _notificarNovoTicket;
 
         public TicketHandler(IRepositorioTicket repositorioTicket, IRepositorioCategoria repositorioCategoria, 
-                             IRepositorioProjeto repositorioProjeto, IRepositorioUsuario repositorioUsuario, IMediator mediator)
+                            IRepositorioProjeto repositorioProjeto, IRepositorioUsuario repositorioUsuario,
+                            INotificarTicket notificarNovoTicket)
         {
             _repositorioTicket = repositorioTicket;
             _repositorioCategoria = repositorioCategoria;
             _repositorioProjeto = repositorioProjeto;
             _repositorioUsuario = repositorioUsuario;
-            _mediator = mediator;
+            //_mediator = mediator;
+            //_servicoEmail = servicoEmail;
+            _notificarNovoTicket = notificarNovoTicket;
         }
 
         public async Task<Response> Handle(CriarTicket request, CancellationToken cancellationToken)
@@ -83,7 +89,8 @@ namespace Manager.Domain.Core.Handlers
             if (ticket.Invalid)
                 return new Response(false, "Ticket inválido", ticket.Notifications);
 
-            _repositorioTicket.Adicionar(ticket);        
+            _repositorioTicket.Adicionar(ticket);
+            await _notificarNovoTicket.Novo(projeto, criador, ticket);
 
             Response result = new Response(true, "Ticket criado com sucesso!", null);
             return await Task.FromResult(result);
@@ -188,10 +195,15 @@ namespace Manager.Domain.Core.Handlers
 
             ticket.Finalizar(request.Solucao, usuario);
 
+            //teste
+            //NotificarFechamentoDeTicket notificacao = new NotificarFechamentoDeTicket(_servicoEmail);
+            //notificacao.NotificaFechamentoDoTicket(ticket, usuario, request.Solucao);
+
             if (ticket.Invalid)
                 return new Response(false, "Ticket inválido", ticket.Notifications);
 
             _repositorioTicket.Editar(ticket);
+            _notificarNovoTicket.Finalizar(ticket, usuario, request.Solucao);
 
             Response result = new Response(true, "Ticket finalizado com sucesso!", null);
             return await Task.FromResult(result);

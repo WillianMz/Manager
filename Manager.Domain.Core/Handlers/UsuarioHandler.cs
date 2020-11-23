@@ -1,6 +1,5 @@
 ﻿using Flunt.Notifications;
 using Manager.Domain.Core.Comandos.Usuarios;
-using Manager.Domain.Core.Eventos;
 using Manager.Domain.Entidades;
 using Manager.Domain.Enums;
 using Manager.Domain.Interfaces.Repositorios;
@@ -21,14 +20,14 @@ namespace Manager.Domain.Core.Handlers
                                               IRequestHandler<AtivarUsuario, Response>
     {
         private readonly IRepositorioUsuario _repositorioUsuario;
-        private readonly IMediator _mediator;
-        private readonly IServicoEmail _servicoEmail;
+        //private readonly IServicoEmail _servicoEmail;
+        private readonly INotificarUsuario _notificarAtivacaoDoUsuario;
 
-        public UsuarioHandler(IRepositorioUsuario repositorioUsuario, IMediator mediator, IServicoEmail servicoEmail)
+        public UsuarioHandler(IRepositorioUsuario repositorioUsuario, INotificarUsuario notificarAtivacaoDoUsuario)
         {
             _repositorioUsuario = repositorioUsuario;
-            _mediator = mediator;
-            _servicoEmail = servicoEmail;
+           // _servicoEmail = servicoEmail;
+            _notificarAtivacaoDoUsuario = notificarAtivacaoDoUsuario;
         }
 
         public async Task<Response> Handle(RegistrarNovoUsuario request, CancellationToken cancellationToken)
@@ -46,9 +45,10 @@ namespace Manager.Domain.Core.Handlers
                 return new Response(false, "Usuário inváldo", usuario.Notifications);
 
             _repositorioUsuario.Adicionar(usuario);
-            var codigoAtivacao = usuario.UsuarioAtivacoes.Last().CodigoAtivacao;
-            EmailDeAtivacaoUsuario emailDeAtivacaoUsuario = new EmailDeAtivacaoUsuario(_servicoEmail);
-            emailDeAtivacaoUsuario.EnviarEmail(usuario, codigoAtivacao);
+            string codigoAtivacao = usuario.UsuarioAtivacoes.Last().CodigoAtivacao;
+            _notificarAtivacaoDoUsuario.EnviarCodigoDeAtivacao(usuario, codigoAtivacao);
+            //EmailDeAtivacaoUsuario emailDeAtivacaoUsuario = new EmailDeAtivacaoUsuario(_servicoEmail);
+            //emailDeAtivacaoUsuario.EnviarEmail(usuario, codigoAtivacao);
 
             var result = new Response(true, "Usuário registrado com sucesso!", null);
             return await Task.FromResult(result);

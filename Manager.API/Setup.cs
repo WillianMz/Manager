@@ -10,6 +10,7 @@ using Manager.Infra.Data.Context;
 using Manager.Infra.Data.Repositorios;
 using Manager.Infra.Data.Transacoes;
 using Manager.Infra.Services.Email;
+using Manager.Infra.Services.Notifications;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -51,6 +52,9 @@ namespace Manager.API
             services.AddTransient<IConsultaUsuario, RepositorioUsuario>();
 
             services.AddTransient<IServicoEmail, ServicoEmail>();
+            services.AddTransient<INotificarRelease, NotificarRelease>();
+            services.AddTransient<INotificarTicket, NotificarTicket>();
+            services.AddTransient<INotificarUsuario, NotificarUsuario>();
         }
 
         public static void ConfigureSwagger(this IServiceCollection services)

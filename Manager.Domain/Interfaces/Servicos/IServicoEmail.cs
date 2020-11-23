@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Manager.Domain.Interfaces.Servicos
+﻿namespace Manager.Domain.Interfaces.Servicos
 {
     public interface IServicoEmail
     {

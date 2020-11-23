@@ -1,5 +1,4 @@
 ﻿using Flunt.Notifications;
-using Manager.Domain.Core.Comandos;
 using Manager.Domain.Core.Comandos.Projetos;
 using Manager.Domain.Entidades;
 using Manager.Domain.Interfaces.Repositorios;
@@ -129,10 +128,10 @@ namespace Manager.Domain.Core.Handlers
             if (request == null)
                 return new Response(false, "Informe o projeto que deseja excluir", request);
 
-            Projeto projeto = await _repositorioProjeto.CarregarObjetoPeloID(request.idProjeto);
+            Projeto projeto = await _repositorioProjeto.CarregarObjetoPeloID(request.IdProjeto);
 
             if (projeto == null)
-                return new Response(false, "Nenhum projeto encontrado com este id", request.idProjeto);
+                return new Response(false, "Nenhum projeto encontrado com este id", request.IdProjeto);
 
             _repositorioProjeto.Remover(projeto);
 

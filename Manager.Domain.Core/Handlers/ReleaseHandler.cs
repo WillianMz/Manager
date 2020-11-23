@@ -1,6 +1,7 @@
 ﻿using Manager.Domain.Core.Comandos.Projetos;
 using Manager.Domain.Entidades;
 using Manager.Domain.Interfaces.Repositorios;
+using Manager.Domain.Interfaces.Servicos;
 using MediatR;
 using System.Linq;
 using System.Threading;
@@ -15,12 +16,15 @@ namespace Manager.Domain.Core.Handlers
         private readonly IRepositorioProjeto _repositorioProjeto;
         private readonly IRepositorioUsuario _repositorioUsuario;
         private readonly IRepositorioRelease _repositorioRelease;
+        private readonly INotificarRelease _notificarRelease;
 
-        public ReleaseHandler(IRepositorioProjeto repositorioProjeto, IRepositorioUsuario repositorioUsuario, IRepositorioRelease repositorioRelease)
+        public ReleaseHandler(IRepositorioProjeto repositorioProjeto, IRepositorioUsuario repositorioUsuario, 
+                              IRepositorioRelease repositorioRelease, INotificarRelease notificarRelease)
         {
             _repositorioProjeto = repositorioProjeto;
             _repositorioUsuario = repositorioUsuario;
             _repositorioRelease = repositorioRelease;
+            _notificarRelease = notificarRelease;
         }
 
         public async Task<Response> Handle(AdicionarRelease request, CancellationToken cancellationToken)
@@ -44,6 +48,7 @@ namespace Manager.Domain.Core.Handlers
 
             //_repositorioProjeto.Editar(projeto);
             _repositorioRelease.Adicionar(release);
+            await _notificarRelease.Nova(usuario, projeto, release);
 
             var result = new Response(true, "Release adicionada com sucesso!", null);
             return await Task.FromResult(result);
@@ -84,7 +89,7 @@ namespace Manager.Domain.Core.Handlers
 
             //projeto projeto = await _repositorioProjeto.CarregarObjetoPeloID(request.ProjetoId);
             //Release release = projeto.Releases.FirstOrDefault(r => r.Id == request.idRelease);
-            Release release = await _repositorioRelease.CarregarObjetoPeloID(request.idRelease);
+            Release release = await _repositorioRelease.CarregarObjetoPeloID(request.IdRelease);
 
             if (release == null)
                 return new Response(false, "Release não encontrada", request);
