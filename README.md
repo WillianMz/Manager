@@ -36,4 +36,4 @@ dotnet watch run
 ## Imagens
 ![alt text](https://github.com/WillianMz/Manager/blob/master/Docs/Imagens/Swagger.png)
 ![alt text](https://github.com/WillianMz/Manager/blob/master/Docs/Imagens/Resposta.png)
-![alt text](hhttps://github.com/WillianMz/Manager/blob/master/Docs/Imagens/Schemas.png)
+![alt text](https://github.com/WillianMz/Manager/blob/master/Docs/Imagens/Schemas.png)
