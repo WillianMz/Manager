@@ -13,7 +13,7 @@ namespace Manager.Infra.Services.Email
             email.From = new MailAddress(remetente, "Manager Tickets");
             email.To.Add(new MailAddress(destinatario));
             //cópia oculta
-            email.CC.Add(new MailAddress("willian.mz@outlook.com.br"));
+            email.CC.Add(new MailAddress("xxxxxx@outlook.com.br"));
 
             email.Subject = titulo;
             email.Body = corpo;
@@ -31,7 +31,7 @@ namespace Manager.Infra.Services.Email
                     smtp.EnableSsl = true;
                     smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
                     smtp.UseDefaultCredentials = false;
-                    smtp.Credentials = new NetworkCredential("willianmazzorana@hotmail.com", "wn2020willian");
+                    smtp.Credentials = new NetworkCredential("xxxxxxxx@hotmail.com", "xxxxxxxxxx");
 
                     smtp.Send(email);
 
