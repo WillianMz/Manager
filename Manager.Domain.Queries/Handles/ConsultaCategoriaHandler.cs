@@ -19,7 +19,7 @@ namespace Manager.Domain.Queries.Handles
 
         public async Task<ResponseQueries> Handle(ListarCategorias request, CancellationToken cancellationToken)
         {
-            var categorias = _consultaCategoria.Listar();
+            var categorias = await _consultaCategoria.Listar();
 
             if (categorias == null)
                 return new ResponseQueries(false, "Nenhuma categoria encontrada", null);
