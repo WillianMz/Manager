@@ -60,7 +60,7 @@ namespace Manager.Infra.Data.Repositorios
        
         public async Task<List<ProjetoDTO>> Listar()
         {
-            var projetos = context.Projetos.OrderBy(p => p.Id).ToList();
+            var projetos = context.Projetos.OrderByDescending(p => p.Id).ToList();
             List<ProjetoDTO> projetoDTOs = new List<ProjetoDTO>();
 
             foreach (var p in projetos)
@@ -88,8 +88,39 @@ namespace Manager.Infra.Data.Repositorios
         public async Task<ProjetoDTO> ProcurarPorID(int id)
         {
             var projeto = context.Projetos.FirstOrDefault(p => p.Id == id);
-            ProjetoDTO DTO = new ProjetoDTO() { Id = projeto.Id, Descricao = projeto.Descricao, Nome = projeto.Nome };
-            return await Task.FromResult(DTO);
+
+            if (projeto == null) return null;
+
+            ProjetoDTO projetoDTO = new ProjetoDTO() 
+            { 
+                Id = projeto.Id, 
+                Descricao = projeto.Descricao, 
+                Nome = projeto.Nome
+            };
+
+            //documentos do projeto
+            foreach (var docs in projeto.Documentos)
+            {
+                DocumentoDTO docDTO = new DocumentoDTO()
+                { 
+                    Id = docs.Id,
+                    Titulo = docs.Titulo,
+                    URL = docs.URL
+                };
+                projetoDTO.Documentos.Add(docDTO);
+            }
+
+            //equipe do projeto
+            foreach (var equipe in projeto.ProjetoUsuarios)
+            {
+                ProjetoUsuarioDTO equipeDTO = new ProjetoUsuarioDTO()
+                {
+                   Usuario = equipe.Usuario.Nome
+                };
+                projetoDTO.Equipe.Add(equipeDTO);
+            }
+
+            return await Task.FromResult(projetoDTO);
         }
 
         #endregion

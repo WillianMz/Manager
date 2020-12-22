@@ -96,7 +96,7 @@ namespace Manager.API.Controllers
         }
 
         [AllowAnonymous]//para testes
-        [HttpPost]
+        [HttpPut]
         [Route("api/Categoria/Editar")]
         public async Task<IActionResult> EditarCategoria([FromBody] EditarCategoria request)
         {

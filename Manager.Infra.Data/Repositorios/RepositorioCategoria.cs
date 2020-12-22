@@ -60,7 +60,7 @@ namespace Manager.Infra.Data.Repositorios
 
         public async Task<List<CategoriaDTO>> Listar()
         {
-            var categorias = context.Categorias.OrderBy(c => c.Id).ToList();
+            var categorias = context.Categorias.OrderByDescending(c => c.Id).ToList();
             List<CategoriaDTO> categoriaDTOs = new List<CategoriaDTO>();
 
             foreach (var c in categorias)

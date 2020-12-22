@@ -45,7 +45,7 @@ namespace Manager.Domain.Queries.Handles
             if (request == null)
                 return new ResponseQueries(false, "Informe um ID para procurar a categoria", null);
 
-            var categoria = _consultaCategoria.ProcurarPorID(request.Id);
+            var categoria = await _consultaCategoria.ProcurarPorID(request.Id);
 
             if (categoria == null)
                 return new ResponseQueries(false, "Nenhuma categoria encontrada com o ID: " + request.Id, null);

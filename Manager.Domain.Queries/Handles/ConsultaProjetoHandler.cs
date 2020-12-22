@@ -33,7 +33,7 @@ namespace Manager.Domain.Queries.Handles
             if (request == null)
                 return new ResponseQueries(false, "Informe o ID do projeto", null);
 
-            var projeto = _consultaProjeto.ProcurarPorID(request.Id);
+            var projeto = await _consultaProjeto.ProcurarPorID(request.Id);
 
             if (projeto == null)
                 return new ResponseQueries(false, "Nenhum projeto encontrado com o ID: " + request.Id, null);
