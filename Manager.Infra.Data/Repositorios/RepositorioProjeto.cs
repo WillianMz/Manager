@@ -89,7 +89,8 @@ namespace Manager.Infra.Data.Repositorios
         {
             var projeto = context.Projetos.FirstOrDefault(p => p.Id == id);
 
-            if (projeto == null) return null;
+            if (projeto == null) 
+                return null;
 
             ProjetoDTO projetoDTO = new ProjetoDTO() 
             { 
@@ -101,7 +102,7 @@ namespace Manager.Infra.Data.Repositorios
             //documentos do projeto
             foreach (var docs in projeto.Documentos)
             {
-                DocumentoDTO docDTO = new DocumentoDTO()
+                DocumentoDTO docDTO = new DocumentoDTO
                 { 
                     Id = docs.Id,
                     Titulo = docs.Titulo,
@@ -113,7 +114,7 @@ namespace Manager.Infra.Data.Repositorios
             //equipe do projeto
             foreach (var equipe in projeto.ProjetoUsuarios)
             {
-                ProjetoUsuarioDTO equipeDTO = new ProjetoUsuarioDTO()
+                ProjetoUsuarioDTO equipeDTO = new ProjetoUsuarioDTO
                 {
                    Usuario = equipe.Usuario.Nome
                 };
