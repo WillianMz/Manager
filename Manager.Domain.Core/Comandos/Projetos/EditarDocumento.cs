@@ -5,6 +5,6 @@ namespace Manager.Domain.Core.Comandos.Projetos
 {
     public class EditarDocumento : DocumentoBase, IRequest<Response>
     {
-        public int IdDocumento { get; set; }
+        public int Id { get; set; }
     }
 }

@@ -106,10 +106,10 @@ namespace Manager.Domain.Core.Handlers
             if (request == null)
                 return new Response(false, "Informe os dados do projeto que deseja alterar", request);
 
-            Projeto projeto = await _repositorioProjeto.CarregarObjetoPeloID(request.IdProjeto);
+            Projeto projeto = await _repositorioProjeto.CarregarObjetoPeloID(request.Id);
 
             if (projeto == null)
-                return new Response(false, "Nenhum projeto encontrado com este Id", request.IdProjeto);
+                return new Response(false, "Nenhum projeto encontrado com este Id", request.Id);
 
             projeto.Editar(request.Nome, request.Descricao);
 

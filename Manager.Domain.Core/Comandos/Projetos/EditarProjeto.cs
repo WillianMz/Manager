@@ -5,7 +5,7 @@ namespace Manager.Domain.Core.Comandos.Projetos
 {
     public class EditarProjeto : ProjetoBase, IRequest<Response>
     {
-        public int IdProjeto { get; set; }
+        public int Id { get; set; }
 
         //public List<EditarDocumento> Documentos { get; set; }
         //public List<EditarRelease> Releases { get; set; }

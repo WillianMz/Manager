@@ -53,7 +53,7 @@ namespace Manager.Domain.Core.Handlers
 
             //Projeto projeto = await _repositorioProjeto.CarregarObjetoPeloID(request.ProjetoId);
             //Documento documento = projeto.Documentos.FirstOrDefault(d => d.Id == request.IdDocumento);
-            Documento documento = await _repositorioDocumento.CarregarObjetoPeloID(request.IdDocumento);
+            Documento documento = await _repositorioDocumento.CarregarObjetoPeloID(request.Id);
 
             //if (projeto == null)
             //    return new Response(false, "Projeto não encontrado!", request);

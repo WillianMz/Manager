@@ -62,7 +62,7 @@ namespace Manager.Domain.Core.Handlers
             Usuario usuario = await _repositorioUsuario.CarregarObjetoPeloID(request.UsuarioId);
             Projeto projeto = await _repositorioProjeto.CarregarObjetoPeloID(request.ProjetoId);
             //Release release = projeto.Releases.FirstOrDefault(r => r.Id == request.IdRelease);
-            Release release = await _repositorioRelease.CarregarObjetoPeloID(request.IdRelease);
+            Release release = await _repositorioRelease.CarregarObjetoPeloID(request.Id);
 
             if (usuario == null)
                 return new Response(false, "Usuário não encontrado", request);

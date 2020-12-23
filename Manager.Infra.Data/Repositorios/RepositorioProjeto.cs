@@ -111,6 +111,22 @@ namespace Manager.Infra.Data.Repositorios
                 projetoDTO.Documentos.Add(docDTO);
             }
 
+            //releases
+            foreach (var rel in projeto.Releases)
+            {
+                ReleaseDTO releaseDTO = new ReleaseDTO
+                {
+                    Id = rel.Id,
+                    Nome = rel.Nome,
+                    Versao =  rel.Versao,
+                    Usuario =  rel.Usuario.Nome,
+                    DataCriacao = rel.DataDeCriacao.ToString(),
+                    DataLiberacao = rel.DataDeLiberacao.ToString(),
+                    Descricao = rel.Descricao
+                };
+                projetoDTO.Releases.Add(releaseDTO);
+            }
+
             //equipe do projeto
             foreach (var equipe in projeto.ProjetoUsuarios)
             {
