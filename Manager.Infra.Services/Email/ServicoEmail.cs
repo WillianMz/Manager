@@ -30,7 +30,7 @@ namespace Manager.Infra.Services.Email
                     smtp.EnableSsl = true;
                     smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
                     smtp.UseDefaultCredentials = false;
-                    smtp.Credentials = new NetworkCredential("willianmazzorana@hotmail.com", "wn2020willian");
+                    smtp.Credentials = new NetworkCredential("xxxxxxxxxxl.com", "xxxxxxxxxxxx");
 
                     smtp.Send(email);
 
