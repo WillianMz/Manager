@@ -59,7 +59,7 @@ namespace Manager.Infra.Data.Repositorios
 
         public async Task<List<TicketDTO>> Listar()
         {
-            var tickets = context.Tickets.OrderBy(t => t.Id).ToList();
+            var tickets = context.Tickets.OrderByDescending(t => t.Id).ToList();
             List<TicketDTO> ticketDTOs = new List<TicketDTO>();
 
             foreach (var t in tickets)

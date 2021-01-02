@@ -112,7 +112,7 @@ namespace Manager.Infra.Data.Repositorios
             }
 
             //releases
-            foreach (var rel in projeto.Releases)
+            foreach (var rel in projeto.Releases.OrderByDescending(r => r.Id))
             {
                 ReleaseDTO releaseDTO = new ReleaseDTO
                 {
