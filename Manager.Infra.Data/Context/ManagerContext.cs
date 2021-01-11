@@ -16,7 +16,7 @@ namespace Manager.Infra.Data.Context
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<UsuarioAtivacao> UsuarioAtivacoes { get; set; }
         public DbSet<ProjetoUsuario> ProjetoUsuarios { get; set; }
-        public DbSet<Anexo> Anexos { get; set; }        
+        public DbSet<Anexo> Anexos { get; set; }
 
         public ManagerContext(DbContextOptions options) : base(options)
         {

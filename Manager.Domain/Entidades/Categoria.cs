@@ -5,7 +5,7 @@ namespace Manager.Domain.Entidades
 {
     public class Categoria : EntidadeBase
     {
-        private List<Ticket> _tickets;
+        private readonly List<Ticket> _tickets;
 
         //para o EFCore
         protected Categoria() {}
