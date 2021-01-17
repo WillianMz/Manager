@@ -1,5 +1,6 @@
 ﻿using Manager.Domain.Core.Comandos.Projetos;
 using Manager.Domain.Interfaces;
+using Manager.Domain.Queries.Consultas.Releases;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -59,6 +60,23 @@ namespace Manager.API.Controllers
             {
                 var response = await _mediator.Send(request, CancellationToken.None);
                 return await ResponseAsync(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        //CONSULTAS
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("api/Projeto/Release/Listar")]
+        public async Task<IActionResult> ProcurarPorNome([FromQuery] FiltrarReleasesPorProjeto request)
+        {
+            try
+            {
+                var response = await _mediator.Send(request, CancellationToken.None);
+                return await ResponseQuerieAsync(response);
             }
             catch (Exception ex)
             {

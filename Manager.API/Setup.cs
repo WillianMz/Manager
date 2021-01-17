@@ -50,6 +50,7 @@ namespace Manager.API
             services.AddTransient<IConsultaProjeto, RepositorioProjeto>();
             services.AddTransient<IConsultaTicket, RepositorioTicket>();
             services.AddTransient<IConsultaUsuario, RepositorioUsuario>();
+            services.AddTransient<IConsultaRelease, RepositorioRelease>();
 
             services.AddTransient<IServicoEmail, ServicoEmail>();
             services.AddTransient<INotificarRelease, NotificarRelease>();
