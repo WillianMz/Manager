@@ -1,6 +1,6 @@
 ﻿using Manager.Domain.Core.Comandos.Projetos;
 using Manager.Domain.Interfaces;
-using Manager.Domain.Queries.Consultas.Releases;
+using Manager.Domain.Queries.Consultas.Projetos;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
